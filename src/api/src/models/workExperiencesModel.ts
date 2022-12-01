@@ -6,7 +6,7 @@ const WorkExperienceSchema = new mongoose.Schema({
         maxLength: 200,
         trim: true
     },
-    company: {
+    organization: {
         type: String,
         required: true,
         maxLength: 100,

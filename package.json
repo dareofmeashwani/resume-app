@@ -2,7 +2,7 @@
     "name": "resume-app",
     "version": "1.0.0",
     "main": "index.js",
-    "repository": "https://github.com/dareofmeashwani/ResumeApp",
+    "repository": "https://github.com/dareofmeashwani/resume-app",
     "author": "connect2ashwaniverma@gmail.com",
     "license": "MIT",
     "private": true,

@@ -7,8 +7,8 @@ const getProps = (user : any) => {
 }
 const projects = createEndpoints(projectsModel, getProps, (req : any) => req.params.projectId);
 
-export const getProjectsList = projects.getDocList;
-export const createProjects = projects.postDoc;
-export const getProjects = projects.getDoc;
-export const patchProjects = projects.patchDoc;
-export const deleteProjects = projects.deleteDoc;
+export const getProjectList = projects.getDocList;
+export const createProject = projects.postDoc;
+export const getProject = projects.getDoc;
+export const patchProject = projects.patchDoc;
+export const deleteProject = projects.deleteDoc;

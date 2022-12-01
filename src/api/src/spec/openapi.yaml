@@ -110,6 +110,8 @@ paths:
                 $ref: "#/components/schemas/EducationDetail"
 
   /educations/{educationId}:
+    parameters:
+      - $ref: "#/components/parameters/EducationId"
     get:
       tags:
         - Education
@@ -180,6 +182,8 @@ paths:
                 $ref: "#/components/schemas/ExtraCurricularDetail"
 
   /extraCurriculars/{extraCurricularId}:
+    parameters:
+      - $ref: "#/components/parameters/ExtraCurricularId"
     get:
       tags:
         - ExtraCurricular
@@ -250,6 +254,8 @@ paths:
                 $ref: "#/components/schemas/ProjectDetail"
 
   /projects/{projectId}:
+    parameters:
+      - $ref: "#/components/parameters/ProjectId"
     get:
       tags:
         - Project
@@ -320,6 +326,8 @@ paths:
                 $ref: "#/components/schemas/ResponsibilityDetail"
 
   /responsibilities/{responsibilityId}:
+    parameters:
+      - $ref: "#/components/parameters/ResponsibilityId"
     get:
       tags:
         - Responsibility
@@ -390,6 +398,8 @@ paths:
                 $ref: "#/components/schemas/SkillDetail"
 
   /skills/{skillId}:
+    parameters:
+      - $ref: "#/components/parameters/SkillId"
     get:
       tags:
         - Skill
@@ -430,7 +440,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Empty"
 
-  /training:
+  /trainings:
     get:
       tags:
         - Training
@@ -460,6 +470,8 @@ paths:
                 $ref: "#/components/schemas/TrainingDetail"
 
   /trainings/{trainingId}:
+    parameters:
+      - $ref: "#/components/parameters/TrainingId"
     get:
       tags:
         - Training
@@ -530,6 +542,8 @@ paths:
                 $ref: "#/components/schemas/WorkExperienceDetail"
 
   /workExperiences/{workExperienceId}:
+    parameters:
+      - $ref: "#/components/parameters/WorkExperienceId"
     get:
       tags:
         - WorkExperience
@@ -914,8 +928,6 @@ components:
       required:
         - institute
         - programme
-        - start
-        - end
         - totalMarks
         - obtainedMarks
 
@@ -1043,24 +1055,25 @@ components:
         - $ref: "#/components/schemas/ProjectDetailBase"
       type: object
       required:
-        - company
-        - position
-        - end
-        - start
+        - title
+        - description
 
     ProjectDetailBase:
       type: object
       properties:
-        company:
-          type: string
-          maxLength: 100
-        position:
+        title:
           type: string
           maxLength: 100
         description:
           type: string
           maxLength: 500
-        technicalDetail:
+        area:
+          type: string
+          maxLength: 100
+        guidedBY:
+          type: string
+          maxLength: 100
+        techStack:
           type: string
           maxLength: 200
         start:
@@ -1109,26 +1122,24 @@ components:
         - $ref: "#/components/schemas/ResponsibilityDetailBase"
       type: object
       required:
-        - company
+        - organization
         - position
-        - end
-        - start
 
     ResponsibilityDetailBase:
       type: object
       properties:
-        company:
+        organization:
           type: string
           maxLength: 100
         position:
           type: string
           maxLength: 100
-        description:
+        guidedBy:
           type: string
-          maxLength: 500
-        technicalDetail:
+          maxLength: 100
+        area:
           type: string
-          maxLength: 200
+          maxLength: 100
         start:
           type: string
           format: date-time
@@ -1175,34 +1186,21 @@ components:
         - $ref: "#/components/schemas/SkillDetailBase"
       type: object
       required:
-        - company
-        - position
-        - end
-        - start
+        - title
+        - description
 
     SkillDetailBase:
       type: object
       properties:
-        company:
-          type: string
-          maxLength: 100
-        position:
+        title:
           type: string
           maxLength: 100
         description:
           type: string
           maxLength: 500
-        technicalDetail:
+        experience:
           type: string
-          maxLength: 200
-        start:
-          type: string
-          format: date-time
-          maxLength: 25
-        end:
-          type: string
-          format: date-time
-          maxLength: 25
+          maxLength: 50
         status:
           type: string
           enum:
@@ -1241,15 +1239,13 @@ components:
         - $ref: "#/components/schemas/TrainingDetailBase"
       type: object
       required:
-        - company
+        - organization
         - position
-        - end
-        - start
 
     TrainingDetailBase:
       type: object
       properties:
-        company:
+        organization:
           type: string
           maxLength: 100
         position:
@@ -1258,7 +1254,10 @@ components:
         description:
           type: string
           maxLength: 500
-        technicalDetail:
+        area:
+          type: string
+          maxLength: 100
+        teachStack:
           type: string
           maxLength: 200
         start:
@@ -1307,7 +1306,7 @@ components:
         - $ref: "#/components/schemas/WorkExperienceDetailBase"
       type: object
       required:
-        - company
+        - organization
         - position
         - end
         - start
@@ -1315,7 +1314,7 @@ components:
     WorkExperienceDetailBase:
       type: object
       properties:
-        company:
+        organization:
           type: string
           maxLength: 100
         position:
@@ -1324,7 +1323,10 @@ components:
         description:
           type: string
           maxLength: 500
-        technicalDetail:
+        area:
+          type: string
+          maxLength: 100
+        techStack:
           type: string
           maxLength: 200
         start:
@@ -1341,3 +1343,101 @@ components:
             - public
             - draft
           default: public
+#######################################
+############  Identifiers  ############
+#######################################
+    Id:
+      type: string
+      pattern: '^[a-f\d]{24}$'
+    
+    EducationId:
+      allOf:
+        - $ref: "#/components/schemas/Id"
+        - description: Id of the Education
+    ExtraCurricularId:
+      allOf:
+        - $ref: "#/components/schemas/Id"
+        - description: Id of the Education
+    ProjectId:
+      allOf:
+        - $ref: "#/components/schemas/Id"
+        - description: Id of the Education
+    ResponsibilityId:
+      allOf:
+        - $ref: "#/components/schemas/Id"
+        - description: Id of the Education
+    SkillId:
+      allOf:
+        - $ref: "#/components/schemas/Id"
+        - description: Id of the Education
+    TrainingId:
+      allOf:
+        - $ref: "#/components/schemas/Id"
+        - description: Id of the Education
+    WorkExperienceId:
+      allOf:
+        - $ref: "#/components/schemas/Id"
+        - description: Id of the Education
+
+
+#######################################
+############  Parameters  #############
+#######################################
+
+  parameters:
+    EducationId:
+      name: educationId
+      description: education identifier
+      in: path
+      required: true
+      schema:
+        allOf:
+          - $ref: "#/components/schemas/EducationId"
+    ExtraCurricularId:
+      name: extraCurricularId
+      description: education identifier
+      in: path
+      required: true
+      schema:
+        allOf:
+          - $ref: "#/components/schemas/ExtraCurricularId"
+    ProjectId:
+      name: projectId
+      description: education identifier
+      in: path
+      required: true
+      schema:
+        allOf:
+          - $ref: "#/components/schemas/ProjectId"
+    ResponsibilityId:
+      name: responsibilityId
+      description: education identifier
+      in: path
+      required: true
+      schema:
+        allOf:
+          - $ref: "#/components/schemas/ResponsibilityId"
+    SkillId:
+      name: skillId
+      description: education identifier
+      in: path
+      required: true
+      schema:
+        allOf:
+          - $ref: "#/components/schemas/SkillId"
+    TrainingId:
+      name: trainingId
+      description: education identifier
+      in: path
+      required: true
+      schema:
+        allOf:
+          - $ref: "#/components/schemas/TrainingId"
+    WorkExperienceId:
+      name: workExperienceId
+      description: education identifier
+      in: path
+      required: true
+      schema:
+        allOf:
+          - $ref: "#/components/schemas/WorkExperienceId"

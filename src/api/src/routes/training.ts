@@ -7,8 +7,8 @@ const getProps = (user : any) => {
 }
 const trainings = createEndpoints(trainingsModel, getProps, (req : any) => req.params.trainingId);
 
-export const getTrainingsList = trainings.getDocList;
-export const createTrainings = trainings.postDoc;
-export const getTrainings = trainings.getDoc;
-export const patchTrainings = trainings.patchDoc;
-export const deleteTrainings = trainings.deleteDoc;
+export const getTrainingList = trainings.getDocList;
+export const createTraining = trainings.postDoc;
+export const getTraining = trainings.getDoc;
+export const patchTraining = trainings.patchDoc;
+export const deleteTraining = trainings.deleteDoc;

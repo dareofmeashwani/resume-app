@@ -7,8 +7,8 @@ const getProps = (user : any) => {
 }
 const skills = createEndpoints(skillsModel, getProps, (req : any) => req.params.skillId);
 
-export const getSkillsList = skills.getDocList;
-export const createSkills = skills.postDoc;
-export const getSkills = skills.getDoc;
-export const patchSkills = skills.patchDoc;
-export const deleteSkills = skills.deleteDoc;
+export const getSkillList = skills.getDocList;
+export const createSkill = skills.postDoc;
+export const getSkill = skills.getDoc;
+export const patchSkill = skills.patchDoc;
+export const deleteSkill = skills.deleteDoc;
