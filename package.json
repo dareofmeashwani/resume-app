@@ -1,0 +1,24 @@
+{
+    "name": "resume-app",
+    "version": "1.0.0",
+    "main": "index.js",
+    "repository": "https://github.com/dareofmeashwani/ResumeApp",
+    "author": "connect2ashwaniverma@gmail.com",
+    "license": "MIT",
+    "private": true,
+    "workspaces": ["src/*"],
+    "scripts": {
+      "setup": "yarn --ignore-scripts install --frozen-lockfile && yarn build",
+      "dev": "yarn yarn-wsrun dev",
+      "build": "yarn yarn-wsrun build",
+      "start": "yarn yarn-wsrun start",
+      "clean": "rm -R *node_modules*",
+      "yarn-wsrun": "wsrun --concurrency=2 --report --exclude-missing"
+    },
+    "dependencies": {
+      "yarn": "1.22.19",
+      "wsrun": "5.2.4",
+      "concurrently": "^7.5.0"
+    }
+  }
+  

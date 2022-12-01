@@ -1,0 +1,1343 @@
+openapi: 3.0.1
+info:
+  title: Resume Service
+  version: 1.0.0
+
+tags:
+  - name: User
+
+servers:
+  - url: "/api/v1"
+    description: resume api
+
+paths:
+  /healthz:
+    get:
+      tags:
+        - Healthz
+      summary: check health
+      operationId: getHealthz
+      responses:
+        "200":
+          $ref: "#/components/responses/healthStatusOk"
+        "503":
+          $ref: "#/components/responses/healthStatusError"
+  
+  /user:
+    get:
+      tags:
+        - User
+      summary: list of user detail
+      operationId: getListUser
+      responses:
+        "200":
+          description: "list of user detail"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserList"
+  
+  /user/login:
+    post:
+      tags:
+        - User
+      summary: login User
+      operationId: postLoginUser
+      requestBody:
+        required: true
+        $ref: '#/components/requestBodies/UserLoginBody' 
+      responses:
+        "202":
+          $ref: "#/components/responses/UserDetail"
+  
+  /user/register:
+    post:
+      tags:
+        - User
+      summary: Register new user
+      operationId: postRegisterUser
+      requestBody:
+        required: true
+        $ref: '#/components/requestBodies/UserRegisterBody' 
+
+      responses:
+        "201":
+          $ref: "#/components/responses/UserDetail"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+
+  /user/logout:
+    post:
+      tags:
+        - User
+      summary: Logout logged-in user
+      operationId: postLogoutUser
+      responses:
+        "202":
+          description: resume api ready
+          content:
+            application/json:
+              schema:
+                  $ref: "#/components/schemas/Empty"
+
+  /educations:
+    get:
+      tags:
+        - Education
+      summary: list educations
+      operationId: getEducationList
+      responses:
+        "200":
+          description: returns list of educations
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EducationList"
+    post:
+      tags:
+        - Education
+      summary: create education
+      operationId: createEducation
+      requestBody:
+        required: true
+        $ref: '#/components/requestBodies/EducationBody'
+      responses:
+        "201":
+          description: create new education
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EducationDetail"
+
+  /educations/{educationId}:
+    get:
+      tags:
+        - Education
+      summary: get education
+      operationId: getEducation
+      responses:
+        "200":
+          description: returns single education
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EducationDetail"
+    patch:
+      tags:
+        - Education
+      summary: modify education
+      operationId: patchEducation
+      requestBody:
+        required: true
+        $ref: '#/components/requestBodies/EducationModificationBody'
+      responses:
+        "202":
+          description: modity existing education
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EducationDetail"
+    delete:
+      tags:
+        - Education
+      summary: delete education
+      operationId: deleteEducation
+      responses:
+        "202":
+          description: delete existing education
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Empty"
+
+  /extraCurriculars:
+    get:
+      tags:
+        - ExtraCurricular
+      summary: list extra curriculars
+      operationId: getExtraCurricularList
+      responses:
+        "200":
+          description: returns list of extra curricular
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExtraCurricularList"
+    post:
+      tags:
+        - ExtraCurricular
+      summary: create extra curriculars
+      operationId: createExtraCurricular
+      requestBody:
+        required: true
+        $ref: '#/components/requestBodies/ExtraCurricularBody'
+      responses:
+        "201":
+          description: create new extra curricular
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExtraCurricularDetail"
+
+  /extraCurriculars/{extraCurricularId}:
+    get:
+      tags:
+        - ExtraCurricular
+      summary: get extra curricular
+      operationId: getExtraCurricular
+      responses:
+        "200":
+          description: returns single extra curricular
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExtraCurricularDetail"
+    patch:
+      tags:
+        - ExtraCurricular
+      summary: modify extra curricular
+      operationId: patchExtraCurricular
+      requestBody:
+        required: true
+        $ref: '#/components/requestBodies/ExtraCurricularModificationBody'
+      responses:
+        "202":
+          description: modify existing extra curricular
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExtraCurricularDetail"
+    delete:
+      tags:
+        - ExtraCurricular
+      summary: delete extra curricular
+      operationId: deleteExtraCurricular
+      responses:
+        "202":
+          description: delete existing extra curricular
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Empty"
+
+  /projects:
+    get:
+      tags:
+        - Project
+      summary: list project
+      operationId: getProjectList
+      responses:
+        "200":
+          description: returns list of project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjectList"
+    post:
+      tags:
+        - Project
+      summary: create project
+      operationId: createProject
+      requestBody:
+        required: true
+        $ref: '#/components/requestBodies/ProjectBody'
+      responses:
+        "201":
+          description: create new project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjectDetail"
+
+  /projects/{projectId}:
+    get:
+      tags:
+        - Project
+      summary: get project
+      operationId: getProject
+      responses:
+        "200":
+          description: returns single project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjectDetail"
+    patch:
+      tags:
+        - Project
+      summary: modify project
+      operationId: patchProject
+      requestBody:
+        required: true
+        $ref: '#/components/requestBodies/ProjectModificationBody'
+      responses:
+        "202":
+          description: modify existing project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjectDetail"
+    delete:
+      tags:
+        - Project
+      summary: delete project
+      operationId: deleteProject
+      responses:
+        "202":
+          description: delete existing project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Empty"
+
+  /responsibilities:
+    get:
+      tags:
+        - Responsibility
+      summary: list responsibilities
+      operationId: getResponsibilityList
+      responses:
+        "200":
+          description: returns list of responsibilities
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponsibilityList"
+    post:
+      tags:
+        - Responsibility
+      summary: create responsibility
+      operationId: createResponsibility
+      requestBody:
+        required: true
+        $ref: '#/components/requestBodies/ResponsibilityBody'
+      responses:
+        "201":
+          description: newly created responsibility
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponsibilityDetail"
+
+  /responsibilities/{responsibilityId}:
+    get:
+      tags:
+        - Responsibility
+      summary: get responsibility
+      operationId: getResponsibility
+      responses:
+        "200":
+          description: returns single responsibility
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponsibilityDetail"
+    patch:
+      tags:
+        - Responsibility
+      summary: modify responsibility
+      operationId: patchResponsibility
+      requestBody:
+        required: true
+        $ref: '#/components/requestBodies/ResponsibilityModificationBody'
+      responses:
+        "202":
+          description: modify existing responsibility
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponsibilityDetail"
+    delete:
+      tags:
+        - Responsibility
+      summary: delete responsibility
+      operationId: deleteResponsibility
+      responses:
+        "202":
+          description: delete existing responsibility
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Empty"
+
+  /skills:
+    get:
+      tags:
+        - Skill
+      summary: list skill
+      operationId: getSkillList
+      responses:
+        "200":
+          description: returns list of skill
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SkillList"
+    post:
+      tags:
+        - Skill
+      summary: create skill
+      operationId: createSkill
+      requestBody:
+        required: true
+        $ref: '#/components/requestBodies/SkillBody'
+      responses:
+        "201":
+          description: create new skill
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SkillDetail"
+
+  /skills/{skillId}:
+    get:
+      tags:
+        - Skill
+      summary: get skill
+      operationId: getSkill
+      responses:
+        "200":
+          description: returns single skill
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SkillDetail"
+    patch:
+      tags:
+        - Skill
+      summary: modify skill
+      operationId: patchSkill
+      requestBody:
+        required: true
+        $ref: '#/components/requestBodies/SkillModificationBody'
+      responses:
+        "202":
+          description: modify existing skill
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SkillDetail"
+    delete:
+      tags:
+        - Skill
+      summary: delete skill
+      operationId: deleteSkill
+      responses:
+        "202":
+          description: delete existing skill
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Empty"
+
+  /training:
+    get:
+      tags:
+        - Training
+      summary: list training
+      operationId: getTrainingList
+      responses:
+        "200":
+          description: returns list of training
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TrainingList"
+    post:
+      tags:
+        - Training
+      summary: create training
+      operationId: createTraining
+      requestBody:
+        required: true
+        $ref: '#/components/requestBodies/TrainingBody'
+      responses:
+        "201":
+          description: create new training
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TrainingDetail"
+
+  /trainings/{trainingId}:
+    get:
+      tags:
+        - Training
+      summary: get training
+      operationId: getTraining
+      responses:
+        "200":
+          description: returns single training
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TrainingDetail"
+    patch:
+      tags:
+        - Training
+      summary: modify training
+      operationId: patchTraining
+      requestBody:
+        required: true
+        $ref: '#/components/requestBodies/TrainingModificationBody'
+      responses:
+        "202":
+          description: modify existing training
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TrainingDetail"
+    delete:
+      tags:
+        - Training
+      summary: delete training
+      operationId: deleteTraining
+      responses:
+        "202":
+          description: delete existing training
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Empty"
+
+  /workExperiences:
+    get:
+      tags:
+        - WorkExperience
+      summary: list Work Experiences
+      operationId: getWorkExperienceList
+      responses:
+        "200":
+          description: returns list of Work Experiences
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkExperienceList"
+    post:
+      tags:
+        - WorkExperience
+      summary: create work experience
+      operationId: createWorkExperience
+      requestBody:
+        required: true
+        $ref: '#/components/requestBodies/WorkExperienceBody'
+      responses:
+        "201":
+          description: create new work experience
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkExperienceDetail"
+
+  /workExperiences/{workExperienceId}:
+    get:
+      tags:
+        - WorkExperience
+      summary: get work experience
+      operationId: getWorkExperience
+      responses:
+        "200":
+          description: returns single work experience
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkExperienceDetail"
+    patch:
+      tags:
+        - WorkExperience
+      summary: modify work experience
+      operationId: patchWorkExperience
+      requestBody:
+        required: true
+        $ref: '#/components/requestBodies/WorkExperienceModificationBody'
+      responses:
+        "202":
+          description: modify existing work experience
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkExperienceDetail"
+    delete:
+      tags:
+        - WorkExperience
+      summary: delete work experience
+      operationId: deleteWorkExperience
+      responses:
+        "202":
+          description: delete existing work experience
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Empty"
+
+components:
+#######################################
+#########   requestBodies  ############
+#######################################
+  requestBodies:
+    UserLoginBody:
+      description: login email & password
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/LoginBody"
+    UserRegisterBody:
+      description: register user
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/RegisterUserDetail"
+    EducationBody:
+      description: education detail
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/EducationDetailRequired"
+    EducationModificationBody:
+      description: education modification request body
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/EducationDetailBase"
+    ExtraCurricularBody:
+      description: extra curricular detail
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ExtraCurricularDetailRequired"
+    ExtraCurricularModificationBody:
+      description: extra curricular modification request body
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ExtraCurricularDetailBase"
+    ProjectBody:
+      description: project detail
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ProjectDetailRequired"
+    ProjectModificationBody:
+      description: project modification request body
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ProjectDetailBase"
+    ResponsibilityBody:
+      description: project detail
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ResponsibilityDetailRequired"
+    ResponsibilityModificationBody:
+      description: responsibility modification request body
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ResponsibilityDetailBase"
+    SkillBody:
+      description: responsibility detail
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/SkillDetailRequired"
+    SkillModificationBody:
+      description: education modification request body
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/SkillDetailBase"
+    TrainingBody:
+      description: training detail
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/TrainingDetailRequired"
+    TrainingModificationBody:
+      description: training modification request body
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/TrainingDetailBase"
+    WorkExperienceBody:
+      description: work experience detail
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/WorkExperienceDetailRequired"
+    WorkExperienceModificationBody:
+      description: work experience modification request body
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/WorkExperienceDetailBase"
+
+#######################################
+###########   responses  ##############
+#######################################
+  responses:
+    BadRequest:
+      description: bad request
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/Empty"
+    InternalServerError:
+      description: internal server error
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/Empty"
+    NotFound:
+      description: not found
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/Empty"
+    Forbidden:
+      description: forbidden error
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/Empty"
+    Logout:
+      description: user logged out
+      content:
+        application/json:
+          schema:
+              $ref: "#/components/schemas/Empty"
+    healthStatusOk:
+      description: resume api ready
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/healthStatus"
+            properties:
+              status:
+                example: OK
+    healthStatusError:
+      description: resume api not ready
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/healthStatus"
+            properties:
+              status:
+                example: NOT OK
+    UserDetail:
+      description: user detail
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/UserDetail"
+
+#######################################
+############   Schemas  ###############
+#######################################
+  schemas:
+    healthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - OK
+            - NOT OK
+    
+    Empty:
+      type: object
+
+    Error:
+      type: object
+
+    ResourceList:
+      required:
+        - docs
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 1
+        docs:
+          type: array
+          items:
+            type: object
+    DateMeta:
+      required:
+        - createdAt
+        - modifiedAt
+      type: object
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+          maxLength: 25
+        modifiedAt:
+          type: string
+          format: date-time
+          maxLength: 25
+#######################################
+##########  User Schemas  #############
+#######################################
+
+    LoginBody:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          maxLength: 256
+        password:
+          type: string
+          maxLength: 25
+    
+    RegisterUserDetail:
+      allOf:
+        - $ref: "#/components/schemas/UserDetailBase"
+      required:
+        - password
+      properties:
+        password:
+          type: string
+          maxLength: 25
+
+    UserDetail:
+      allOf:
+        - $ref: "#/components/schemas/UserDetailBase"
+        - $ref: "#/components/schemas/DateMeta"
+      required:
+        - id
+        - emailVerified
+        - mobileVerified
+      properties:
+        id:
+          type: string
+          example: "145664568768"
+        emailVerified:
+          type: boolean
+        mobileVerified:
+          type: boolean
+  
+    UserDetailBase:
+      type: object
+      required:
+        - email
+        - firstname
+        - gender
+        - mobile
+        - dob
+      properties:
+        email:
+          type: string
+          maxLength: 256
+        firstname:
+          type: string
+          maxLength: 100
+        gender:
+          type: string
+          maxLength: 50
+        lastname:
+          type: string
+          maxLength: 100
+        dob:
+          type: string
+          format: date-time
+          maxLength: 25
+        mobile:
+          type: string
+          maxLength: 13
+    UserList:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/ResourceList'
+        - type: object
+          properties:
+            docs:
+              type: array
+              items:
+                $ref: '#/components/schemas/UserDetail'
+#######################################
+########  Education Schemas  ##########
+#######################################
+    EducationList:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/ResourceList'
+        - type: object
+          properties:
+            docs:
+              type: array
+              items:
+                $ref: '#/components/schemas/EducationDetail'
+
+    EducationDetail:
+      allOf:
+        - $ref: "#/components/schemas/EducationDetailRequired"
+        - $ref: "#/components/schemas/DateMeta"
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          example: "145664568768"
+    
+    EducationDetailRequired:
+      allOf:
+        - $ref: "#/components/schemas/EducationDetailBase"
+      type: object
+      required:
+        - institute
+        - programme
+        - start
+        - end
+        - totalMarks
+        - obtainedMarks
+
+    EducationDetailBase:
+      type: object
+      properties:
+        institute:
+          type: string
+          maxLength: 100
+        address:
+          type: string
+          maxLength: 200
+        programme:
+          type: string
+          maxLength: 100
+        programmeArea:
+          type: string
+          maxLength: 100
+        start:
+          type: string
+          format: date-time
+          maxLength: 25
+        end:
+          type: string
+          format: date-time
+          maxLength: 25
+        totalMarks:
+          type: number
+          multipleOf: 0.001
+        obtainedMarks:
+          type: number
+          multipleOf: 0.001
+        gradingType:
+          type: string
+          enum:
+            - percentage
+            - cgpa
+          default: cgpa
+        status:
+          type: string
+          enum:
+            - public
+            - draft
+          default: public
+
+#######################################
+#####  Extra Curricular Schemas  ######
+#######################################
+    ExtraCurricularList:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/ResourceList'
+        - type: object
+          properties:
+            docs:
+              type: array
+              items:
+                $ref: '#/components/schemas/ExtraCurricularDetail'
+
+    ExtraCurricularDetail:
+      allOf:
+        - $ref: "#/components/schemas/ExtraCurricularDetailRequired"
+        - $ref: "#/components/schemas/DateMeta"
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          example: "145664568768"
+    
+    ExtraCurricularDetailRequired:
+      allOf:
+        - $ref: "#/components/schemas/ExtraCurricularDetailBase"
+      type: object
+      required:
+        - title
+        - description
+
+    ExtraCurricularDetailBase:
+      type: object
+      properties:
+        title:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+          maxLength: 500
+        status:
+          type: string
+          enum:
+            - public
+            - draft
+          default: public
+
+
+#######################################
+##########  Project Schemas  ##########
+#######################################
+    ProjectList:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/ResourceList'
+        - type: object
+          properties:
+            docs:
+              type: array
+              items:
+                $ref: '#/components/schemas/ProjectDetail'
+
+    ProjectDetail:
+      allOf:
+        - $ref: "#/components/schemas/ProjectDetailRequired"
+        - $ref: "#/components/schemas/DateMeta"
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          example: "145664568768"
+    
+    ProjectDetailRequired:
+      allOf:
+        - $ref: "#/components/schemas/ProjectDetailBase"
+      type: object
+      required:
+        - company
+        - position
+        - end
+        - start
+
+    ProjectDetailBase:
+      type: object
+      properties:
+        company:
+          type: string
+          maxLength: 100
+        position:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+          maxLength: 500
+        technicalDetail:
+          type: string
+          maxLength: 200
+        start:
+          type: string
+          format: date-time
+          maxLength: 25
+        end:
+          type: string
+          format: date-time
+          maxLength: 25
+        status:
+          type: string
+          enum:
+            - public
+            - draft
+          default: public
+
+#######################################
+##########  Responsibility Schemas  ##########
+#######################################
+    ResponsibilityList:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/ResourceList'
+        - type: object
+          properties:
+            docs:
+              type: array
+              items:
+                $ref: '#/components/schemas/ResponsibilityDetail'
+
+    ResponsibilityDetail:
+      allOf:
+        - $ref: "#/components/schemas/ResponsibilityDetailRequired"
+        - $ref: "#/components/schemas/DateMeta"
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          example: "145664568768"
+    
+    ResponsibilityDetailRequired:
+      allOf:
+        - $ref: "#/components/schemas/ResponsibilityDetailBase"
+      type: object
+      required:
+        - company
+        - position
+        - end
+        - start
+
+    ResponsibilityDetailBase:
+      type: object
+      properties:
+        company:
+          type: string
+          maxLength: 100
+        position:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+          maxLength: 500
+        technicalDetail:
+          type: string
+          maxLength: 200
+        start:
+          type: string
+          format: date-time
+          maxLength: 25
+        end:
+          type: string
+          format: date-time
+          maxLength: 25
+        status:
+          type: string
+          enum:
+            - public
+            - draft
+          default: public
+
+#######################################
+###########  Skill Schemas  ###########
+#######################################
+    SkillList:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/ResourceList'
+        - type: object
+          properties:
+            docs:
+              type: array
+              items:
+                $ref: '#/components/schemas/SkillDetail'
+
+    SkillDetail:
+      allOf:
+        - $ref: "#/components/schemas/SkillDetailRequired"
+        - $ref: "#/components/schemas/DateMeta"
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          example: "145664568768"
+    
+    SkillDetailRequired:
+      allOf:
+        - $ref: "#/components/schemas/SkillDetailBase"
+      type: object
+      required:
+        - company
+        - position
+        - end
+        - start
+
+    SkillDetailBase:
+      type: object
+      properties:
+        company:
+          type: string
+          maxLength: 100
+        position:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+          maxLength: 500
+        technicalDetail:
+          type: string
+          maxLength: 200
+        start:
+          type: string
+          format: date-time
+          maxLength: 25
+        end:
+          type: string
+          format: date-time
+          maxLength: 25
+        status:
+          type: string
+          enum:
+            - public
+            - draft
+          default: public
+
+#######################################
+###########  Training Schemas  ###########
+#######################################
+    TrainingList:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/ResourceList'
+        - type: object
+          properties:
+            docs:
+              type: array
+              items:
+                $ref: '#/components/schemas/TrainingDetail'
+
+    TrainingDetail:
+      allOf:
+        - $ref: "#/components/schemas/TrainingDetailRequired"
+        - $ref: "#/components/schemas/DateMeta"
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          example: "145664568768"
+    
+    TrainingDetailRequired:
+      allOf:
+        - $ref: "#/components/schemas/TrainingDetailBase"
+      type: object
+      required:
+        - company
+        - position
+        - end
+        - start
+
+    TrainingDetailBase:
+      type: object
+      properties:
+        company:
+          type: string
+          maxLength: 100
+        position:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+          maxLength: 500
+        technicalDetail:
+          type: string
+          maxLength: 200
+        start:
+          type: string
+          format: date-time
+          maxLength: 25
+        end:
+          type: string
+          format: date-time
+          maxLength: 25
+        status:
+          type: string
+          enum:
+            - public
+            - draft
+          default: public
+
+#######################################
+#####  Work Experience Schemas  #######
+#######################################
+    WorkExperienceList:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/ResourceList'
+        - type: object
+          properties:
+            docs:
+              type: array
+              items:
+                $ref: '#/components/schemas/WorkExperienceDetail'
+
+    WorkExperienceDetail:
+      allOf:
+        - $ref: "#/components/schemas/WorkExperienceDetailRequired"
+        - $ref: "#/components/schemas/DateMeta"
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          example: "145664568768"
+    
+    WorkExperienceDetailRequired:
+      allOf:
+        - $ref: "#/components/schemas/WorkExperienceDetailBase"
+      type: object
+      required:
+        - company
+        - position
+        - end
+        - start
+
+    WorkExperienceDetailBase:
+      type: object
+      properties:
+        company:
+          type: string
+          maxLength: 100
+        position:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+          maxLength: 500
+        technicalDetail:
+          type: string
+          maxLength: 200
+        start:
+          type: string
+          format: date-time
+          maxLength: 25
+        end:
+          type: string
+          format: date-time
+          maxLength: 25
+        status:
+          type: string
+          enum:
+            - public
+            - draft
+          default: public
