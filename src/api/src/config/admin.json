@@ -5,5 +5,6 @@
     "gender": "Male",
     "lastname": "Kumar Verma",
     "dob": "1992-10-01T16:05:38.099Z",
-    "mobile": "8791890959"
+    "mobile": "8791890959",
+    "emailVerified": true
 }]

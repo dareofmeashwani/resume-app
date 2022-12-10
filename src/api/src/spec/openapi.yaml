@@ -27,6 +27,8 @@ paths:
     get:
       tags:
         - User
+      x-middleware:
+        - loginCheck
       summary: list of user detail
       operationId: getListUser
       responses:
@@ -68,6 +70,8 @@ paths:
 
   /user/logout:
     post:
+      x-middleware:
+        - loginCheck
       tags:
         - User
       summary: Logout logged-in user
@@ -80,6 +84,30 @@ paths:
               schema:
                   $ref: "#/components/schemas/Empty"
 
+  /email/verify:
+    patch:
+      tags:
+        - Email
+      summary: email verification
+      operationId: emailVerify
+      requestBody:
+        required: true
+        $ref: '#/components/requestBodies/EmailVerifyBody' 
+      responses:
+        "200":
+          $ref: "#/components/responses/UserDetail"
+
+  /email/resendVerification:
+      post:
+        x-middleware:
+          - loginCheck
+        tags:
+          - Email
+        summary: resend email verification
+        operationId: emailResendVerification
+        responses:
+          "200":
+            $ref: "#/components/schemas/Empty"
   /educations:
     get:
       tags:
@@ -96,6 +124,9 @@ paths:
     post:
       tags:
         - Education
+      x-middleware:
+        - loginCheck
+        - emailVerifyCheck
       summary: create education
       operationId: createEducation
       requestBody:
@@ -127,6 +158,9 @@ paths:
     patch:
       tags:
         - Education
+      x-middleware:
+        - loginCheck
+        - emailVerifyCheck
       summary: modify education
       operationId: patchEducation
       requestBody:
@@ -142,6 +176,9 @@ paths:
     delete:
       tags:
         - Education
+      x-middleware:
+        - loginCheck
+        - emailVerifyCheck
       summary: delete education
       operationId: deleteEducation
       responses:
@@ -168,6 +205,9 @@ paths:
     post:
       tags:
         - ExtraCurricular
+      x-middleware:
+        - loginCheck
+        - emailVerifyCheck
       summary: create extra curriculars
       operationId: createExtraCurricular
       requestBody:
@@ -199,6 +239,9 @@ paths:
     patch:
       tags:
         - ExtraCurricular
+      x-middleware:
+        - loginCheck
+        - emailVerifyCheck
       summary: modify extra curricular
       operationId: patchExtraCurricular
       requestBody:
@@ -214,6 +257,9 @@ paths:
     delete:
       tags:
         - ExtraCurricular
+      x-middleware:
+        - loginCheck
+        - emailVerifyCheck
       summary: delete extra curricular
       operationId: deleteExtraCurricular
       responses:
@@ -240,6 +286,9 @@ paths:
     post:
       tags:
         - Project
+      x-middleware:
+        - loginCheck
+        - emailVerifyCheck
       summary: create project
       operationId: createProject
       requestBody:
@@ -271,6 +320,9 @@ paths:
     patch:
       tags:
         - Project
+      x-middleware:
+        - loginCheck
+        - emailVerifyCheck
       summary: modify project
       operationId: patchProject
       requestBody:
@@ -286,6 +338,9 @@ paths:
     delete:
       tags:
         - Project
+      x-middleware:
+        - loginCheck
+        - emailVerifyCheck
       summary: delete project
       operationId: deleteProject
       responses:
@@ -312,6 +367,9 @@ paths:
     post:
       tags:
         - Responsibility
+      x-middleware:
+        - loginCheck
+        - emailVerifyCheck
       summary: create responsibility
       operationId: createResponsibility
       requestBody:
@@ -343,6 +401,9 @@ paths:
     patch:
       tags:
         - Responsibility
+      x-middleware:
+        - loginCheck
+        - emailVerifyCheck
       summary: modify responsibility
       operationId: patchResponsibility
       requestBody:
@@ -358,6 +419,9 @@ paths:
     delete:
       tags:
         - Responsibility
+      x-middleware:
+        - loginCheck
+        - emailVerifyCheck
       summary: delete responsibility
       operationId: deleteResponsibility
       responses:
@@ -384,6 +448,9 @@ paths:
     post:
       tags:
         - Skill
+      x-middleware:
+        - loginCheck
+        - emailVerifyCheck
       summary: create skill
       operationId: createSkill
       requestBody:
@@ -415,6 +482,9 @@ paths:
     patch:
       tags:
         - Skill
+      x-middleware:
+        - loginCheck
+        - emailVerifyCheck
       summary: modify skill
       operationId: patchSkill
       requestBody:
@@ -430,6 +500,9 @@ paths:
     delete:
       tags:
         - Skill
+      x-middleware:
+        - loginCheck
+        - emailVerifyCheck
       summary: delete skill
       operationId: deleteSkill
       responses:
@@ -456,6 +529,9 @@ paths:
     post:
       tags:
         - Training
+      x-middleware:
+        - loginCheck
+        - emailVerifyCheck
       summary: create training
       operationId: createTraining
       requestBody:
@@ -487,6 +563,9 @@ paths:
     patch:
       tags:
         - Training
+      x-middleware:
+        - loginCheck
+        - emailVerifyCheck
       summary: modify training
       operationId: patchTraining
       requestBody:
@@ -502,6 +581,9 @@ paths:
     delete:
       tags:
         - Training
+      x-middleware:
+        - loginCheck
+        - emailVerifyCheck
       summary: delete training
       operationId: deleteTraining
       responses:
@@ -528,6 +610,9 @@ paths:
     post:
       tags:
         - WorkExperience
+      x-middleware:
+        - loginCheck
+        - emailVerifyCheck
       summary: create work experience
       operationId: createWorkExperience
       requestBody:
@@ -559,6 +644,9 @@ paths:
     patch:
       tags:
         - WorkExperience
+      x-middleware:
+        - loginCheck
+        - emailVerifyCheck
       summary: modify work experience
       operationId: patchWorkExperience
       requestBody:
@@ -574,11 +662,153 @@ paths:
     delete:
       tags:
         - WorkExperience
+      x-middleware:
+        - loginCheck
+        - emailVerifyCheck
       summary: delete work experience
       operationId: deleteWorkExperience
       responses:
         "202":
           description: delete existing work experience
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Empty"
+
+  /query:
+    get:
+      tags:
+        - Query
+      x-middleware:
+        - loginCheck
+        - emailVerifyCheck
+      summary: list queries
+      operationId: getQueryList
+      responses:
+        "200":
+          description: returns list of submitted queries
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryList"
+    post:
+      tags:
+        - Query
+      summary: create query
+      operationId: createQuery
+      requestBody:
+        required: true
+        $ref: '#/components/requestBodies/QueryBody'
+      responses:
+        "201":
+          description: create new query
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryDetail"
+
+  /meetingStatus:
+    get:
+      parameters:
+        - $ref: "#/components/parameters/MeetingTimestamp"
+      tags:
+        - Meeting
+      x-middleware:
+        - loginCheck
+        - emailVerifyCheck
+      summary: list system meetings status
+      operationId: getMeetingStatus
+      responses:
+        "200":
+          description: returns list of system's meeting status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MeetingStatusList"
+
+
+  /meeting:
+    get:
+      tags:
+        - Meeting
+      x-middleware:
+        - loginCheck
+        - emailVerifyCheck
+      summary: list meetings
+      operationId: getMeetingList
+      responses:
+        "200":
+          description: returns list of meetings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MeetingList"
+    post:
+      tags:
+        - Meeting
+      x-middleware:
+        - loginCheck
+        - emailVerifyCheck
+      summary: create Meeting
+      operationId: createMeeting
+      requestBody:
+        required: true
+        $ref: '#/components/requestBodies/MeetingBody'
+      responses:
+        "201":
+          description: create new Meeting
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MeetingDetail"
+
+  /meeting/{meetingId}:
+    parameters:
+      - $ref: "#/components/parameters/MeetingId"
+    get:
+      tags:
+        - Meeting
+      x-middleware:
+        - loginCheck
+        - emailVerifyCheck
+      summary: get meeting
+      operationId: getMeeting
+      responses:
+        "200":
+          description: returns single meeting
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MeetingDetail"
+    patch:
+      tags:
+        - Meeting
+      x-middleware:
+        - loginCheck
+        - emailVerifyCheck
+      summary: modify meeting
+      operationId: patchMeeting
+      requestBody:
+        required: true
+        $ref: '#/components/requestBodies/MeetingModificationBody'
+      responses:
+        "202":
+          description: modify existing meeting
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MeetingDetail"
+    delete:
+      tags:
+        - Meeting
+      x-middleware:
+        - loginCheck
+        - emailVerifyCheck
+      summary: delete meeting
+      operationId: deleteMeeting
+      responses:
+        "202":
+          description: delete existing meeting
           content:
             application/json:
               schema:
@@ -603,6 +833,13 @@ components:
           schema:
             allOf:
               - $ref: "#/components/schemas/RegisterUserDetail"
+    EmailVerifyBody:
+      description: verify user email
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/EmailVerifyDetail"
     EducationBody:
       description: education detail
       content:
@@ -646,7 +883,7 @@ components:
             allOf:
               - $ref: "#/components/schemas/ProjectDetailBase"
     ResponsibilityBody:
-      description: project detail
+      description: responsibility detail
       content:
         application/json:
           schema:
@@ -660,14 +897,14 @@ components:
             allOf:
               - $ref: "#/components/schemas/ResponsibilityDetailBase"
     SkillBody:
-      description: responsibility detail
+      description: skill detail
       content:
         application/json:
           schema:
             allOf:
               - $ref: "#/components/schemas/SkillDetailRequired"
     SkillModificationBody:
-      description: education modification request body
+      description: skill modification request body
       content:
         application/json:
           schema:
@@ -701,6 +938,28 @@ components:
           schema:
             allOf:
               - $ref: "#/components/schemas/WorkExperienceDetailBase"
+    QueryBody:
+      description: query post detail
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/QueryDetailRequired"
+
+    MeetingBody:
+      description: meeting payload for creation
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/MeetingDetailRequired"
+    MeetingModificationBody:
+      description: meeting modification request body
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/MeetingDetailBase"
 
 #######################################
 ###########   responses  ##############
@@ -799,6 +1058,12 @@ components:
           type: array
           items:
             type: object
+    
+    createdAt:
+        type: string
+        format: date-time
+        maxLength: 25
+
     DateMeta:
       required:
         - createdAt
@@ -806,9 +1071,8 @@ components:
       type: object
       properties:
         createdAt:
-          type: string
-          format: date-time
-          maxLength: 25
+          allOf:
+            - $ref: "#/components/schemas/createdAt"
         modifiedAt:
           type: string
           format: date-time
@@ -895,6 +1159,14 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/UserDetail'
+    EmailVerifyDetail:
+      type: object
+      required:
+        - token
+      properties:
+        token:
+          type: string
+          maxLength: 256
 #######################################
 ########  Education Schemas  ##########
 #######################################
@@ -1343,6 +1615,152 @@ components:
             - public
             - draft
           default: public
+
+#######################################
+###########  Query Schemas  ###########
+#######################################
+    QueryList:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/ResourceList'
+        - type: object
+          properties:
+            docs:
+              type: array
+              items:
+                $ref: '#/components/schemas/QueryDetail'
+
+    QueryDetail:
+      allOf:
+        - $ref: "#/components/schemas/QueryDetailRequired"
+      type: object
+      required:
+        - id
+        - createdAt
+      properties:
+        id:
+          type: string
+          example: "145664568768"
+        createdAt:
+          allOf:
+            - $ref: "#/components/schemas/createdAt"
+
+    
+    QueryDetailRequired:
+      allOf:
+        - $ref: "#/components/schemas/QueryDetailBase"
+      type: object
+      required:
+        - name
+        - subject
+        - mobile
+        - email
+
+    QueryDetailBase:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 200
+        subject:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+          maxLength: 500
+        email:
+          type: string
+          maxLength: 256
+        mobile:
+          type: string
+          maxLength: 13
+
+#######################################
+############   Meetings  ##############
+#######################################
+    MeetingList:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/ResourceList'
+        - type: object
+          properties:
+            docs:
+              type: array
+              items:
+                $ref: '#/components/schemas/MeetingDetail'
+
+    MeetingDetail:
+      allOf:
+        - $ref: "#/components/schemas/MeetingDetailRequired"
+        - $ref: "#/components/schemas/DateMeta"
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          example: "145664568768"
+    
+    MeetingDetailRequired:
+      allOf:
+        - $ref: "#/components/schemas/MeetingDetailBase"
+      type: object
+      required:
+        - end
+        - start
+
+    MeetingDetailBase:
+      type: object
+      properties:
+        title:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+          maxLength: 500
+        start:
+          type: string
+          format: date-time
+          maxLength: 25
+        end:
+          type: string
+          format: date-time
+          maxLength: 25
+        members:
+          type: array
+          minItems: 0
+          maxItems: 100
+          items:
+            type: string
+            format: email
+            maxLength: 256
+            example: bob@gmail.com
+
+    MeetingStatusList:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/ResourceList'
+        - type: object
+          properties:
+            docs:
+              type: array
+              items:
+                $ref: '#/components/schemas/MeetingStatus'
+    
+    MeetingStatus:
+      type: object
+      required:
+        - start
+        - end
+      properties:
+        start:
+          type: string
+          format: date-time
+          maxLength: 25
+        end:
+          type: string
+          format: date-time
+          maxLength: 25
 #######################################
 ############  Identifiers  ############
 #######################################
@@ -1375,6 +1793,10 @@ components:
         - $ref: "#/components/schemas/Id"
         - description: Id of the Education
     WorkExperienceId:
+      allOf:
+        - $ref: "#/components/schemas/Id"
+        - description: Id of the Education
+    MeetingId:
       allOf:
         - $ref: "#/components/schemas/Id"
         - description: Id of the Education
@@ -1441,3 +1863,21 @@ components:
       schema:
         allOf:
           - $ref: "#/components/schemas/WorkExperienceId"
+    MeetingId:
+      name: meetingId
+      description: meeting identifier
+      in: path
+      required: true
+      schema:
+        allOf:
+          - $ref: "#/components/schemas/MeetingId"
+    MeetingTimestamp:
+      name: timestamp
+      description: timestamp
+      in: query
+      required: true
+      schema:
+        type: string
+        maxLength: 25
+        format: date-time
+      example: '2022-12-10T10:31:53.327Z'

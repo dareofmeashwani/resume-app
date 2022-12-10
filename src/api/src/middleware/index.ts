@@ -2,7 +2,6 @@ import express from "express";
 import * as path from "path";
 import * as OpenApiValidator from 'express-openapi-validator';
 import bodyParser from "body-parser";
-import {User} from "../models/userModel"
 import {sessionMw, sessionCleaner} from "./sessionMw";
 import corsMw from "./cors";
 import errorResponder from "./errorResponder";
@@ -28,15 +27,6 @@ const validatorOptions = {
 const openApiValidatorMw = OpenApiValidator.middleware(validatorOptions);
 const bodyParserMw = bodyParser.json()
 
-async function fillUserInfo(req : express.Request, res : express.Response, next : Function) {
-    const user = req.session && (req.session as any).user
-    if (user && user.id) {
-        const userdata = await User.findOne({ email: user.email});
-        res.locals.userData = userdata;
-    }
-    next()
-}
-
 export default {
     pre: [
         validationErrorMw,
@@ -45,7 +35,6 @@ export default {
         corsMw,
         sessionMw,
         sessionCleaner,
-        fillUserInfo
     ],
     post: [errorResponder]
 };

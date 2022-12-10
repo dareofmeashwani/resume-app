@@ -7,3 +7,6 @@ export * from "./skills";
 export * from "./training";
 export * from "./users";
 export * from "./workExperience";
+export * from "./query";
+export * from "./email";
+export * from "./meeting";

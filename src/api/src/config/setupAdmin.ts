@@ -16,7 +16,8 @@ export default function () {
                 }
                 const user = new User({
                     ...admin,
-                    role: ROLES.ADMIN
+                    role: ROLES.ADMIN,
+                    emailVerified: true,
                 });
                 return user.save();
             })).then(resolve, reject);

@@ -8,11 +8,12 @@
     "private": true,
     "workspaces": ["src/*"],
     "scripts": {
-      "setup": "yarn --ignore-scripts install --frozen-lockfile && yarn build",
+      "setup": "yarn --ignore-scripts install --frozen-lockfile --registry https://registry.npmjs.org/ && yarn build",
       "dev": "yarn yarn-wsrun dev",
       "build": "yarn yarn-wsrun build",
       "start": "yarn yarn-wsrun start",
-      "clean": "rm -R *node_modules*",
+      "clean": "rm -rf ./node_modules && rm -rf ./src/{api,ui}/{node_modules,build}",
+      "clean:build": "rm -rf ./src/{api,ui}/{build}",
       "yarn-wsrun": "wsrun --concurrency=2 --report --exclude-missing"
     },
     "dependencies": {

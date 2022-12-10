@@ -36,6 +36,22 @@ export const MESSAGES = {
     LOGIN_ERROR:{
         code: 1000009,
         message: "Unable to Login at this time, please try again later"
+    },
+    INVALID_TOKEN:{
+        code: 1000010,
+        message: "Invalid Token or Token Expired" 
+    },
+    INVALID_OPERATION:{
+        code: 1000011,
+        message: "Operation not allowed" 
+    },
+    UNVERIFIED_EMAIL_ERROR:{
+        code: 1000012,
+        message: "Please verfiy your email, then try again your action" 
+    },
+    GOOGLE_CONNECTIVITY_ERROR:{
+        code: 1000013,
+        message: "Please try again later, unable to process your request at this time" 
     }
 };
 export const HTTP_STATUS = {

@@ -1,7 +1,7 @@
 import express from "express";
-import {OpenAPIV3} from "openapi-types";
-import {connector} from 'swagger-routes-express';
-import 'express-async-errors';
+import { OpenAPIV3 } from "openapi-types";
+import { connector } from "swagger-routes-express";
+import "express-async-errors";
 import * as jsyaml from "js-yaml";
 import * as fs from "fs";
 import * as path from "path";
@@ -10,6 +10,7 @@ import * as api from "./routes";
 import middleware from "./middleware";
 import connectDb from "./utils/connectDb";
 import setupAdmin from "./config/setupAdmin";
+import { loginCheck, emailVerifyCheck } from "./middleware/auth";
 
 const app = express();
 const applyGlobalMiddleware = (type : string) => {
@@ -27,8 +28,11 @@ const connect = connector(api, swaggerSpec, {
         } : ${
             (descriptor[1] as any).name
         }`)
+    },
+    middleware: {
+        loginCheck,
+        emailVerifyCheck,
     }
-
 })
 connectDb();
 setupAdmin();
