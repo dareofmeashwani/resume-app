@@ -27,7 +27,7 @@ const genRequestId = (
 	res: express.Response,
 	next: express.NextFunction
 ) => {
-	(req as any).resquestId = uuid();
+	(req as any).requestId = uuid();
     next();
 };
 // openapi validator middleware

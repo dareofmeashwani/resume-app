@@ -32,6 +32,7 @@ export async function permissionsCheck(
 ) {
 	const permissions =
 		((req as any).openapi.schema["x-permissions"] as any) || [];
+	// user permissions need to come from database
 	const userPermissions =
 		res.locals.userData.role === ROLES.ADMIN
 			? [

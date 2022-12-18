@@ -10,3 +10,5 @@ export * from "./workExperience";
 export * from "./query";
 export * from "./email";
 export * from "./meeting";
+export * from "./download";
+export * from "./images";
