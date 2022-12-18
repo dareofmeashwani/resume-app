@@ -44,7 +44,7 @@ export async function emailResendVerification(
 	}
 	const emailToken = user.generateEmailActivationToken();
 	res.send(HTTP_STATUS.OK);
-	sendVerificationEmail(user.email, emailToken);
+	sendVerificationEmail(user, emailToken);
 }
 
 const getUserProps = (user: any) => {

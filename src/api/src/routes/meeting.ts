@@ -1,23 +1,239 @@
 import * as express from "express";
-import { HTTP_STATUS, MESSAGES, ROLES } from "../utils/constants";
+import { HTTP_STATUS, MESSAGES } from "../utils/constants";
 import { throwResumeError } from "../utils/resumeError";
-import { checkAuth, getWeekStartEnd, filterProps } from "../utils/helpers";
+import { getWeekStartEnd, filterProps, unique } from "../utils/helpers";
 import config from "../config";
-import createEndpoints from "../utils/genericEndpoint";
 import meetingModel from "../models/meetingModel";
-import { google } from "googleapis";
+import * as zoom from "../utils/zoomApi";
+import {
+	sendZoomCancellation,
+	sendZoomInvite,
+	sendZoomUpdate
+} from "../utils/email";
+const getProps = (user: any) => {
+	return filterProps(user, ["__v", "externalEventId", "createdBy"], {
+		_id: "id"
+	});
+};
 
-const SCOPES = [
-	"https://www.googleapis.com/auth/calendar",
-	"https://www.googleapis.com/auth/calendar.events"
-];
-const jwtClient = new google.auth.JWT(
-	config.GOOGLE_CLIENT_EMAIL,
-	undefined,
-	config.GOOGLE_CLIENT_KEY,
-	SCOPES
-);
-const calendar = google.calendar({ version: "v3", auth: jwtClient });
+export const getMeetingList = async function (
+	req: express.Request,
+	res: express.Response
+) {
+	try {
+		const docList = await meetingModel.aggregatePaginate(
+			meetingModel.aggregate([
+				{
+					$match: {
+						createdBy: res.locals.userData.id
+					}
+				}
+			])
+		);
+		docList.docs = docList.docs.map((doc: any) => getProps(doc));
+		res.status(HTTP_STATUS.OK).send(docList);
+	} catch (error) {
+		throwResumeError(
+			HTTP_STATUS.SERVICE_UNAVAILABLE,
+			MESSAGES.DB_CONNECTIVITY_ERROR,
+			req,
+			error
+		);
+	}
+};
+export const getMeeting = async function (
+	req: express.Request,
+	res: express.Response
+) {
+	try {
+		const response = await meetingModel.findOne({
+			_id: req.params.meetingId,
+			createdBy: res.locals.userData.id
+		});
+		res.status(HTTP_STATUS.OK).send(getProps(response._doc));
+	} catch (error) {
+		throwResumeError(
+			HTTP_STATUS.SERVICE_UNAVAILABLE,
+			MESSAGES.DB_CONNECTIVITY_ERROR,
+			req,
+			error
+		);
+	}
+};
+
+export const createMeeting = async (
+	req: express.Request,
+	res: express.Response
+) => {
+	let attendees: any = [
+		{ email: res.locals.userData.email },
+		{ email: config.ADMIN_EMAIL }
+	];
+	if (req.body.members) {
+		req.body.members.forEach((member: string) => {
+			attendees.push({ email: member });
+		});
+	}
+	attendees = unique(attendees, "email");
+	let response: any = {};
+	if (!req.query.noLink) {
+		try {
+			response = await zoom.create(
+				{
+					topic: req.body.title || "Meeting with " + config.ADMIN_EMAIL,
+					agenda: req.body.description || "",
+					start_time: new Date(req.body.start).toISOString(),
+					duration: Math.floor(
+						(new Date(req.body.end).getTime() - new Date(req.body.start).getTime()) /
+							60000
+					)
+				},
+				attendees
+			);
+			sendZoomInvite(
+				res.locals.userData,
+				attendees.map((attendee: any) => attendee.email),
+				response
+			);
+		} catch (error) {
+			throwResumeError(
+				HTTP_STATUS.INTERNAL_SERVER_ERROR,
+				MESSAGES.ZOOM_CONNECTIVITY_ERROR,
+				req,
+				error
+			);
+		}
+	}
+	req.body.members = req.body.members && unique(req.body.members);
+	const doc = new meetingModel({
+		...req.body,
+		createdBy: res.locals.userData.id,
+		externalEventId: response.id
+	});
+	try {
+		const response = await doc.save();
+		res.status(HTTP_STATUS.CREATED).send(getProps(response._doc));
+	} catch (error) {
+		zoom.del(response.id);
+		throwResumeError(
+			HTTP_STATUS.SERVICE_UNAVAILABLE,
+			MESSAGES.DB_CONNECTIVITY_ERROR,
+			req,
+			error
+		);
+	}
+};
+export const patchMeeting = async (
+	req: express.Request,
+	res: express.Response
+) => {
+	let response;
+	try {
+		req.body.members = req.body.members && unique(req.body.members);
+		response = await meetingModel.findOneAndUpdate(
+			{
+				_id: req.params.meetingId,
+				createdBy: res.locals.userData.id
+			},
+			{
+				$set: req.body
+			},
+			{ new: true }
+		);
+	} catch (error) {
+		throwResumeError(
+			HTTP_STATUS.SERVICE_UNAVAILABLE,
+			MESSAGES.DB_CONNECTIVITY_ERROR,
+			req,
+			error
+		);
+	}
+	let attendees: any = [
+		{ email: res.locals.userData.email },
+		{ email: config.ADMIN_EMAIL }
+	];
+	if (response.members) {
+		response.members.forEach((member: string) => {
+			attendees.push({ email: member });
+		});
+	}
+	attendees = unique(attendees, "email");
+	try {
+		const zoomResponse = await zoom.update(
+			response.externalEventId,
+			{
+				topic: response.title,
+				agenda: response.description,
+				start_time: new Date(response.start).toISOString(),
+				duration: Math.floor(
+					(new Date(response.end).getTime() - new Date(response.start).getTime()) /
+						60000
+				)
+			},
+			attendees
+		);
+		res.status(HTTP_STATUS.ACCEPTED).send(getProps(response._doc));
+		sendZoomUpdate(
+			res.locals.userData,
+			attendees.map((attendee: any) => attendee.email),
+			await (
+				await zoom.get(response._doc.externalEventId)
+			).data
+		);
+	} catch (error) {
+		throwResumeError(
+			HTTP_STATUS.INTERNAL_SERVER_ERROR,
+			MESSAGES.ZOOM_CONNECTIVITY_ERROR,
+			req,
+			error
+		);
+	}
+};
+export const deleteMeeting = async (
+	req: express.Request,
+	res: express.Response
+) => {
+	const response = await meetingModel.findOne({
+		_id: req.params.meetingId,
+		createdBy: res.locals.userData.id
+	});
+	if (!response) {
+		throwResumeError(HTTP_STATUS.NOT_FOUND, MESSAGES.NOT_FOUND_ERROR, req);
+	}
+	let attendees: any = unique([
+		...response._doc.members,
+		res.locals.userData.email,
+		config.ADMIN_EMAIL
+	]);
+	let zoomData;
+	try {
+		zoomData = await zoom.get(response._doc.externalEventId);
+		await zoom.del(response._doc.externalEventId);
+	} catch (error) {
+		throwResumeError(
+			HTTP_STATUS.INTERNAL_SERVER_ERROR,
+			MESSAGES.ZOOM_CONNECTIVITY_ERROR,
+			req,
+			error
+		);
+	}
+	try {
+		await meetingModel.deleteOne({ _id: req.params.meetingId });
+		res.status(HTTP_STATUS.ACCEPTED).send();
+	} catch (error) {
+		throwResumeError(
+			HTTP_STATUS.SERVICE_UNAVAILABLE,
+			MESSAGES.DB_CONNECTIVITY_ERROR,
+			req,
+			error
+		);
+	}
+	sendZoomCancellation(
+		res.locals.userData,
+		attendees,
+		zoomData?.data
+	);
+};
 
 export async function getMeetingStatus(
 	req: express.Request,
@@ -29,15 +245,13 @@ export async function getMeetingStatus(
 	}
 	const weekRange = getWeekStartEnd(timestamp);
 	try {
-		const events = await calendar.events.list({
-			calendarId: config.ADMIN_EMAIL,
-			timeMin: weekRange.start,
-			timeMax: weekRange.end
+		const response = await meetingModel.find({
+			start: { $gte: weekRange.start, $lte: weekRange.end }
 		});
-		const meetingStatus = events.data.items?.map((event) => {
+		const meetingStatus: any[] = response.map((event) => {
 			return {
-				start: new Date(event?.start?.dateTime as string).toISOString(),
-				end: new Date(event?.end?.dateTime as string).toISOString()
+				start: new Date(event.start as string).toISOString(),
+				end: new Date(event.end as string).toISOString()
 			};
 		});
 		res.status(HTTP_STATUS.OK).send({
@@ -46,142 +260,36 @@ export async function getMeetingStatus(
 		});
 	} catch (error) {
 		throwResumeError(
-			HTTP_STATUS.INTERNAL_SERVER_ERROR,
-			MESSAGES.GOOGLE_CONNECTIVITY_ERROR,
+			HTTP_STATUS.SERVICE_UNAVAILABLE,
+			MESSAGES.DB_CONNECTIVITY_ERROR,
 			req,
 			error
 		);
 	}
 }
 
-const getProps = (user: any) => {
-	return filterProps(user, ["__v", "gEventId"], { _id: "id" });
-};
-const meeting = createEndpoints(
-	meetingModel,
-	getProps,
-	(req: any) => req.params.meetingId
-);
-export const getMeetingList = meeting.getDocList;
-export const getMeeting = meeting.getDoc;
-
-export const createMeeting = async (
+export async function zoomResendInvite(
 	req: express.Request,
 	res: express.Response
-) => {
-	const attendees: any = [
-		//{ email: res.locals.userData.email }
-	];
-	if (req.body.members && false) {
-		req.body.members.forEach((member: string) => {
-			attendees.push({ email: member });
-		});
+) {
+	const response = await meetingModel.findOne({
+		_id: req.params.meetingId,
+		createdBy: res.locals.userData.id
+	});
+	if (!response) {
+		throwResumeError(HTTP_STATUS.NOT_FOUND, MESSAGES.NOT_FOUND_ERROR, req);
 	}
-	var event = {
-		summary: req.body.title || "Meeting with " + config.ADMIN_EMAIL,
-		location: "Virtual / Google Meet",
-		description: req.body.description || "",
-		start: {
-			dateTime: "2022-12-13T09:00:00-07:00",
-			timeZone: "Asia/Kolkata"
-		},
-		end: {
-			dateTime: "2022-12-14T09:00:00-07:00",
-			timeZone: "Asia/Kolkata"
-		},
+	let attendees: any = unique([
+		...response._doc.members,
+		res.locals.userData.email,
+		config.ADMIN_EMAIL
+	]);
+	sendZoomInvite(
+		res.locals.userData,
 		attendees,
-		reminders: {
-			useDefault: true
-		},
-		conferenceData: {
-			createRequest: {
-				conferenceSolutionKey: {
-					type: "hangoutsMeet"
-				},
-				requestId: "coding-calendar-demo"
-			}
-		}
-	};
-	let gResponse: any;
-	try {
-		gResponse = await calendar.events.insert({
-			auth: jwtClient,
-			calendarId: config.ADMIN_EMAIL,
-			requestBody: event,
-			conferenceDataVersion: 1
-		});
-	} catch (error) {
-		console.error(error);
-		throwResumeError(
-			HTTP_STATUS.INTERNAL_SERVER_ERROR,
-			MESSAGES.GOOGLE_CONNECTIVITY_ERROR,
-			req,
-			error
-		);
-	}
-	req.body.gEventId = "gEventId";
-	meeting.postDoc(req, res);
-};
-export const patchMeeting = (req: express.Request, res: express.Response) => {
-	try {
-	} catch (error) {
-		throwResumeError(
-			HTTP_STATUS.INTERNAL_SERVER_ERROR,
-			MESSAGES.GOOGLE_CONNECTIVITY_ERROR,
-			req,
-			error
-		);
-	}
-	meeting.patchDoc(req, res);
-};
-export const deleteMeeting = (req: express.Request, res: express.Response) => {
-	try {
-	} catch (error) {
-		throwResumeError(
-			HTTP_STATUS.INTERNAL_SERVER_ERROR,
-			MESSAGES.GOOGLE_CONNECTIVITY_ERROR,
-			req,
-			error
-		);
-	}
-	meeting.deleteDoc(req, res);
-};
-
-async function name() {
-	var event = {
-		summary: "My first event!",
-		location: "Hyderabad,India",
-		description: "First event with nodeJS!",
-		start: {
-			dateTime: "2022-01-12T09:00:00-07:00",
-			timeZone: "Asia/Dhaka"
-		},
-		end: {
-			dateTime: "2022-01-14T17:00:00-07:00",
-			timeZone: "Asia/Dhaka"
-		},
-		attendees: [],
-		reminders: {
-			useDefault: false,
-			overrides: [
-				{ method: "email", minutes: 24 * 60 },
-				{ method: "popup", minutes: 10 }
-			]
-		}
-	};
-
-	calendar.events.insert(
-		{
-			auth: jwtClient,
-			calendarId: config.ADMIN_EMAIL,
-			requestBody: event
-		},
-		function (err: any, event: any) {
-			if (err) {
-				console.log("There was an error contacting the Calendar service: " + err);
-				return;
-			}
-			console.log("Event created: %s", event.data);
-		}
+		await (
+			await zoom.get(response._doc.externalEventId)
+		).data
 	);
+	res.status(HTTP_STATUS.ACCEPTED).send();
 }

@@ -2,14 +2,13 @@ import * as express from "express";
 import { HTTP_STATUS, MESSAGES, ROLES } from "../utils/constants";
 import Query from "../models/queryModel";
 import { throwResumeError } from "../utils/resumeError";
-import { checkAuth, filterProps } from "../utils/helpers";
+import { filterProps } from "../utils/helpers";
 import { sendQueryNotificationToAdmin } from "../utils/email";
 
 export async function getQueryList(
 	req: express.Request,
-	res: express.Response,
+	res: express.Response
 ) {
-	checkAuth(req, res, [ROLES.ADMIN]);
 	try {
 		/*const options = {
             page: req.body.page,
@@ -23,15 +22,13 @@ export async function getQueryList(
 		throwResumeError(
 			HTTP_STATUS.SERVICE_UNAVAILABLE,
 			MESSAGES.DB_CONNECTIVITY_ERROR,
-			req
+			req,
+			error
 		);
 	}
 }
 
-export async function createQuery(
-	req: express.Request,
-	res: express.Response,
-) {
+export async function createQuery(req: express.Request, res: express.Response) {
 	const query = new Query({
 		...req.body
 	});
@@ -43,7 +40,8 @@ export async function createQuery(
 		throwResumeError(
 			HTTP_STATUS.SERVICE_UNAVAILABLE,
 			MESSAGES.DB_CONNECTIVITY_ERROR,
-			req
+			req,
+			error
 		);
 	}
 }

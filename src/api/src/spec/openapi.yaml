@@ -29,6 +29,9 @@ paths:
         - User
       x-middleware:
         - loginCheck
+        - permissionsCheck
+      x-permissions:
+        - system.user.read
       summary: list of user detail
       operationId: getListUser
       responses:
@@ -72,6 +75,7 @@ paths:
     post:
       x-middleware:
         - loginCheck
+        - permissionsCheck
       tags:
         - User
       summary: Logout logged-in user
@@ -101,6 +105,7 @@ paths:
       post:
         x-middleware:
           - loginCheck
+          - permissionsCheck
         tags:
           - Email
         summary: resend email verification
@@ -122,11 +127,14 @@ paths:
               schema:
                 $ref: "#/components/schemas/EducationList"
     post:
+      x-permissions:
+        - system.educations.create
       tags:
         - Education
       x-middleware:
         - loginCheck
         - emailVerifyCheck
+        - permissionsCheck
       summary: create education
       operationId: createEducation
       requestBody:
@@ -156,11 +164,14 @@ paths:
               schema:
                 $ref: "#/components/schemas/EducationDetail"
     patch:
+      x-permissions:
+        - system.educations.update
       tags:
         - Education
       x-middleware:
         - loginCheck
         - emailVerifyCheck
+        - permissionsCheck
       summary: modify education
       operationId: patchEducation
       requestBody:
@@ -176,9 +187,12 @@ paths:
     delete:
       tags:
         - Education
+      x-permissions:
+        - system.educations.delete
       x-middleware:
         - loginCheck
         - emailVerifyCheck
+        - permissionsCheck
       summary: delete education
       operationId: deleteEducation
       responses:
@@ -208,6 +222,9 @@ paths:
       x-middleware:
         - loginCheck
         - emailVerifyCheck
+        - permissionsCheck
+      x-permissions:
+        - system.extraCurriculars.create
       summary: create extra curriculars
       operationId: createExtraCurricular
       requestBody:
@@ -242,6 +259,9 @@ paths:
       x-middleware:
         - loginCheck
         - emailVerifyCheck
+        - permissionsCheck
+      x-permissions:
+        - system.extraCurriculars.update
       summary: modify extra curricular
       operationId: patchExtraCurricular
       requestBody:
@@ -260,6 +280,9 @@ paths:
       x-middleware:
         - loginCheck
         - emailVerifyCheck
+        - permissionsCheck
+      x-permissions:
+        - system.extraCurriculars.delete
       summary: delete extra curricular
       operationId: deleteExtraCurricular
       responses:
@@ -289,6 +312,9 @@ paths:
       x-middleware:
         - loginCheck
         - emailVerifyCheck
+        - permissionsCheck
+      x-permissions:
+        - system.projects.create
       summary: create project
       operationId: createProject
       requestBody:
@@ -323,6 +349,9 @@ paths:
       x-middleware:
         - loginCheck
         - emailVerifyCheck
+        - permissionsCheck
+      x-permissions:
+        - system.projects.update
       summary: modify project
       operationId: patchProject
       requestBody:
@@ -341,6 +370,9 @@ paths:
       x-middleware:
         - loginCheck
         - emailVerifyCheck
+        - permissionsCheck
+      x-permissions:
+        - system.projects.delete
       summary: delete project
       operationId: deleteProject
       responses:
@@ -370,6 +402,9 @@ paths:
       x-middleware:
         - loginCheck
         - emailVerifyCheck
+        - permissionsCheck
+      x-permissions:
+        - system.responsibilities.create
       summary: create responsibility
       operationId: createResponsibility
       requestBody:
@@ -404,6 +439,9 @@ paths:
       x-middleware:
         - loginCheck
         - emailVerifyCheck
+        - permissionsCheck
+      x-permissions:
+        - system.responsibilities.update
       summary: modify responsibility
       operationId: patchResponsibility
       requestBody:
@@ -422,6 +460,9 @@ paths:
       x-middleware:
         - loginCheck
         - emailVerifyCheck
+        - permissionsCheck
+      x-permissions:
+        - system.responsibilities.delete
       summary: delete responsibility
       operationId: deleteResponsibility
       responses:
@@ -451,6 +492,9 @@ paths:
       x-middleware:
         - loginCheck
         - emailVerifyCheck
+        - permissionsCheck
+      x-permissions:
+        - system.skills.create
       summary: create skill
       operationId: createSkill
       requestBody:
@@ -485,6 +529,9 @@ paths:
       x-middleware:
         - loginCheck
         - emailVerifyCheck
+        - permissionsCheck
+      x-permissions:
+        - system.skills.update
       summary: modify skill
       operationId: patchSkill
       requestBody:
@@ -503,6 +550,9 @@ paths:
       x-middleware:
         - loginCheck
         - emailVerifyCheck
+        - permissionsCheck
+      x-permissions:
+        - system.skills.delete
       summary: delete skill
       operationId: deleteSkill
       responses:
@@ -532,6 +582,9 @@ paths:
       x-middleware:
         - loginCheck
         - emailVerifyCheck
+        - permissionsCheck
+      x-permissions:
+        - system.trainings.create
       summary: create training
       operationId: createTraining
       requestBody:
@@ -566,6 +619,9 @@ paths:
       x-middleware:
         - loginCheck
         - emailVerifyCheck
+        - permissionsCheck
+      x-permissions:
+        - system.trainings.update
       summary: modify training
       operationId: patchTraining
       requestBody:
@@ -584,6 +640,9 @@ paths:
       x-middleware:
         - loginCheck
         - emailVerifyCheck
+        - permissionsCheck
+      x-permissions:
+        - system.trainings.delete
       summary: delete training
       operationId: deleteTraining
       responses:
@@ -613,6 +672,9 @@ paths:
       x-middleware:
         - loginCheck
         - emailVerifyCheck
+        - permissionsCheck
+      x-permissions:
+        - system.workExperiences.create
       summary: create work experience
       operationId: createWorkExperience
       requestBody:
@@ -647,6 +709,9 @@ paths:
       x-middleware:
         - loginCheck
         - emailVerifyCheck
+        - permissionsCheck
+      x-permissions:
+        - system.workExperiences.update
       summary: modify work experience
       operationId: patchWorkExperience
       requestBody:
@@ -665,6 +730,9 @@ paths:
       x-middleware:
         - loginCheck
         - emailVerifyCheck
+        - permissionsCheck
+      x-permissions:
+        - system.workExperiences.delete
       summary: delete work experience
       operationId: deleteWorkExperience
       responses:
@@ -682,6 +750,9 @@ paths:
       x-middleware:
         - loginCheck
         - emailVerifyCheck
+        - permissionsCheck
+      x-permissions:
+        - system.query.read
       summary: list queries
       operationId: getQueryList
       responses:
@@ -716,6 +787,7 @@ paths:
       x-middleware:
         - loginCheck
         - emailVerifyCheck
+        - permissionsCheck
       summary: list system meetings status
       operationId: getMeetingStatus
       responses:
@@ -727,13 +799,14 @@ paths:
                 $ref: "#/components/schemas/MeetingStatusList"
 
 
-  /meeting:
+  /meetings:
     get:
       tags:
         - Meeting
       x-middleware:
         - loginCheck
         - emailVerifyCheck
+        - permissionsCheck
       summary: list meetings
       operationId: getMeetingList
       responses:
@@ -749,6 +822,7 @@ paths:
       x-middleware:
         - loginCheck
         - emailVerifyCheck
+        - permissionsCheck
       summary: create Meeting
       operationId: createMeeting
       requestBody:
@@ -762,7 +836,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/MeetingDetail"
 
-  /meeting/{meetingId}:
+  /meetings/{meetingId}:
     parameters:
       - $ref: "#/components/parameters/MeetingId"
     get:
@@ -771,6 +845,7 @@ paths:
       x-middleware:
         - loginCheck
         - emailVerifyCheck
+        - permissionsCheck
       summary: get meeting
       operationId: getMeeting
       responses:
@@ -786,6 +861,7 @@ paths:
       x-middleware:
         - loginCheck
         - emailVerifyCheck
+        - permissionsCheck
       summary: modify meeting
       operationId: patchMeeting
       requestBody:
@@ -804,6 +880,7 @@ paths:
       x-middleware:
         - loginCheck
         - emailVerifyCheck
+        - permissionsCheck
       summary: delete meeting
       operationId: deleteMeeting
       responses:
@@ -813,6 +890,21 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Empty"
+    
+  /meetings/{meetingId}/resendInvite:
+    parameters:
+      - $ref: "#/components/parameters/MeetingId"
+    post:
+      x-middleware:
+        - loginCheck
+        - permissionsCheck
+      tags:
+        - Meeting
+      summary: resend zoom invitation link
+      operationId: zoomResendInvite
+      responses:
+        "200":
+          $ref: "#/components/schemas/Empty"
 
 components:
 #######################################

@@ -1,22 +1,4 @@
-import * as express from "express";
 import mongoose from "mongoose";
-import { HTTP_STATUS, MESSAGES } from "../utils/constants";
-import { throwResumeError } from "../utils/resumeError";
-export function checkAuth(
-	req: express.Request,
-	res: express.Response,
-	permissions?: string[]
-) {
-	if (permissions) {
-		if (permissions.indexOf(res.locals.userData.role.toString()) > -1) {
-			return true;
-		} else {
-			throwResumeError(HTTP_STATUS.UNAUTHORIZED, MESSAGES.UNAUTHORIZED, req);
-		}
-	}
-	return true;
-}
-
 export function filterProps(source: any, ignore: any, change?: any) {
 	let res = {};
 	Object.keys(source).forEach((key: string) => {
@@ -47,7 +29,33 @@ export function getWeekStartEnd(selectedDate: Date | undefined) {
 		new Date(selectedDate.setDate(last)).setHours(23, 59, 59, 999)
 	);
 	return {
-		start: firstday.toISOString(),
-		end: lastday.toISOString()
+		start: firstday,
+		end: lastday
 	};
+}
+
+export function unique(dataArray: any[], lookUpkey?: string) {
+	const set = new Set();
+	lookUpkey = lookUpkey || "id";
+	return dataArray.filter((value: any) => {
+		if (typeof value === "object") {
+			value = value[lookUpkey as string];
+		}
+		if (set.has(value)) {
+			return false;
+		}
+		set.add(value);
+		return true;
+	});
+}
+
+export function generateRandom(length: number) {
+	var result = "";
+	var characters =
+		"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	var charactersLength = characters.length;
+	for (var i = 0; i < length; i++) {
+		result += characters.charAt(Math.floor(Math.random() * charactersLength));
+	}
+	return result;
 }

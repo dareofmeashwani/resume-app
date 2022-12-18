@@ -31,8 +31,9 @@
     "js-yaml": "^4.1.0",
     "connect-mongodb-session": "^3.1.1",
     "cors":"^2.8.5",
-    "googleapis": "^109.0.1",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "axios": "^1.2.1",
+    "moment": "^2.29.4"
   },
   "devDependencies": {
     "@eslint/create-config": "^0.4.1",
@@ -53,6 +54,8 @@
     "@types/js-yaml": "^4.0.5",
     "@types/connect-mongodb-session": "^2.4.4",
     "@types/cors": "^2.8.12",
-    "@types/nodemailer": "^6.4.6"
+    "@types/nodemailer": "^6.4.6",
+    "@types/uuid": "^9.0.0",
+    "@types/axios": "^0.14.0"
   }
 }

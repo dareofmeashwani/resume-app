@@ -3,14 +3,10 @@ import { HTTP_STATUS, MESSAGES, ROLES } from "../utils/constants";
 import { User } from "../models/userModel";
 import { SESSION_ID } from "../utils/constants";
 import { throwResumeError } from "../utils/resumeError";
-import { checkAuth, filterProps} from "../utils/helpers";
+import { filterProps } from "../utils/helpers";
 import { sendVerificationEmail, sendWelcomeEmail } from "../utils/email";
 
-export async function getListUser(
-	req: express.Request,
-	res: express.Response,
-) {
-	checkAuth(req, res, [ROLES.ADMIN]);
+export async function getListUser(req: express.Request, res: express.Response) {
 	try {
 		const users = await User.aggregatePaginate(
 			User.aggregate([
@@ -27,14 +23,15 @@ export async function getListUser(
 		throwResumeError(
 			HTTP_STATUS.SERVICE_UNAVAILABLE,
 			MESSAGES.DB_CONNECTIVITY_ERROR,
-			req
+			req,
+			error
 		);
 	}
 }
 
 export async function postRegisterUser(
 	req: express.Request,
-	res: express.Response,
+	res: express.Response
 ) {
 	if (await (User as any).emailTaken(req.body.email)) {
 		throwResumeError(HTTP_STATUS.CONFLICT, MESSAGES.EMAIL_ALREADY_IN_USE, req);
@@ -46,13 +43,14 @@ export async function postRegisterUser(
 		const doc = await user.save();
 		const emailToken = user.generateEmailActivationToken();
 		res.status(HTTP_STATUS.CREATED).send(getUserProps(doc._doc));
-		sendWelcomeEmail(doc._doc.email);
-		sendVerificationEmail(doc._doc.email, emailToken);
+		sendWelcomeEmail(doc._doc);
+		sendVerificationEmail(doc._doc, emailToken);
 	} catch (error) {
 		throwResumeError(
 			HTTP_STATUS.SERVICE_UNAVAILABLE,
 			MESSAGES.DB_CONNECTIVITY_ERROR,
-			req
+			req,
+			error
 		);
 	}
 }
@@ -75,7 +73,8 @@ export async function postLoginUser(
 			throwResumeError(
 				HTTP_STATUS.INTERNAL_SERVER_ERROR,
 				MESSAGES.LOGIN_ERROR,
-				req
+				req,
+				err
 			);
 		}
 		return res.status(HTTP_STATUS.ACCEPTED).send(getUserProps(user._doc));
@@ -85,7 +84,6 @@ export function postLogoutUser(
 	req: express.Request,
 	res: express.Response
 ): void {
-	checkAuth(req, res, [ROLES.USER, ROLES.ADMIN]);
 	req.session.destroy((err: any) => {
 		if (err) {
 			throwResumeError(

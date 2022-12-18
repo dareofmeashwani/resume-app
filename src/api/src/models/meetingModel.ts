@@ -18,9 +18,8 @@ const MeetingSchema = new mongoose.Schema({
 		type: Date,
 		required: true
 	},
-	gEventId:{
-		type: String,
-		required: true
+	externalEventId: {
+		type: String
 	},
 	end: {
 		type: Date,
@@ -35,6 +34,11 @@ const MeetingSchema = new mongoose.Schema({
 				throwResumeError(HTTP_STATUS.BAD_REQUEST, MESSAGES.INVALID_EMAIL);
 			}
 		}
+	},
+	createdBy: {
+		type: String,
+		required: true,
+		trim: true
 	},
 	createdAt: {
 		type: Date,

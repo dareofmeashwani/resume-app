@@ -9,8 +9,7 @@ import config from "./config";
 import * as api from "./routes";
 import middleware from "./middleware";
 import connectDb from "./utils/connectDb";
-import setupAdmin from "./config/setupAdmin";
-import { loginCheck, emailVerifyCheck } from "./middleware/auth";
+import { loginCheck, emailVerifyCheck, permissionsCheck } from "./middleware/auth";
 
 const app = express();
 const applyGlobalMiddleware = (type : string) => {
@@ -32,10 +31,10 @@ const connect = connector(api, swaggerSpec, {
     middleware: {
         loginCheck,
         emailVerifyCheck,
+        permissionsCheck,
     }
 })
 connectDb();
-setupAdmin();
 applyGlobalMiddleware('pre');
 connect(app);
 applyGlobalMiddleware('post');
