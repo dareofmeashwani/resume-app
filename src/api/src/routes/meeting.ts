@@ -1,5 +1,5 @@
 import * as express from "express";
-import { HTTP_STATUS, MESSAGES } from "../utils/constants";
+import { HTTP_STATUS, MESSAGES, ROLES } from "../utils/constants";
 import { throwResumeError } from "../utils/resumeError";
 import { getWeekStartEnd, filterProps, unique } from "../utils/helpers";
 import config from "../config";
@@ -10,6 +10,7 @@ import {
 	sendZoomInvite,
 	sendZoomUpdate
 } from "../utils/email";
+import { User } from "../models/userModel";
 const getProps = (user: any) => {
 	return filterProps(user, ["__v", "externalEventId", "createdBy"], {
 		_id: "id"
@@ -65,9 +66,24 @@ export const createMeeting = async (
 	req: express.Request,
 	res: express.Response
 ) => {
+	let admins = [];
+	try {
+		admins = await User.find({ role: ROLES.ADMIN });
+	} catch (error) {
+		throwResumeError(
+			HTTP_STATUS.SERVICE_UNAVAILABLE,
+			MESSAGES.DB_CONNECTIVITY_ERROR,
+			req,
+			error
+		);
+	}
 	let attendees: any = [
 		{ email: res.locals.userData.email },
-		{ email: config.ADMIN_EMAIL }
+		...admins.map((admin: any) => {
+			return {
+				email: admin.email
+			};
+		})
 	];
 	if (req.body.members) {
 		req.body.members.forEach((member: string) => {
@@ -80,7 +96,7 @@ export const createMeeting = async (
 		try {
 			response = await zoom.create(
 				{
-					topic: req.body.title || "Meeting with " + config.ADMIN_EMAIL,
+					topic: req.body.title || "Meeting with " + config.DOMAIN_NAME,
 					agenda: req.body.description || "",
 					start_time: new Date(req.body.start).toISOString(),
 					duration: Math.floor(
@@ -128,7 +144,9 @@ export const patchMeeting = async (
 	res: express.Response
 ) => {
 	let response;
+	let admins = [];
 	try {
+		admins = await User.find({ role: ROLES.ADMIN });
 		req.body.members = req.body.members && unique(req.body.members);
 		response = await meetingModel.findOneAndUpdate(
 			{
@@ -150,7 +168,11 @@ export const patchMeeting = async (
 	}
 	let attendees: any = [
 		{ email: res.locals.userData.email },
-		{ email: config.ADMIN_EMAIL }
+		...admins.map((admin: any) => {
+			return {
+				email: admin.email
+			};
+		})
 	];
 	if (response.members) {
 		response.members.forEach((member: string) => {
@@ -193,17 +215,29 @@ export const deleteMeeting = async (
 	req: express.Request,
 	res: express.Response
 ) => {
-	const response = await meetingModel.findOne({
-		_id: req.params.meetingId,
-		createdBy: res.locals.userData.id
-	});
+	let admins = [];
+	let response;
+	try {
+		admins = await User.find({ role: ROLES.ADMIN });
+		response = await meetingModel.findOne({
+			_id: req.params.meetingId,
+			createdBy: res.locals.userData.id
+		});
+	} catch (error) {
+		throwResumeError(
+			HTTP_STATUS.SERVICE_UNAVAILABLE,
+			MESSAGES.DB_CONNECTIVITY_ERROR,
+			req,
+			error
+		);
+	}
 	if (!response) {
 		throwResumeError(HTTP_STATUS.NOT_FOUND, MESSAGES.NOT_FOUND_ERROR, req);
 	}
 	let attendees: any = unique([
 		...response._doc.members,
 		res.locals.userData.email,
-		config.ADMIN_EMAIL
+		admins.map((admin)=> admin.email)
 	]);
 	let zoomData;
 	try {
@@ -228,11 +262,7 @@ export const deleteMeeting = async (
 			error
 		);
 	}
-	sendZoomCancellation(
-		res.locals.userData,
-		attendees,
-		zoomData?.data
-	);
+	sendZoomCancellation(res.locals.userData, attendees, zoomData?.data);
 };
 
 export async function getMeetingStatus(
@@ -272,17 +302,29 @@ export async function zoomResendInvite(
 	req: express.Request,
 	res: express.Response
 ) {
-	const response = await meetingModel.findOne({
-		_id: req.params.meetingId,
-		createdBy: res.locals.userData.id
-	});
+	let admins = [];
+	let response;
+	try {
+		admins = await User.find({ role: ROLES.ADMIN });
+		response = await meetingModel.findOne({
+			_id: req.params.meetingId,
+			createdBy: res.locals.userData.id
+		});
+	} catch (error) {
+		throwResumeError(
+			HTTP_STATUS.SERVICE_UNAVAILABLE,
+			MESSAGES.DB_CONNECTIVITY_ERROR,
+			req,
+			error
+		);
+	}
 	if (!response) {
 		throwResumeError(HTTP_STATUS.NOT_FOUND, MESSAGES.NOT_FOUND_ERROR, req);
 	}
 	let attendees: any = unique([
 		...response._doc.members,
 		res.locals.userData.email,
-		config.ADMIN_EMAIL
+		admins.map((admin)=> admin.email)
 	]);
 	sendZoomInvite(
 		res.locals.userData,

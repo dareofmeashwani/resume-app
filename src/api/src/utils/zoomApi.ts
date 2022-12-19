@@ -3,7 +3,7 @@ import axios from "axios";
 import config from "../config";
 import { generateRandom } from "./helpers";
 
-const url = "https://api.zoom.us/v2/users/" + config.ADMIN_EMAIL + "/meetings";
+const url = "https://api.zoom.us/v2/users/" + config.EMAIL + "/meetings";
 const meetingUrl = "https://api.zoom.us/v2/meetings/";
 
 function getToken() {

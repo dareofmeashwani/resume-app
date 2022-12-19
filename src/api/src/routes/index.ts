@@ -12,3 +12,4 @@ export * from "./email";
 export * from "./meeting";
 export * from "./download";
 export * from "./images";
+export * from "./admin";

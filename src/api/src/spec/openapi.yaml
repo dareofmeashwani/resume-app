@@ -23,6 +23,24 @@ paths:
     "503":
      $ref: "#/components/responses/healthStatusError"
 
+ /admins:
+  get:
+   tags:
+    - Admin
+   x-middleware:
+    - loginCheck
+    - emailVerifyCheck
+    - permissionsCheck
+   summary: list of admin detail
+   operationId: getAdminList
+   responses:
+    "200":
+     description: "list of admin detail"
+     content:
+      application/json:
+       schema:
+        $ref: "#/components/schemas/AdminList"
+
  /user:
   get:
    tags:
@@ -1231,6 +1249,37 @@ components:
   ##########  User Schemas  #############
   #######################################
 
+  AdminList:
+   type: object
+   allOf:
+    - $ref: "#/components/schemas/ResourceList"
+    - type: object
+      properties:
+       docs:
+        type: array
+        items:
+         $ref: "#/components/schemas/AdminDetail"
+
+  AdminDetail:
+   required:
+    - id
+    - firstname
+    - gender
+   properties:
+    id:
+     allOf:
+      - $ref: "#/components/schemas/Id"
+        description: Id of the Education
+    firstname:
+     type: string
+     maxLength: 100
+    gender:
+     type: string
+     maxLength: 50
+    lastname:
+     type: string
+     maxLength: 100
+
   LoginBody:
    type: object
    required:
@@ -1952,6 +2001,7 @@ components:
    type: string
    maxLength: 256
    minLength: 1
+   pattern: '^[\w.-]+(/[\w./-]+[\w./-]+)?$'
 
  #######################################
  ############  Parameters  #############

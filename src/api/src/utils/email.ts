@@ -2,6 +2,8 @@ import nodemailer from "nodemailer";
 import Mailgen from "mailgen";
 import config from "../config";
 import moment from "moment";
+import { User } from "../models/userModel";
+import { ROLES } from "./constants";
 
 let transporter = nodemailer.createTransport({
 	service: "Gmail",
@@ -61,7 +63,6 @@ export const sendVerificationEmail = async (
 				link: `${config.DOMAIN_ADDRESS}`
 			}
 		});
-
 		const email = {
 			body: {
 				name: userInfo.firstname + " " + userInfo.lastname,
@@ -96,37 +97,42 @@ export const sendVerificationEmail = async (
 };
 
 export const sendQueryNotificationToAdmin = async (query: any) => {
+	const admins = await User.find({ role: ROLES.ADMIN });
+	if (!admins) {
+		return false;
+	}
+	let mailGenerator = new Mailgen({
+		theme: THEME,
+		product: {
+			name: config.DOMAIN_NAME,
+			link: `${config.DOMAIN_ADDRESS}`
+		}
+	});
 	try {
-		let mailGenerator = new Mailgen({
-			theme: THEME,
-			product: {
-				name: config.DOMAIN_NAME,
-				link: `${config.DOMAIN_ADDRESS}`
-			}
-		});
-
-		const email = {
-			body: {
-				dictionary: {
-					Date: query.createdAt,
-					Sender: query.name,
-					Subject: query.subject,
-					Mobile: query.mobile,
-					Email: query.email,
-					Description: query.description
-				}
-			}
-		};
-
-		let emailBody = mailGenerator.generate(email);
-		let message = {
-			from: config.EMAIL,
-			to: config.ADMIN_EMAIL,
-			subject: `#### Query from ${query.name} ${query.email} ####`,
-			html: emailBody
-		};
-
-		await transporter.sendMail(message);
+		await Promise.all(
+			admins.map(async (admin) => {
+				const email = {
+					body: {
+						dictionary: {
+							Date: query.createdAt,
+							Sender: query.name,
+							Subject: query.subject,
+							Mobile: query.mobile,
+							Email: query.email,
+							Description: query.description
+						}
+					}
+				};
+				let emailBody = mailGenerator.generate(email);
+				let message = {
+					from: config.EMAIL,
+					to: admin.email,
+					subject: `#### Query from ${query.name} ${query.email} ####`,
+					html: emailBody
+				};
+				return await transporter.sendMail(message);
+			})
+		);
 		return true;
 	} catch (error) {
 		console.error(error);
@@ -155,7 +161,7 @@ const sendZoomMeeting = async (
 			"Meeting Timing : " +
 				moment(meeting.start_time).format("MM/DD/YYYY h:mm a ") +
 				" IST",
-			"Meeting With : " + config.DOMAIN_OWNER
+			"Meeting With : " + config.DOMAIN_NAME
 		];
 		await Promise.all(
 			emails.map(async (userEmail: string) => {
@@ -244,7 +250,7 @@ export const sendZoomCancellation = async (
 							"Meeting Timing : " +
 								moment(meeting.start_time).format("MM/DD/YYYY h:mm a ") +
 								" IST",
-							"Meeting With : " + config.DOMAIN_OWNER
+							"Meeting With : " + config.DOMAIN_NAME
 						],
 						outro:
 							"Need help, or have questions? Just reply to this email, we'd love to help."
