@@ -1,14 +1,14 @@
 {
-    "compilerOptions": {
-        "target": "es5",
-        "module": "commonjs",
-        "allowJs": true,
-        "outDir": "build",
-        "rootDir": "src",
-        "strict": true,
-        "noImplicitAny": true,
-        "esModuleInterop": true,
-        "resolveJsonModule": true
-    },
-    "exclude": ["node_modules", "build"]
+	"compilerOptions": {
+		"target": "es5",
+		"module": "commonjs",
+		"allowJs": false,
+		"outDir": "build",
+		"rootDir": "src",
+		"strict": true,
+		"noImplicitAny": true,
+		"esModuleInterop": true,
+		"resolveJsonModule": true
+	},
+	"exclude": ["node_modules", "build"],
 }

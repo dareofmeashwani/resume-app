@@ -5,8 +5,9 @@
   "scripts": {
     "dev": "nodemon",
     "start": "node build/server.js",
-    "build": "yarn tsc",
-    "clean": "rm build && rm node_modules"
+    "build": "yarn tsc && yarn copyFiles",
+    "clean": "rm build  rm node_modules",
+    "copyFiles": "cp-cli src/spec build/spec && cp-cli src/download build/download && cp-cli src/images build/images"
   },
   "author": "",
   "license": "ISC",
@@ -33,7 +34,8 @@
     "cors":"^2.8.5",
     "uuid": "^9.0.0",
     "axios": "^1.2.1",
-    "moment": "^2.29.4"
+    "moment": "^2.29.4",
+    "cp-cli": "^2.0.0"
   },
   "devDependencies": {
     "@eslint/create-config": "^0.4.1",
