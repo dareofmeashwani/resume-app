@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 const env: any = {};
 fs
-	.readFileSync(path.join(__dirname, "../../../../.env"), "utf-8")
+	.readFileSync(path.join(__dirname, "../../../../.env_dev"), "utf-8")
 	.split(/\r?\n/)
 	.forEach(function (line) {
 		const equalIndex = line.indexOf("=");

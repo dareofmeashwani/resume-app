@@ -112,7 +112,8 @@ dist
 .pnp.js
 /client/.eslintcache
 .eslintcache
-.env
+.env_dev
+.env_prod
 # testing
 /coverage
 
