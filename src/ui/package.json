@@ -31,7 +31,6 @@
     "yup": "^0.32.11",
     "http-proxy-middleware": "^2.0.6"
   },
-  "proxy": "http://localhost:3000",
   "scripts": {
     "dev": "set PORT=80 && react-scripts start",
     "start": "set PORT=80 && react-scripts start",
