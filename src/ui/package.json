@@ -32,12 +32,12 @@
     "http-proxy-middleware": "^2.0.6"
   },
   "scripts": {
-    "dev": "set PORT=80 && react-scripts start",
-    "start": "set PORT=80 && react-scripts start",
+    "dev": "react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "clean": "rm -R build && rm -R node_modules"
   },
-  "proxy": "http://localhost:3000",
+  "proxy": "http://localhost:3001",
   "eslintConfig": {
     "extends": [
       "react-app",
