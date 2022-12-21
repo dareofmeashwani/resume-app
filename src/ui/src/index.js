@@ -8,7 +8,7 @@ import './styles/main.css';
 import { Provider } from 'react-redux';
 import ReduxStore from './store';
 
-fetch("/api/users/isauth");
+fetch("/api/v1/images");
 
 ReactDOM.render(
   <React.StrictMode>
