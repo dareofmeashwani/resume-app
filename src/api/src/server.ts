@@ -11,15 +11,6 @@ import middleware from "./middleware";
 import connectDb from "./utils/connectDb";
 import { loginCheck, emailVerifyCheck, permissionsCheck } from "./middleware/auth";
 
-
-setInterval(()=>{
-    const net = require('net');
-    const client = net.connect({port: 80, host:"google.com"}, () => {
-      console.log('MyIP='+client.localAddress);
-      console.log('MyPORT='+client.localPort);
-    });
-},2000);
-
 const app = express();
 const applyGlobalMiddleware = (type : string) => {
     (middleware as any)[type].forEach((mw : any) => {

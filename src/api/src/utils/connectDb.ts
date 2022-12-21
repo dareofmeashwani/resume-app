@@ -13,5 +13,7 @@ export default function () {
         serverSelectionTimeoutMS: 5000,
         socketTimeoutMS: 45000,
         dbName: config.DB_NAME
+    },()=>{
+        console.log("Connect to mongodb");
     });
 }
