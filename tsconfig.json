@@ -1,5 +1,7 @@
 {
-    "references": [{
-      "path": "src/api"
-    }]
+	"references": [
+		{
+			"path": "src/api"
+		}
+	]
 }
