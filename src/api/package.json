@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nodemon",
     "start": "node build/server.js",
-    "build": "yarn tsc && yarn copyFiles",
+    "build": "tsc && npm run copyFiles",
     "clean": "rm -rf build && rm -rf node_modules",
     "copyFiles": "cp-cli src/spec build/spec && cp-cli src/download build/download && cp-cli src/images build/images"
   },
