@@ -6,5 +6,5 @@ COPY package*.json ./
 COPY src src
 RUN yarn setup
 RUN yarn build:prod
-EXPOSE 3000
+EXPOSE 3001
 CMD [ "yarn", "start:prod" ]
