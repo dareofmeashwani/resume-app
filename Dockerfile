@@ -6,7 +6,7 @@ COPY package*.json ./
 COPY src ./
 
 RUN yarn setup
-RUN yarn build
+RUN yarn build:prod
 
 EXPOSE 3000
-CMD [ "yarn", "start" ]
+CMD [ "yarn", "start:prod" ]

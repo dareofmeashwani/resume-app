@@ -8,10 +8,12 @@
     "private": true,
     "workspaces": ["src/*"],
     "scripts": {
-      "setup": "yarn --ignore-scripts install --frozen-lockfile --registry https://registry.npmjs.org/ && yarn build",
+      "setup": "yarn --ignore-scripts install --frozen-lockfile --registry https://registry.npmjs.org/",
       "dev": "yarn yarn-wsrun dev",
       "build": "yarn yarn-wsrun build",
+      "build:prod": "yarn build && cp-cli src/ui/build src/api/build/public",
       "start": "yarn yarn-wsrun start",
+      "start:prod": "npm run start --prefix src/api",
       "clean": "rm -rf ./node_modules && rm -rf ./src/{api,ui}/{node_modules,build}",
       "clean:build": "rm -rf ./src/{api,ui}/{build}",
       "yarn-wsrun": "wsrun --concurrency=2 --report --exclude-missing"
@@ -19,7 +21,8 @@
     "dependencies": {
       "yarn": "1.22.19",
       "wsrun": "5.2.4",
-      "concurrently": "^7.5.0"
+      "concurrently": "^7.5.0",
+      "cp-cli": "^2.0.0"
     }
   }
   
