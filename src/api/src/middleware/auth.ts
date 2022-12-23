@@ -32,56 +32,9 @@ export async function permissionsCheck(
 ) {
 	const permissions =
 		((req as any).openapi.schema["x-permissions"] as any) || [];
-	// user permissions need to come from database
-	const userPermissions =
-		res.locals.userData.role === ROLES.ADMIN
-			? [
-					"system.user.read",
-					"system.educations.read",
-					"system.educations.create",
-					"system.educations.update",
-					"system.educations.delete",
-					"system.extraCurriculars.read",
-					"system.extraCurriculars.create",
-					"system.extraCurriculars.update",
-					"system.extraCurriculars.delete",
-					"system.projects.read",
-					"system.projects.create",
-					"system.projects.update",
-					"system.projects.delete",
-					"system.responsibilities.read",
-					"system.responsibilities.create",
-					"system.responsibilities.update",
-					"system.responsibilities.delete",
-					"system.skills.read",
-					"system.skills.create",
-					"system.skills.update",
-					"system.skills.delete",
-					"system.trainings.read",
-					"system.trainings.create",
-					"system.trainings.update",
-					"system.trainings.delete",
-					"system.workExperiences.read",
-					"system.workExperiences.create",
-					"system.workExperiences.update",
-					"system.workExperiences.delete",
-					"system.query.read"
-			  ]
-			: [
-					"system.educations.read",
-					"system.extraCurriculars.read",
-					"system.projects.read",
-					"system.responsibilities.read",
-					"system.skills.read",
-					"system.trainings.read",
-					"system.workExperiences.read"
-			  ];
 	if (
 		permissions &&
-		!permissions.reduce(
-			(acc: boolean, perm: never) => acc && userPermissions.includes(perm),
-			true
-		)
+		!permissions.includes(res.locals.userData.role)
 	) {
 		throwResumeError(HTTP_STATUS.FORBIDDEN, MESSAGES.UNAUTHORIZED, req);
 	}
