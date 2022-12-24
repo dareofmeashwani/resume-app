@@ -927,6 +927,8 @@ paths:
   get:
    summary: downloadable content
    operationId: downloadFile
+   tags:
+    - Downloads
    parameters:
     - $ref: "#/components/parameters/Filename"
    responses:
@@ -958,6 +960,8 @@ paths:
   get:
    summary: image list
    operationId: imageList
+   tags:
+    - Images
    responses:
     "200":
      description: return list of images
@@ -973,6 +977,8 @@ paths:
     - $ref: "#/components/parameters/Filename"
    summary: serve binary image
    operationId: getImage
+   tags:
+    - Images
    responses:
     "200":
      description: return image
