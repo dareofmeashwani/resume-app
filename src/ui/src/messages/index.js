@@ -8,7 +8,9 @@ const messages = {
 	meeting: "Meeting",
 	gallery: "Gallery",
 	downloads: "Downloads",
-	contact: "Contact"
+	contact: "Contact",
+	signIn : "SignIn",
+	signUp: "SignUp",
 };
 
 export default function getText(key) {

@@ -5,16 +5,21 @@ import getText from "../messages";
 const Header = () => {
 	const routeHandler = (oEvent) => {
 		console.log(oEvent);
-        
 	};
-
+	const userInfo = { firstname: "Ashwani", icon: "" };
 	return (
 		<>
 			<AppBar
 				title={getText("title")}
 				settings={[getText("home"), getText("profile"), getText("logout")]}
 				click={routeHandler}
-                userInfo={{firstname: "Ashwani", icon: ""}}
+				userInfo={null}
+				register={(e) => {
+					console.log(e);
+				}}
+				login={(e) => {
+					console.log(e);
+				}}
 				pages={[
 					getText("aboutMe"),
 					getText("meeting"),

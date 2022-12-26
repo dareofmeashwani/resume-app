@@ -1,6 +1,7 @@
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
@@ -13,6 +14,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import EngineeringIcon from "@mui/icons-material/Engineering";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import getText from "../../messages";
 
 const darkTheme = createTheme({
 	palette: {
@@ -28,6 +30,8 @@ function ResponsiveAppBar(props) {
 	const pages = props.pages || [];
 	const settings = props.settings;
 	const clickHandler = props.click;
+	const handleRister = props.register;
+	const handleLogin = props.login;
 	const userInfo = props.userInfo || {};
 	const [anchorElNav, setAnchorElNav] = React.useState(null);
 	const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -55,14 +59,15 @@ function ResponsiveAppBar(props) {
 	return (
 		<ThemeProvider theme={darkTheme}>
 			<AppBar position="static" color="primary">
-				<Container maxWidth="xl">
-					<Toolbar disableGutters>
+				<Container maxWidth="xxl">
+					<Toolbar disableGutters sx={{ width: "100%" }}>
 						<EngineeringIcon sx={{ display: { xs: "none", md: "flex" }, mr: 2 }} />
 						<Typography
 							variant="h6"
 							noWrap
 							component="a"
 							onClick={HandleItemClick}
+							href="#"
 							sx={{
 								mr: 2,
 								display: { xs: "none", md: "flex" },
@@ -120,6 +125,7 @@ function ResponsiveAppBar(props) {
 							noWrap
 							component="a"
 							onClick={HandleItemClick}
+							href="#"
 							sx={{
 								mr: 2,
 								display: { xs: "flex", md: "none" },
@@ -144,38 +150,74 @@ function ResponsiveAppBar(props) {
 								</Button>
 							))}
 						</Box>
-
-						<Box sx={{ flexGrow: 0 }}>
-							<Tooltip title="Open settings">
-								<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-									<Avatar alt={userInfo.firstname} src={userInfo.icon} />
-								</IconButton>
-							</Tooltip>
-							<Menu
-								sx={{ mt: "45px" }}
-								id="menu-appbar"
-								anchorEl={anchorElUser}
-								anchorOrigin={{
-									vertical: "top",
-									horizontal: "right"
-								}}
-								keepMounted
-								transformOrigin={{
-									vertical: "top",
-									horizontal: "right"
-								}}
-								open={Boolean(anchorElUser)}
-								onClose={handleCloseUserMenu}
-							>
-								{settings.map((setting) => (
-									<MenuItem key={setting} onClick={handleCloseUserMenu}>
-										<Typography textAlign="center" onClick={HandleItemClick}>
-											{setting}
-										</Typography>
-									</MenuItem>
-								))}
-							</Menu>
-						</Box>
+						{userInfo && Object.keys(userInfo).length ? (
+							<Box sx={{ flexGrow: 0 }}>
+								<Tooltip title="Open settings">
+									<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+										<Avatar alt={userInfo.firstname} src={userInfo.icon} />
+									</IconButton>
+								</Tooltip>
+								<Menu
+									sx={{ mt: "45px" }}
+									id="menu-appbar"
+									anchorEl={anchorElUser}
+									anchorOrigin={{
+										vertical: "top",
+										horizontal: "right"
+									}}
+									keepMounted
+									transformOrigin={{
+										vertical: "top",
+										horizontal: "right"
+									}}
+									open={Boolean(anchorElUser)}
+									onClose={handleCloseUserMenu}
+								>
+									{settings.map((setting) => (
+										<MenuItem key={setting} onClick={handleCloseUserMenu}>
+											<Typography textAlign="center" onClick={HandleItemClick}>
+												{setting}
+											</Typography>
+										</MenuItem>
+									))}
+								</Menu>
+							</Box>
+						) : (
+							<>
+								<Box mx=".5rem">
+									<Link
+										color="inherit"
+										component="button"
+										underline="none"
+										onClick={handleLogin}
+										sx={{
+											fontFamily: "Roboto",
+											fontWeight: 500,
+											fontSize: "large",
+											color: "inherit",
+										}}
+									>
+										{getText("signIn")}
+									</Link>
+								</Box>
+								<Box mx=".5rem">
+									<Link
+										color="inherit"
+										component="button"
+										underline="none"
+										onClick={handleRister}
+										sx={{
+											fontFamily: "Roboto",
+											fontWeight: 500,
+											fontSize: "large",
+											color: "inherit",
+										}}
+									>
+										{getText("signUp")}
+									</Link>
+								</Box>
+							</>
+						)}
 					</Toolbar>
 				</Container>
 			</AppBar>
