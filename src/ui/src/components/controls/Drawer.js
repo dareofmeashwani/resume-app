@@ -36,7 +36,11 @@ function SwipeableEdgeDrawer(props) {
 	const container =
 		window !== undefined ? () => window().document.body : undefined;
 
-	let [state, setState] = React.useState({ open: false, Content: null , title: ""});
+	let [state, setState] = React.useState({
+		open: false,
+		Content: null,
+		title: ""
+	});
 	const toggleDrawer = (newOpen) => () => {
 		setState({ ...state, open: newOpen });
 	};
@@ -69,10 +73,14 @@ function SwipeableEdgeDrawer(props) {
 				disableSwipeToOpen={true}
 			>
 				<DrawerHeader>
-					<IconButton onClick={toggleDrawer(false)}>
-						<ChevronRightIcon />
+					<IconButton onClick={toggleDrawer(false)} color="inherit">
+						<ChevronRightIcon/>
 					</IconButton>
-					<StyledBox sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+					<StyledBox
+						display="flex"
+						justifyContent="center"
+						alignItems="center"
+					>
 						<div>hello</div>
 					</StyledBox>
 				</DrawerHeader>
@@ -82,7 +90,6 @@ function SwipeableEdgeDrawer(props) {
 						margin: 2,
 						height: "100%",
 						overflow: "auto",
-						color: "inherit"
 					}}
 				>
 					{state.Content && <state.Content />}

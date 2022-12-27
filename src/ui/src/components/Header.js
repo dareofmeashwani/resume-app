@@ -14,30 +14,34 @@ const Header = () => {
 		open: false,
 		content: null
 	});
-	const userInfo = { firstname: "Ashwani", icon: "", name: "Ashwani Kumar Verma" };
+	const userInfo = {
+		firstname: "Ashwani",
+		icon: "",
+		name: "Ashwani Kumar Verma"
+	};
 	return (
 		<>
-			<AppBar
-				title={getText("title")}
-				settings={[getText("home"), getText("profile"), getText("logout")]}
-				click={routeHandler}
-				userInfo={null}
-				register={(e) => {
-					setDrawerState({ open: true, content: SignUp });
-				}}
-				login={(e) => {
-					setDrawerState({ open: true, content: SignIn });
-				}}
-				pages={[
-					getText("aboutMe"),
-					getText("meeting"),
-					getText("gallery"),
-					getText("downloads"),
-					getText("contact")
-				]}
-			/>
-			<SwipeableEdgeDrawer initial={drawerState}/>
-			<HLine />
+				<AppBar
+					title={getText("title")}
+					settings={[getText("home"), getText("profile"), getText("logout")]}
+					click={routeHandler}
+					userInfo={null}
+					register={(e) => {
+						setDrawerState({ open: true, content: SignUp });
+					}}
+					login={(e) => {
+						setDrawerState({ open: true, content: SignIn });
+					}}
+					pages={[
+						getText("aboutMe"),
+						getText("meeting"),
+						getText("gallery"),
+						getText("downloads"),
+						getText("contact")
+					]}
+				/>
+				<SwipeableEdgeDrawer initial={drawerState} />
+				<HLine />
 		</>
 	);
 };
