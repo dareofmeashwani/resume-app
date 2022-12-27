@@ -9,6 +9,7 @@ import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import HLine from "./HLine";
 
 const drawerBleeding = 56;
 
@@ -48,7 +49,8 @@ function SwipeableEdgeDrawer(props) {
 	React.useEffect(() => {
 		setState({
 			open: props.initial.open,
-			Content: props.initial.content
+			Content: props.initial.content,
+			title: props.initial.title
 		});
 	}, [props.initial]);
 	return (
@@ -74,22 +76,18 @@ function SwipeableEdgeDrawer(props) {
 			>
 				<DrawerHeader>
 					<IconButton onClick={toggleDrawer(false)} color="inherit">
-						<ChevronRightIcon/>
+						<ChevronRightIcon />
 					</IconButton>
-					<StyledBox
-						display="flex"
-						justifyContent="center"
-						alignItems="center"
-					>
-						<div>hello</div>
+					<StyledBox display="flex" justifyContent="center" alignItems="center">
+						<div>{state.title}</div>
 					</StyledBox>
 				</DrawerHeader>
-				<Divider />
+				<HLine />
 				<StyledBox
 					sx={{
 						margin: 2,
 						height: "100%",
-						overflow: "auto",
+						overflow: "auto"
 					}}
 				>
 					{state.Content && <state.Content />}

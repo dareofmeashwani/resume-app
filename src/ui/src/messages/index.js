@@ -11,6 +11,8 @@ const messages = {
 	contact: "Contact",
 	signIn : "SignIn",
 	signUp: "SignUp",
+	registerTitle: "SignUp Form",
+	loginTitle: "SignIn"
 };
 
 export default function getText(key) {
