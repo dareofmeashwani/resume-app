@@ -25,12 +25,41 @@ const darkTheme = createTheme({
 	}
 });
 
+function stringToColor(string) {
+	let hash = 0;
+	let i;
+  
+	/* eslint-disable no-bitwise */
+	for (i = 0; i < string.length; i += 1) {
+	  hash = string.charCodeAt(i) + ((hash << 5) - hash);
+	}
+  
+	let color = '#';
+  
+	for (i = 0; i < 3; i += 1) {
+	  const value = (hash >> (i * 8)) & 0xff;
+	  color += `00${value.toString(16)}`.slice(-2);
+	}
+	/* eslint-enable no-bitwise */
+  
+	return color;
+  }
+
+function stringAvatar(name) {
+	return {
+	  sx: {
+		bgcolor: stringToColor(name),
+	  },
+	  children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
+	};
+  }
+
 function ResponsiveAppBar(props) {
 	const title = props.title;
 	const pages = props.pages || [];
 	const settings = props.settings;
 	const clickHandler = props.click;
-	const handleRister = props.register;
+	const handleRegister = props.register;
 	const handleLogin = props.login;
 	const userInfo = props.userInfo || {};
 	const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -154,7 +183,7 @@ function ResponsiveAppBar(props) {
 							<Box sx={{ flexGrow: 0 }}>
 								<Tooltip title="Open settings">
 									<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-										<Avatar alt={userInfo.firstname} src={userInfo.icon} />
+										<Avatar {...stringAvatar(userInfo.name)} />
 									</IconButton>
 								</Tooltip>
 								<Menu
@@ -205,7 +234,7 @@ function ResponsiveAppBar(props) {
 										color="inherit"
 										component="button"
 										underline="none"
-										onClick={handleRister}
+										onClick={handleRegister}
 										sx={{
 											fontFamily: "Roboto",
 											fontWeight: 500,

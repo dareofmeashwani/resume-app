@@ -1,12 +1,20 @@
 import React from "react";
 import AppBar from "./controls/AppBar";
 import HLine from "./controls/HLine";
+import SignIn from "./controls/SignInForm";
+import SignUp from "./controls/SignUpForm";
 import getText from "../messages";
+import SwipeableEdgeDrawer from "./controls/Drawer";
+
 const Header = () => {
 	const routeHandler = (oEvent) => {
 		console.log(oEvent);
 	};
-	const userInfo = { firstname: "Ashwani", icon: "" };
+	const [drawerState, setDrawerState] = React.useState({
+		open: false,
+		content: null
+	});
+	const userInfo = { firstname: "Ashwani", icon: "", name: "Ashwani Kumar Verma" };
 	return (
 		<>
 			<AppBar
@@ -15,10 +23,10 @@ const Header = () => {
 				click={routeHandler}
 				userInfo={null}
 				register={(e) => {
-					console.log(e);
+					setDrawerState({ open: true, content: SignUp });
 				}}
 				login={(e) => {
-					console.log(e);
+					setDrawerState({ open: true, content: SignIn });
 				}}
 				pages={[
 					getText("aboutMe"),
@@ -28,6 +36,7 @@ const Header = () => {
 					getText("contact")
 				]}
 			/>
+			<SwipeableEdgeDrawer initial={drawerState}/>
 			<HLine />
 		</>
 	);

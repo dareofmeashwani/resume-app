@@ -6,6 +6,7 @@ import Home from "./components/home";
 import Header from "./components/Header";
 
 const app = () => {
+	console.log("app");
 	return (
 		<BrowserRouter>
 			<MainLayout>

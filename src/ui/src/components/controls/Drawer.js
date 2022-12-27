@@ -4,11 +4,11 @@ import { Global } from "@emotion/react";
 import { styled } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { grey } from "@mui/material/colors";
-import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import Skeleton from "@mui/material/Skeleton";
-import Typography from "@mui/material/Typography";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 const drawerBleeding = 56;
 
@@ -22,28 +22,31 @@ const StyledBox = styled(Box)(({ theme }) => ({
 	backgroundColor: theme.palette.mode === "light" ? "#fff" : grey[800]
 }));
 
-const Puller = styled(Box)(({ theme }) => ({
-	width: 30,
-	height: 6,
-	backgroundColor: theme.palette.mode === "light" ? grey[300] : grey[900],
-	borderRadius: 3,
-	position: "absolute",
-	top: 8,
-	left: "calc(50% - 15px)"
+const DrawerHeader = styled("div")(({ theme }) => ({
+	display: "flex",
+	alignItems: "center",
+	padding: theme.spacing(0, 1),
+	...theme.mixins.toolbar,
+	justifyContent: "flex-start",
+	color: "inherit"
 }));
 
 function SwipeableEdgeDrawer(props) {
 	const { window } = props;
-	const [open, setOpen] = React.useState(false);
-
-	const toggleDrawer = (newOpen) => () => {
-		setOpen(newOpen);
-	};
-
-	// This is used only for the example
 	const container =
 		window !== undefined ? () => window().document.body : undefined;
 
+	let [state, setState] = React.useState({ open: false, Content: null , title: ""});
+	const toggleDrawer = (newOpen) => () => {
+		setState({ ...state, open: newOpen });
+	};
+
+	React.useEffect(() => {
+		setState({
+			open: props.initial.open,
+			Content: props.initial.content
+		});
+	}, [props.initial]);
 	return (
 		<Root>
 			<CssBaseline />
@@ -56,44 +59,33 @@ function SwipeableEdgeDrawer(props) {
 					}
 				}}
 			/>
-			<Box sx={{ textAlign: "center", pt: 1 }}>
-				<Button onClick={toggleDrawer(true)}>Open</Button>
-			</Box>
 			<SwipeableDrawer
 				container={container}
 				anchor="right"
-				open={open}
+				open={state.open}
 				onClose={toggleDrawer(false)}
 				onOpen={toggleDrawer(true)}
 				swipeAreaWidth={drawerBleeding}
-				disableSwipeToOpen={false}
-				ModalProps={{
-					keepMounted: true
-				}}
+				disableSwipeToOpen={true}
 			>
+				<DrawerHeader>
+					<IconButton onClick={toggleDrawer(false)}>
+						<ChevronRightIcon />
+					</IconButton>
+					<StyledBox sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+						<div>hello</div>
+					</StyledBox>
+				</DrawerHeader>
+				<Divider />
 				<StyledBox
 					sx={{
-						position: "absolute",
-						top: -drawerBleeding,
-						borderTopLeftRadius: 8,
-						borderTopRightRadius: 8,
-						visibility: "visible",
-						right: 0,
-						left: 0
-					}}
-				>
-					<Puller />
-					<Typography sx={{ p: 2, color: "text.secondary" }}>51 results</Typography>
-				</StyledBox>
-				<StyledBox
-					sx={{
-						px: 2,
-						pb: 2,
+						margin: 2,
 						height: "100%",
-						overflow: "auto"
+						overflow: "auto",
+						color: "inherit"
 					}}
 				>
-					<Skeleton variant="rectangular" height="100%" />
+					{state.Content && <state.Content />}
 				</StyledBox>
 			</SwipeableDrawer>
 		</Root>
