@@ -6,7 +6,6 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { grey } from "@mui/material/colors";
 import Box from "@mui/material/Box";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import HLine from "./HLine";
@@ -36,21 +35,26 @@ function SwipeableEdgeDrawer(props) {
 	const { window } = props;
 	const container =
 		window !== undefined ? () => window().document.body : undefined;
-
 	let [state, setState] = React.useState({
 		open: false,
 		Content: null,
-		title: ""
+		title: "",
+		contentProps: {}
 	});
-	const toggleDrawer = (newOpen) => () => {
-		setState({ ...state, open: newOpen });
+	const toggleDrawer = () => () => {
+		setState({
+			open: false,
+			Content: null,
+			title: "",
+			contentProps: {}
+		});
 	};
-
 	React.useEffect(() => {
 		setState({
 			open: props.initial.open,
 			Content: props.initial.content,
-			title: props.initial.title
+			title: props.initial.title,
+			contentProps: props.initial.contentProps
 		});
 	}, [props.initial]);
 	return (
@@ -75,12 +79,14 @@ function SwipeableEdgeDrawer(props) {
 				disableSwipeToOpen={true}
 			>
 				<DrawerHeader>
-					<IconButton onClick={toggleDrawer(false)} color="inherit">
+					<IconButton onClick={toggleDrawer(false)}>
 						<ChevronRightIcon />
 					</IconButton>
-					<StyledBox display="flex" justifyContent="center" alignItems="center">
-						<div>{state.title}</div>
-					</StyledBox>
+					{state.title ? (
+						<Box display="flex" justifyContent="center" alignItems="center">
+							{state.title}
+						</Box>
+					) : null}
 				</DrawerHeader>
 				<HLine />
 				<StyledBox
@@ -90,7 +96,7 @@ function SwipeableEdgeDrawer(props) {
 						overflow: "auto"
 					}}
 				>
-					{state.Content && <state.Content />}
+					{state.Content && <state.Content {...state.contentProps} />}
 				</StyledBox>
 			</SwipeableDrawer>
 		</Root>

@@ -1,10 +1,10 @@
 import React from "react";
 import AppBar from "./controls/AppBar";
 import HLine from "./controls/HLine";
-import SignIn from "./controls/SignInForm";
-import SignUp from "./controls/SignUpForm";
+import SignWorkflow from "./controls/SignWorkflow";
 import getText from "../messages";
 import SwipeableEdgeDrawer from "./controls/Drawer";
+import * as constants from "../utils/constants";
 
 const Header = () => {
 	const routeHandler = (oEvent) => {
@@ -12,7 +12,7 @@ const Header = () => {
 	};
 	const [drawerState, setDrawerState] = React.useState({
 		open: false,
-		content: null,
+		content: SignWorkflow,
 		title: ""
 	});
 	const userInfo = {
@@ -30,15 +30,19 @@ const Header = () => {
 				register={(e) => {
 					setDrawerState({
 						open: true,
-						content: SignUp,
-						title: getText("registerTitle")
+						content: SignWorkflow,
+						contentProps: {
+							type: constants.SIGNUP
+						}
 					});
 				}}
 				login={(e) => {
 					setDrawerState({
 						open: true,
-						content: SignIn,
-						title: getText("loginTitle")
+						content: SignWorkflow,
+						contentProps: {
+							type: constants.SIGNIN
+						}
 					});
 				}}
 				pages={[

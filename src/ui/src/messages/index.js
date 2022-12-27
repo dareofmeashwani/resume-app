@@ -9,10 +9,12 @@ const messages = {
 	gallery: "Gallery",
 	downloads: "Downloads",
 	contact: "Contact",
-	signIn : "SignIn",
-	signUp: "SignUp",
-	registerTitle: "SignUp Form",
-	loginTitle: "SignIn"
+	signIn: "Sign In",
+	signUp: "Sign Up",
+	dontHaveAccount: "Don't have an account? Sign Up",
+	forgetPassword: "Forgot password?",
+	password: "Password",
+	emailAddress: "Email Address"
 };
 
 export default function getText(key) {

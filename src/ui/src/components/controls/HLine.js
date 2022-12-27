@@ -1,7 +1,7 @@
 import React from "react";
 
-const Header = () => {
+const HLine = () => {
 	return <div className="horizontalLine"></div>;
 };
 
-export default Header;
+export default HLine;
