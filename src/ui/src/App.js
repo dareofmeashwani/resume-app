@@ -22,6 +22,7 @@ const app = () => {
 				<MainLayout>
 					<Header />
 					<Routes>
+						<Route path="/" element={<Home />} />
 						<Route path="/home" element={<Home />} />
 						<Route path="/aboutMe" element={<Home />} />
 						<Route path="/meeting" element={<Home />} />
