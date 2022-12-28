@@ -91,7 +91,6 @@ function SwipeableEdgeDrawer(props) {
 				<HLine />
 				<StyledBox
 					sx={{
-						margin: 2,
 						height: "100%",
 						overflow: "auto"
 					}}

@@ -6,12 +6,13 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 import Copyright from "./Copyright";
 import NoRefLink from "./NoRefLink";
 import * as constants from "../../utils/constants";
 import getText from "../../messages";
+import GenderRadio from "./GenderRadio";
 
 export default function SignIn(props) {
 	const handleSubmit = (event) => {
@@ -31,7 +32,8 @@ export default function SignIn(props) {
 			<>
 				<Box
 					sx={{
-						marginTop: 8,
+						marginLeft: "4rem",
+						marginRight: "4rem",
 						display: "flex",
 						flexDirection: "column",
 						alignItems: "center"
@@ -41,39 +43,30 @@ export default function SignIn(props) {
 						<LockOutlinedIcon />
 					</Avatar>
 					<Typography component="h1" variant="h5">
-						Sign up
+						{getText("signUp")}
 					</Typography>
-					<Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+					<Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
 						<Grid container spacing={2}>
-							<Grid item xs={12} sm={6}>
-								<TextField
-									autoComplete="given-name"
-									name="firstName"
-									required
-									fullWidth
-									id="firstName"
-									label="First Name"
-									autoFocus
-								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
+							<Grid item xs={12}>
 								<TextField
 									required
 									fullWidth
-									id="lastName"
-									label="Last Name"
-									name="lastName"
-									autoComplete="family-name"
+									id="email"
+									type="email"
+									label="Email Address"
+									name="email"
+									autoComplete="email"
 								/>
 							</Grid>
 							<Grid item xs={12}>
 								<TextField
 									required
 									fullWidth
-									id="email"
-									label="Email Address"
-									name="email"
-									autoComplete="email"
+									id="mobile"
+									type="tel"
+									label="Mobile"
+									name="mobile"
+									autoComplete="mobile"
 								/>
 							</Grid>
 							<Grid item xs={12}>
@@ -87,6 +80,47 @@ export default function SignIn(props) {
 									autoComplete="new-password"
 								/>
 							</Grid>
+							<Grid item xs={12} sm={6}>
+								<TextField
+									autoComplete="given-name"
+									name="firstName"
+									required
+									fullWidth
+									id="firstName"
+									label="First Name"
+									autoFocus
+								/>
+							</Grid>
+							<Grid item xs={12} sm={6}>
+								<TextField
+									fullWidth
+									id="lastName"
+									label="Last Name"
+									name="lastName"
+									autoComplete="family-name"
+								/>
+							</Grid>
+							<Grid item xs={12}>
+								<TextField
+									required
+									fullWidth
+									id="date"
+									label="Birthday"
+									type="date"
+									InputLabelProps={{
+										shrink: true
+									}}
+								/>
+							</Grid>
+							<Grid item xs={12}>
+								<GenderRadio
+									required
+									fullWidth
+									id="gender"
+									name="gender"
+									autoComplete="gender"
+								/>
+							</Grid>
 							<Grid item xs={12}>
 								<FormControlLabel
 									control={<Checkbox value="allowExtraEmails" color="primary" />}
@@ -94,21 +128,21 @@ export default function SignIn(props) {
 								/>
 							</Grid>
 						</Grid>
-						<Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-							{getText("signUp")}
-						</Button>
-						<Grid container justifyContent="flex-end">
+						<Grid container justifyContent="space-between" sx={{ mt: 3, mb: 2 }}>
+							<Button type="submit" variant="contained">
+								{getText("signUp")}
+							</Button>
 							<Grid item>
 								<NoRefLink
-										variant="body2"
-										text={"Already have an account? Sign in"}
-										onClick={() => setType(constants.SIGNIN)}
+									variant="body2"
+									text={"Already have an account? Sign in"}
+									onClick={() => setType(constants.SIGNIN)}
 								/>
 							</Grid>
 						</Grid>
 					</Box>
 				</Box>
-				<Copyright sx={{ mt: 5 }} />
+				<Copyright sx={{ mt: 0 }} />
 			</>
 		);
 	}
@@ -130,7 +164,7 @@ export default function SignIn(props) {
 						<Typography component="h1" variant="h5">
 							{getText("signIn")}
 						</Typography>
-						<Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+						<Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
 							<TextField
 								margin="normal"
 								required

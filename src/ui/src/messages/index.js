@@ -14,7 +14,8 @@ const messages = {
 	dontHaveAccount: "Don't have an account? Sign Up",
 	forgetPassword: "Forgot password?",
 	password: "Password",
-	emailAddress: "Email Address"
+	emailAddress: "Email Address",
+	gender: "Gender"
 };
 
 export default function getText(key) {
