@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "b3ca21bc-29b6-4605-8bfc-9e541c64c533",
+		"_postman_id": "d26f117c-a82c-494f-84a1-c81548d97e9a",
 		"name": "Resume-api",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5338025"
 	},
 	"item": [
 		{
@@ -18,7 +19,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"tert@gmail.com\",\r\n    \"password\": \"password\",\r\n    \"firstname\": \"Ashwani\",\r\n    \"gender\": \"Male\",\r\n    \"lastname\": \"Verma\",\r\n    \"dob\": \"2022-11-18T16:05:38.099Z\",\r\n    \"mobile\": \"8791890959\"\r\n}",
+							"raw": "{\r\n    \"email\": \"ashwaniverma.verma@rediff.com\",\r\n    \"password\": \"password\",\r\n    \"firstname\": \"Ashwani\",\r\n    \"gender\": \"Male\",\r\n    \"lastname\": \"Verma\",\r\n    \"dob\": \"2022-11-18T16:05:38.099Z\",\r\n    \"mobile\": \"8791890959\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -45,7 +46,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"connect2ashwaniverma@gmail.com\",\r\n    \"password\": \"ashwani\"\r\n}",
+							"raw": "{\r\n    \"email\": \"ashwaniverma.verma@rediff.com\",\r\n    \"password\": \"password\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -107,11 +108,8 @@
 			"item": [
 				{
 					"name": "Create educations",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -541,7 +539,7 @@
 			"name": "Responsibilities",
 			"item": [
 				{
-					"name": "Create project",
+					"name": "Create Responsibility",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -567,7 +565,7 @@
 					"response": []
 				},
 				{
-					"name": "Get All project",
+					"name": "Get All Responsibility",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -596,7 +594,7 @@
 					"response": []
 				},
 				{
-					"name": "Get project",
+					"name": "Get Responsibility",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -626,7 +624,7 @@
 					"response": []
 				},
 				{
-					"name": "Patch project",
+					"name": "Patch Responsibility",
 					"request": {
 						"method": "PATCH",
 						"header": [],
@@ -653,7 +651,7 @@
 					"response": []
 				},
 				{
-					"name": "Delete project",
+					"name": "Delete Responsibility",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -829,7 +827,7 @@
 			"name": "Trainings",
 			"item": [
 				{
-					"name": "Create skill",
+					"name": "Create training",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -855,7 +853,7 @@
 					"response": []
 				},
 				{
-					"name": "Get All skill",
+					"name": "Get All trainings",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -884,7 +882,7 @@
 					"response": []
 				},
 				{
-					"name": "Get skill",
+					"name": "Get training",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -914,7 +912,7 @@
 					"response": []
 				},
 				{
-					"name": "Patch skill",
+					"name": "Patch training",
 					"request": {
 						"method": "PATCH",
 						"header": [],
@@ -941,7 +939,7 @@
 					"response": []
 				},
 				{
-					"name": "Delete skill",
+					"name": "Delete training",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -1114,6 +1112,372 @@
 			]
 		},
 		{
+			"name": "Query",
+			"item": [
+				{
+					"name": "create query",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Ram\",\r\n  \"subject\": \"issue\",\r\n  \"description\": \"facing issue\",\r\n  \"email\": \"ashwaniverma.verma@rediff.com\",\r\n  \"mobile\": \"7477766111\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/query",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"query"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list queries",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/query",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"query"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Email",
+			"item": [
+				{
+					"name": "Verify Email",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNvbm5lY3QyYXNod2FuaXZlcm1hQGdtYWlsLmNvbSIsInRpbWVzdGFtcCI6IjIwMjItMTItMDdUMTY6MTg6MzMuNDk0WiIsImlhdCI6MTY3MDQyOTkxMywiZXhwIjoxNjcwNTE2MzEzfQ.QOKbE9ErRK8KOBP_JvmVc-tW-RsTokcO2ZlhfNQUVHY\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/email/verify",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"email",
+								"verify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Resend verification email",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"dgfbhbjbhbjbjbjbjhbjhbjgcc\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/email/resendVerification",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"email",
+								"resendVerification"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Meeting",
+			"item": [
+				{
+					"name": "System Meeting Status",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/meetingStatus?timestamp=2022-12-20T13%3A13%3A27.814Z",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"meetingStatus"
+							],
+							"query": [
+								{
+									"key": "timestamp",
+									"value": "2022-12-20T13%3A13%3A27.814Z"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Meeting",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"new meeting\",\r\n  \"description\": \"string\",\r\n  \"start\": \"2022-12-20T17:11:32.773Z\",\r\n  \"end\": \"2022-12-20T18:11:32.773Z\",\r\n  \"members\": [\r\n    \"ashwaniverma.verma@rediff.com\"\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/meetings",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"meetings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All meeting",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/meetings",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"meetings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get meeting",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/meetings/639e0e5166ecd538a56a25e8",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"meetings",
+								"639e0e5166ecd538a56a25e8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch meeting",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"hello meeting1234567jggguggugjdxfcgvbn m\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/meetings/639f030f7b45a9a25f746fda",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"meetings",
+								"639f030f7b45a9a25f746fda"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete meeting",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/meetings/639f030f7b45a9a25f746fda",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"meetings",
+								"639f030f7b45a9a25f746fda"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Resend Meeting Invite",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/meetings/639e0e5166ecd538a56a25e8/resendInvite",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"meetings",
+								"639e0e5166ecd538a56a25e8",
+								"resendInvite"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Images",
+			"item": [
+				{
+					"name": "Images List",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/images",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"images"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Image",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/images/test.jpg",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"images",
+								"test.jpg"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Healthz",
 			"request": {
 				"method": "GET",
@@ -1125,6 +1489,53 @@
 					],
 					"path": [
 						"healthz"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Downloads",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{apiUrl}}/download/test.txt",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"download",
+						"test.txt"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin list",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{apiUrl}}/admins",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"admins"
 					]
 				}
 			},
