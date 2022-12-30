@@ -12,10 +12,14 @@ const messages = {
 	signIn: "Sign In",
 	signUp: "Sign Up",
 	dontHaveAccount: "Don't have an account? Sign Up",
-	forgetPassword: "Forgot password?",
+	haveAccountSignIn: "Already have an account? Sign in",
+	forgetYourPassword: "Forgot password?",
+	forgetPassword: "Forgot Password",
+	sendResetLink: "Send Reset Link",
 	password: "Password",
 	emailAddress: "Email Address",
-	gender: "Gender"
+	gender: "Gender",
+	passwordResetconfirmation: " An email with a confirmation link has been sent your email address."
 };
 
 export default function getText(key) {

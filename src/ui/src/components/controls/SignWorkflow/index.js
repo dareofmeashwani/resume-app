@@ -4,15 +4,18 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
+import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import Typography from "@mui/material/Typography";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import Copyright from "./Copyright";
-import NoRefLink from "./NoRefLink";
-import * as constants from "../../utils/constants";
-import getText from "../../messages";
-import GenderRadio from "./GenderRadio";
+import Copyright from "../Copyright";
+import NoRefLink from "../NoRefLink";
+import * as constants from "../../../utils/constants";
+import getText from "../../../messages";
+import GenderRadio from "../GenderRadio";
+import Confirmation from "../Confirmation";
+import ForgetPassword from "./ForgetPassword";
 
 export default function SignIn(props) {
 	const handleSubmit = (event) => {
@@ -23,10 +26,34 @@ export default function SignIn(props) {
 			password: data.get("password")
 		});
 	};
+    const handleReset = function(event){
+        event.preventDefault();
+        setType(constants.CONFIRMATION);
+		setMessage("hello o");
+    }
 	let [type, setType] = React.useState(constants.SIGNIN);
+	let [message, setMessage] = React.useState("");
 	React.useEffect(() => {
 		setType(props.type);
 	}, [props.type]);
+	if (type === constants.CONFIRMATION) {
+		return (
+			<>
+				<Confirmation message={message} />
+				<Copyright sx={{ mt: 8, mb: 4 }} />
+			</>
+		);
+	}
+	if (type === constants.FORGET_PASSWORD) {
+		return (
+			<>
+				<Box sx={{ margin: "4rem" }}>
+					<ForgetPassword setType={setType} handleReset={handleReset} />
+					<Copyright sx={{ mt: 8, mb: 4 }} />
+				</Box>
+			</>
+		);
+	}
 	if (type === constants.SIGNUP) {
 		return (
 			<>
@@ -40,7 +67,7 @@ export default function SignIn(props) {
 					}}
 				>
 					<Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-						<LockOutlinedIcon />
+						<AppRegistrationIcon />
 					</Avatar>
 					<Typography component="h1" variant="h5">
 						{getText("signUp")}
@@ -56,6 +83,7 @@ export default function SignIn(props) {
 									label="Email Address"
 									name="email"
 									autoComplete="email"
+									autoFocus
 								/>
 							</Grid>
 							<Grid item xs={12}>
@@ -88,7 +116,6 @@ export default function SignIn(props) {
 									fullWidth
 									id="firstName"
 									label="First Name"
-									autoFocus
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
@@ -135,7 +162,7 @@ export default function SignIn(props) {
 							<Grid item>
 								<NoRefLink
 									variant="body2"
-									text={"Already have an account? Sign in"}
+									text={getText("haveAccountSignIn")}
 									onClick={() => setType(constants.SIGNIN)}
 								/>
 							</Grid>
@@ -159,7 +186,7 @@ export default function SignIn(props) {
 						}}
 					>
 						<Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-							<LockOutlinedIcon />
+							<LockOpenIcon />
 						</Avatar>
 						<Typography component="h1" variant="h5">
 							{getText("signIn")}
@@ -198,7 +225,7 @@ export default function SignIn(props) {
 								<Grid item xs>
 									<NoRefLink
 										variant="body2"
-										text={getText("forgetPassword")}
+										text={getText("forgetYourPassword")}
 										onClick={() => setType(constants.FORGET_PASSWORD)}
 									/>
 								</Grid>
