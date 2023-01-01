@@ -16,6 +16,7 @@ export default function ForgetPassword(props) {
 	return (
 		<Box
 			sx={{
+				margin: "4rem",
 				display: "flex",
 				flexDirection: "column",
 				alignItems: "center"
