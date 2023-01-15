@@ -90,8 +90,9 @@ export const isAuthUser = () => {
 			const response = await axios.get(`/api/v1/user/isAuth`);
 			dispatch(users.authUser(response.data));
 		} catch (error) {
-			if (error.status === HTTP_STATUS.UNAUTHORIZED) {
+			if (error.response.status === HTTP_STATUS.UNAUTHORIZED) {
 				dispatch(users.signOut());
+				removeCookieToken();
 			} else {
 				dispatch(
 					users.errorGlobal({
