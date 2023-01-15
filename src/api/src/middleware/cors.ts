@@ -1,12 +1,15 @@
 import cors from 'cors';
+import config from '../config';
 export default cors({
-    origin: "http://localhost:3000",
+    origin: config.DOMAIN_ADDRESS,
     methods: [
         "POST",
         "PUT",
         "GET",
         "OPTIONS",
-        "HEAD"
+        "HEAD",
+        "PATCH",
+        "DELETE"
     ],
     credentials: true
 })
