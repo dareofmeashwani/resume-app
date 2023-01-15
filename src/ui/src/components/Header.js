@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import AppBar from "./controls/AppBar";
+import { redirect } from "react-router-dom";
 import HLine from "./controls/HLine";
 import SignWorkflow from "./controls/SignWorkflow";
 import getText from "../messages";
 import SwipeableEdgeDrawer from "./controls/Drawer";
 import * as constants from "../utils/constants";
-import { signOut, isAuthUser } from "../store/actions/user_actions";
+import { signOut } from "../store/actions/user_actions";
 import { useDispatch, useSelector } from "react-redux";
 
 const Header = (props) => {
@@ -38,8 +39,9 @@ const Header = (props) => {
 			case "logout":
 				dispatch(signOut());
 				break;
+			case "meeting":
 			case "contact":
-				dispatch(isAuthUser());
+				redirect("/" + key);
 				break;
 			default:
 				console.log("Home");

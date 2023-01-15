@@ -19,7 +19,7 @@ export default function errorResponder(
 	}
 	res.header("Content-Type", "application/json");
 	if (!(error instanceof ResumeError)) {
-		console.log((error as Error).stack);
+		console.trace((error as Error).stack);
 		error = new ResumeError(
 			HTTP_STATUS.INTERNAL_SERVER_ERROR,
 			ERROR_MESSAGES.GENERIC_ERROR,

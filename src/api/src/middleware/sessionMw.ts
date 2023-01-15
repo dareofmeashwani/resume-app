@@ -8,8 +8,7 @@ const connectMdbSessStore = connectMdbSess.default(session);
 const sessionstore = new connectMdbSessStore({
 	uri: mongoUri,
 	collection: SESSION_COLLECTION,
-	databaseName: config.DB_NAME,
-	expires: Number(config.SESSION_EXPIRY)
+	databaseName: config.DB_NAME
 });
 export const sessionMw = session({
 	secret: config.PRIVATE_KEY,
