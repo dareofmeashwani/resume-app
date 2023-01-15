@@ -17,7 +17,7 @@ export const sessionMw = session({
 	name: SESSION_ID,
 	cookie: {
 		maxAge: Number(config.SESSION_EXPIRY),
-		secure: process.env.ENV === ENV.prod,
+		secure: false,//process.env.ENV === ENV.prod,
 		sameSite: true,
 		httpOnly: false
 	},
