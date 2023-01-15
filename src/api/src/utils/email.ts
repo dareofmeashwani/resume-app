@@ -96,6 +96,51 @@ export const sendVerificationEmail = async (
 	}
 };
 
+export const sendForgetPasswordEmail = async (
+	userInfo: any,
+	token: string
+) => {
+	try {
+		let mailGenerator = new Mailgen({
+			theme: THEME,
+			product: {
+				name: config.DOMAIN_NAME,
+				link: `${config.DOMAIN_ADDRESS}`
+			}
+		});
+		const email = {
+			body: {
+				name: userInfo.firstname + " " + userInfo.lastname,
+				action: {
+					instructions: "To reset your account password, please click here:",
+
+					button: {
+						color: "#1a73e8",
+						text: "Reset your account",
+						link: `${config.DOMAIN_ADDRESS}/user/forgetPassword?t=${token}`
+					}
+				},
+				outro:
+					"Need help, or have questions? Just reply to this email, we'd love to help."
+			}
+		};
+
+		let emailBody = mailGenerator.generate(email);
+		let message = {
+			from: config.EMAIL,
+			to: userInfo.email,
+			subject: `Activate your ${config.DOMAIN_NAME} account`,
+			html: emailBody
+		};
+
+		await transporter.sendMail(message);
+		return true;
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
+};
+
 export const sendQueryNotificationToAdmin = async (query: any) => {
 	const admins = await User.find({ role: ROLES.ADMIN });
 	if (!admins) {

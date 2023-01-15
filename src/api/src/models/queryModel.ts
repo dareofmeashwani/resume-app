@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import mongooseAggregatePaginate from 'mongoose-aggregate-paginate-v2';
 import validator from 'validator';
-import { HTTP_STATUS, MESSAGES } from '../utils/constants';
+import { HTTP_STATUS, ERROR_MESSAGES } from '../utils/constants';
 import { throwResumeError } from '../utils/resumeError';
 const QuerySchema = new mongoose.Schema({
     name: {
@@ -29,7 +29,7 @@ const QuerySchema = new mongoose.Schema({
         maxLength: 200,
         validate(value : string) {
             if (!validator.isEmail(value)) {
-                throwResumeError(HTTP_STATUS.BAD_REQUEST,MESSAGES.INVALID_EMAIL);
+                throwResumeError(HTTP_STATUS.BAD_REQUEST,ERROR_MESSAGES.INVALID_EMAIL);
             }
         }
     },
@@ -39,7 +39,7 @@ const QuerySchema = new mongoose.Schema({
         required: true,
         validate(value : string) {
             if (!validator.isMobilePhone(value)) {
-                throwResumeError(HTTP_STATUS.BAD_REQUEST,MESSAGES.INVALID_MOBILE);
+                throwResumeError(HTTP_STATUS.BAD_REQUEST,ERROR_MESSAGES.INVALID_MOBILE);
             }
         }
     },

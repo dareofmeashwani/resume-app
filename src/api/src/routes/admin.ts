@@ -1,5 +1,5 @@
 import * as express from "express";
-import { HTTP_STATUS, MESSAGES, ROLES } from "../utils/constants";
+import { HTTP_STATUS, ERROR_MESSAGES, ROLES } from "../utils/constants";
 import { User } from "../models/userModel";
 import { throwResumeError } from "../utils/resumeError";
 import { filterProps } from "../utils/helpers";
@@ -39,7 +39,7 @@ export async function getAdminList(req: express.Request, res: express.Response) 
 	} catch (error) {
 		throwResumeError(
 			HTTP_STATUS.SERVICE_UNAVAILABLE,
-			MESSAGES.DB_CONNECTIVITY_ERROR,
+			ERROR_MESSAGES.DB_CONNECTIVITY_ERROR,
 			req,
 			error
 		);

@@ -9,10 +9,24 @@ import Typography from "@mui/material/Typography";
 import NoRefLink from "../NoRefLink";
 import * as constants from "../../../utils/constants";
 import getText from "../../../messages";
+import { errorHelper } from "../../../utils";
+import * as Yup from "yup";
+import { useFormik } from "formik";
 
 export default function ForgetPassword(props) {
 	const setType = props.setType;
 	const handleReset = props.handleReset;
+	const formik = useFormik({
+		initialValues: { email: ""},
+		validationSchema: Yup.object({
+			email: Yup.string()
+				.required(getText("inputEmailRequired"))
+				.email(getText("invalidEmailInputWarning")),
+		}),
+		onSubmit: (values) => {
+			handleReset(values);
+		}
+	});
 	return (
 		<Box
 			sx={{
@@ -28,7 +42,7 @@ export default function ForgetPassword(props) {
 			<Typography component="h1" variant="h5">
 				{getText("forgetPassword")}
 			</Typography>
-			<Box component="form" onSubmit={handleReset} sx={{ mt: 1 }}>
+			<Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 1 }}>
 				<TextField
 					margin="normal"
 					required
@@ -39,6 +53,8 @@ export default function ForgetPassword(props) {
 					autoComplete="email"
 					type="email"
 					autoFocus
+					{...formik.getFieldProps("email")}
+					{...errorHelper(formik, "email")}
 				/>
 				<Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
 					{getText("sendResetLink")}

@@ -1,36 +1,65 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AppBar from "./controls/AppBar";
 import HLine from "./controls/HLine";
 import SignWorkflow from "./controls/SignWorkflow";
 import getText from "../messages";
 import SwipeableEdgeDrawer from "./controls/Drawer";
 import * as constants from "../utils/constants";
+import { signOut, isAuthUser } from "../store/actions/user_actions";
+import { useDispatch, useSelector } from "react-redux";
 
-const Header = () => {
-	const routeHandler = (oEvent) => {
-		console.log(oEvent);
-	};
+const Header = (props) => {
 	const [drawerState, setDrawerState] = React.useState({
 		open: false,
-		content: SignWorkflow,
-		title: ""
+		content: SignWorkflow
 	});
-	const userInfo = {
-		firstname: "Ashwani",
-		icon: "",
-		name: "Ashwani Kumar Verma"
+	const [userInfo, setUserInfo] = React.useState(null);
+	const dispatch = useDispatch();
+	const user = useSelector((state) => {
+		return state.userData.user;
+	});
+	const pages = [
+		{ id: "aboutme", text: getText("aboutMe") },
+		userInfo ? { id: "meeting", text: getText("meeting") } : null,
+		{ id: "gallery", text: getText("gallery") },
+		{ id: "downloads", text: getText("downloads") },
+		{ id: "contact", text: getText("contact") }
+	];
+	useEffect(() => {
+		setUserInfo(user);
+		setDrawerState({
+			...drawerState,
+			open: false
+		});
+	}, [user]);
+	const routeHandler = (oEvent) => {
+		const key = oEvent.target.getAttribute("data-key");
+		switch (key) {
+			case "logout":
+				dispatch(signOut());
+				break;
+			case "contact":
+				dispatch(isAuthUser());
+				break;
+			default:
+				console.log("Home");
+		}
 	};
 	return (
 		<>
 			<AppBar
 				title={getText("title")}
-				settings={[getText("home"), getText("profile"), getText("logout")]}
+				settings={[
+					{ id: "dashboard", text: getText("dashboard") },
+					{ id: "profile", text: getText("profile") },
+					{ id: "logout", text: getText("logout") }
+				]}
 				click={routeHandler}
-				userInfo={null}
+				userInfo={userInfo}
 				register={(e) => {
 					setDrawerState({
+						...drawerState,
 						open: true,
-						content: SignWorkflow,
 						contentProps: {
 							type: constants.SIGNUP
 						}
@@ -38,20 +67,14 @@ const Header = () => {
 				}}
 				login={(e) => {
 					setDrawerState({
+						...drawerState,
 						open: true,
-						content: SignWorkflow,
 						contentProps: {
 							type: constants.SIGNIN
 						}
 					});
 				}}
-				pages={[
-					getText("aboutMe"),
-					getText("meeting"),
-					getText("gallery"),
-					getText("downloads"),
-					getText("contact")
-				]}
+				pages={pages}
 			/>
 			<SwipeableEdgeDrawer initial={drawerState} />
 			<HLine />

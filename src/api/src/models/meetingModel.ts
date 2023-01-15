@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 import validator from "validator";
-import { HTTP_STATUS, MESSAGES } from "../utils/constants";
+import { HTTP_STATUS, ERROR_MESSAGES } from "../utils/constants";
 import { throwResumeError } from "../utils/resumeError";
 const MeetingSchema = new mongoose.Schema({
 	title: {
@@ -31,7 +31,7 @@ const MeetingSchema = new mongoose.Schema({
 		trim: true,
 		validate(emails: string[]) {
 			if (emails.some((email) => !validator.isEmail(email))) {
-				throwResumeError(HTTP_STATUS.BAD_REQUEST, MESSAGES.INVALID_EMAIL);
+				throwResumeError(HTTP_STATUS.BAD_REQUEST, ERROR_MESSAGES.INVALID_EMAIL);
 			}
 		}
 	},

@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import config from "../config";
+import jwt from "jsonwebtoken";
 export function filterProps(source: any, ignore: any, change?: any) {
 	let res = {};
 	Object.keys(source).forEach((key: string) => {
@@ -58,4 +60,24 @@ export function generateRandom(length: number) {
 		result += characters.charAt(Math.floor(Math.random() * charactersLength));
 	}
 	return result;
+}
+
+export function generateToken(user: any, type: string) {
+	const userObj = {
+		id: user._id.toHexString(),
+		email: user.email,
+		type: type
+	};
+	const encryptedData = jwt.sign(userObj, config.PRIVATE_KEY, {
+		expiresIn: config.TOKEN_EXPIRY
+	});
+	const token = jwt.sign({ data: encryptedData }, config.PRIVATE_KEY2, {
+		expiresIn: config.TOKEN_EXPIRY
+	});
+	return token;
+}
+
+export function verifyToken(token: string) {
+	const decryptedToken = jwt.verify(token, config.PRIVATE_KEY2) as any;
+	return jwt.verify(decryptedToken.data, config.PRIVATE_KEY);
 }

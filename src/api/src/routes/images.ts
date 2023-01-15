@@ -1,6 +1,6 @@
 import * as express from "express";
 import * as path from "path";
-import { HTTP_STATUS, MESSAGES } from "../utils/constants";
+import { HTTP_STATUS, ERROR_MESSAGES } from "../utils/constants";
 import fs from "fs";
 import config from "../config";
 import { throwResumeError } from "../utils/resumeError";
@@ -31,7 +31,7 @@ export const getImage = function (req: express.Request, res: express.Response) {
 	const filename = req.params.filename;
 	const filePath = path.join(__dirname, "../images/" + filename);
 	if (!fs.existsSync(filePath)) {
-		throwResumeError(HTTP_STATUS.NOT_FOUND, MESSAGES.NOT_FOUND_ERROR, req);
+		throwResumeError(HTTP_STATUS.NOT_FOUND, ERROR_MESSAGES.NOT_FOUND_ERROR, req);
 	}
 	const ext: string = path.extname(filename).slice(1);
 	let type = (mime as any)[ext] || "text/plain";

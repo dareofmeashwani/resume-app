@@ -1,7 +1,6 @@
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Link from "@mui/material/Link";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
@@ -13,18 +12,8 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import EngineeringIcon from "@mui/icons-material/Engineering";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
 import getText from "../../messages";
 import NoRefLink from "./NoRefLink";
-
-const darkTheme = createTheme({
-	palette: {
-		mode: "dark",
-		primary: {
-			main: "#1976d2"
-		}
-	}
-});
 
 function stringToColor(string) {
 	let hash = 0;
@@ -57,7 +46,7 @@ function stringAvatar(name) {
 
 function ResponsiveAppBar(props) {
 	const title = props.title;
-	const pages = props.pages || [];
+	const pages = (props.pages || []).filter((page) => !!page);
 	const settings = props.settings;
 	const clickHandler = props.click;
 	const handleRegister = props.register;
@@ -87,163 +76,176 @@ function ResponsiveAppBar(props) {
 		}
 	};
 	return (
-		<ThemeProvider theme={darkTheme}>
-			<AppBar position="static" color="primary">
-				<Container maxWidth="xxl">
-					<Toolbar disableGutters sx={{ width: "100%" }}>
-						<EngineeringIcon sx={{ display: { xs: "none", md: "flex" }, mr: 2 }} />
-						<Typography
-							variant="h6"
-							noWrap
-							component="a"
-							onClick={HandleItemClick}
-							href="#"
+		<AppBar position="static" color="primary">
+			<Container maxWidth="xxl">
+				<Toolbar disableGutters sx={{ width: "100%" }}>
+					<EngineeringIcon sx={{ display: { xs: "none", md: "flex" }, mr: 2 }} />
+					<Typography
+						variant="h6"
+						noWrap
+						component="a"
+						onClick={HandleItemClick}
+						href="#"
+						sx={{
+							mr: 2,
+							display: { xs: "none", md: "flex" },
+							fontFamily: "monospace",
+							fontWeight: 700,
+							letterSpacing: ".3rem",
+							color: "inherit",
+							textDecoration: "none"
+						}}
+					>
+						{title}
+					</Typography>
+
+					<Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+						<IconButton
+							size="large"
+							aria-label="account of current user"
+							aria-controls="menu-appbar"
+							aria-haspopup="true"
+							onClick={handleOpenNavMenu}
+							color="inherit"
+						>
+							<MenuIcon />
+						</IconButton>
+						<Menu
+							id="menu-appbar"
+							anchorEl={anchorElNav}
+							anchorOrigin={{
+								vertical: "bottom",
+								horizontal: "left"
+							}}
+							keepMounted
+							transformOrigin={{
+								vertical: "top",
+								horizontal: "left"
+							}}
+							open={Boolean(anchorElNav)}
+							onClose={handleCloseNavMenu}
 							sx={{
-								mr: 2,
-								display: { xs: "none", md: "flex" },
-								fontFamily: "monospace",
-								fontWeight: 700,
-								letterSpacing: ".3rem",
-								color: "inherit",
-								textDecoration: "none"
+								display: { xs: "block", md: "none" }
 							}}
 						>
-							{title}
-						</Typography>
-
-						<Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-							<IconButton
-								size="large"
-								aria-label="account of current user"
-								aria-controls="menu-appbar"
-								aria-haspopup="true"
-								onClick={handleOpenNavMenu}
-								color="inherit"
+							{pages.map((page) => (
+								<MenuItem data-key={page.id} key={page.id} onClick={handleCloseNavMenu}>
+									<Typography
+										data-key={page.id}
+										key={page.id}
+										textAlign="center"
+										onClick={HandleItemClick}
+									>
+										{page.text}
+									</Typography>
+								</MenuItem>
+							))}
+						</Menu>
+					</Box>
+					<EngineeringIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+					<Typography
+						variant="h5"
+						noWrap
+						component="a"
+						onClick={HandleItemClick}
+						href="#"
+						sx={{
+							mr: 2,
+							display: { xs: "flex", md: "none" },
+							flexGrow: 1,
+							fontFamily: "monospace",
+							fontWeight: 700,
+							letterSpacing: ".3rem",
+							color: "inherit",
+							textDecoration: "none"
+						}}
+					>
+						{title}
+					</Typography>
+					<Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+						{pages.map((page) => (
+							<Button
+								data-key={page.id}
+								key={page.id}
+								onClick={HandleItemClick}
+								sx={{ my: 2, color: "white", display: "block" }}
 							>
-								<MenuIcon />
-							</IconButton>
+								{page.text}
+							</Button>
+						))}
+					</Box>
+					{userInfo && Object.keys(userInfo).length ? (
+						<Box sx={{ flexGrow: 0 }}>
+							<Tooltip title="Open settings">
+								<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+									<Avatar {...stringAvatar(userInfo.name)} />
+								</IconButton>
+							</Tooltip>
 							<Menu
+								sx={{ mt: "45px" }}
 								id="menu-appbar"
-								anchorEl={anchorElNav}
+								anchorEl={anchorElUser}
 								anchorOrigin={{
-									vertical: "bottom",
-									horizontal: "left"
+									vertical: "top",
+									horizontal: "right"
 								}}
 								keepMounted
 								transformOrigin={{
 									vertical: "top",
-									horizontal: "left"
+									horizontal: "right"
 								}}
-								open={Boolean(anchorElNav)}
-								onClose={handleCloseNavMenu}
-								sx={{
-									display: { xs: "block", md: "none" }
-								}}
+								open={Boolean(anchorElUser)}
+								onClose={handleCloseUserMenu}
 							>
-								{pages.map((page) => (
-									<MenuItem key={page} onClick={handleCloseNavMenu}>
-										<Typography textAlign="center" onClick={HandleItemClick}>
-											{page}
+								{settings.map((setting) => (
+									<MenuItem
+										data-key={setting.id}
+										key={setting.id}
+										onClick={handleCloseUserMenu}
+									>
+										<Typography
+											data-key={setting.id}
+											key={setting.id}
+											textAlign="center"
+											onClick={HandleItemClick}
+										>
+											{setting.text}
 										</Typography>
 									</MenuItem>
 								))}
 							</Menu>
 						</Box>
-						<EngineeringIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
-						<Typography
-							variant="h5"
-							noWrap
-							component="a"
-							onClick={HandleItemClick}
-							href="#"
-							sx={{
-								mr: 2,
-								display: { xs: "flex", md: "none" },
-								flexGrow: 1,
-								fontFamily: "monospace",
-								fontWeight: 700,
-								letterSpacing: ".3rem",
-								color: "inherit",
-								textDecoration: "none"
-							}}
-						>
-							{title}
-						</Typography>
-						<Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-							{pages.map((page) => (
-								<Button
-									key={page}
-									onClick={HandleItemClick}
-									sx={{ my: 2, color: "white", display: "block" }}
-								>
-									{page}
-								</Button>
-							))}
-						</Box>
-						{userInfo && Object.keys(userInfo).length ? (
-							<Box sx={{ flexGrow: 0 }}>
-								<Tooltip title="Open settings">
-									<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-										<Avatar {...stringAvatar(userInfo.name)} />
-									</IconButton>
-								</Tooltip>
-								<Menu
-									sx={{ mt: "45px" }}
-									id="menu-appbar"
-									anchorEl={anchorElUser}
-									anchorOrigin={{
-										vertical: "top",
-										horizontal: "right"
+					) : (
+						<>
+							<Box mx=".5rem">
+								<NoRefLink
+									text={getText("signIn")}
+									onClick={handleLogin}
+									sx={{
+										fontFamily: "Roboto",
+										fontWeight: 500,
+										fontSize: "large",
+										color: "inherit"
 									}}
-									keepMounted
-									transformOrigin={{
-										vertical: "top",
-										horizontal: "right"
-									}}
-									open={Boolean(anchorElUser)}
-									onClose={handleCloseUserMenu}
-								>
-									{settings.map((setting) => (
-										<MenuItem key={setting} onClick={handleCloseUserMenu}>
-											<Typography textAlign="center" onClick={HandleItemClick}>
-												{setting}
-											</Typography>
-										</MenuItem>
-									))}
-								</Menu>
+								/>
 							</Box>
-						) : (
-							<>
-								<Box mx=".5rem">
-									<NoRefLink
-										text={getText("signIn")}
-										onClick={handleLogin}
-										sx={{
-											fontFamily: "Roboto",
-											fontWeight: 500,
-											fontSize: "large",
-											color: "inherit"
-										}}
-									/>
-								</Box>
-								<Box mx=".5rem">
-									<NoRefLink
-										text={getText("signUp")}
-										onClick={handleRegister}
-										sx={{
-											fontFamily: "Roboto",
-											fontWeight: 500,
-											fontSize: "large",
-											color: "inherit"
-										}}
-									/>
-								</Box>
-							</>
-						)}
-					</Toolbar>
-				</Container>
-			</AppBar>
-		</ThemeProvider>
+							<Box mx=".5rem">
+								<NoRefLink
+									text={getText("signUp")}
+									onClick={handleRegister}
+									sx={{
+										fontFamily: "Roboto",
+										fontWeight: 500,
+										fontSize: "large",
+										color: "inherit"
+									}}
+								/>
+							</Box>
+						</>
+					)}
+				</Toolbar>
+			</Container>
+		</AppBar>
 	);
 }
 export default ResponsiveAppBar;

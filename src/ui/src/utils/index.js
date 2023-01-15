@@ -7,3 +7,13 @@ export function getDomainName() {
 	}
 	return hostname;
 }
+
+export function errorHelper(formik, values) {
+	return {
+		error: formik.errors[values] && formik.touched[values] ? true : false,
+		helperText:
+			formik.errors[values] && formik.touched[values]
+				? formik.errors[values]
+				: null
+	};
+}

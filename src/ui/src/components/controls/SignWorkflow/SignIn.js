@@ -11,6 +11,8 @@ import * as Yup from "yup";
 import NoRefLink from "../NoRefLink";
 import * as constants from "../../../utils/constants";
 import getText from "../../../messages";
+import { errorHelper } from "../../../utils";
+
 export default function SignIn(props) {
 	const setType = props.setType;
 	const handleSignIn = props.handleSignIn;
@@ -18,22 +20,15 @@ export default function SignIn(props) {
 		initialValues: { email: "", password: "" },
 		validationSchema: Yup.object({
 			email: Yup.string()
-				.required("Sorry the email is required")
-				.email("This is not a valid email"),
+				.required(getText("inputEmailRequired"))
+				.email(getText("invalidEmailInputWarning")),
 			password: Yup.string()
-				.required("Sorry the password is required")
-				.min(8, "minimum 8 length of password needed")
+				.required(getText("inputPasswordRequired"))
+				.min(8, getText("inputPasswordMinLenWarning"))
 		}),
 		onSubmit: (values) => {
 			handleSignIn(values);
 		}
-	});
-	const errorHelper = (formik, values) => ({
-		error: formik.errors[values] && formik.touched[values] ? true : false,
-		helperText:
-			formik.errors[values] && formik.touched[values]
-				? formik.errors[values]
-				: null
 	});
 	return (
 		<Box

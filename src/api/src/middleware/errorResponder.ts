@@ -1,5 +1,5 @@
 import express from "express";
-import { HTTP_STATUS, MESSAGES } from "../utils/constants";
+import { HTTP_STATUS, ERROR_MESSAGES } from "../utils/constants";
 import { ResumeError } from "../utils/resumeError";
 export default function errorResponder(
 	error: ResumeError | any,
@@ -7,12 +7,22 @@ export default function errorResponder(
 	res: express.Response,
 	next: express.NextFunction
 ) {
+	if (error.path) {
+		error = new ResumeError(
+			HTTP_STATUS.BAD_REQUEST,
+			{
+				message: error.message,
+				code: ERROR_MESSAGES.SPEC_VALIDATION_FAILED.code
+			},
+			error.errors
+		);
+	}
 	res.header("Content-Type", "application/json");
 	if (!(error instanceof ResumeError)) {
 		console.log((error as Error).stack);
 		error = new ResumeError(
 			HTTP_STATUS.INTERNAL_SERVER_ERROR,
-			MESSAGES.GENERIC_ERROR,
+			ERROR_MESSAGES.GENERIC_ERROR,
 			error
 		);
 	}

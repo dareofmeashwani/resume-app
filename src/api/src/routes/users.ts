@@ -1,10 +1,19 @@
 import * as express from "express";
-import { HTTP_STATUS, MESSAGES, ROLES } from "../utils/constants";
+import {
+	HTTP_STATUS,
+	ERROR_MESSAGES,
+	ROLES,
+	MESSAGES
+} from "../utils/constants";
 import { User } from "../models/userModel";
 import { SESSION_ID } from "../utils/constants";
 import { throwResumeError } from "../utils/resumeError";
 import { filterProps } from "../utils/helpers";
-import { sendVerificationEmail, sendWelcomeEmail } from "../utils/email";
+import {
+	sendVerificationEmail,
+	sendWelcomeEmail,
+	sendForgetPasswordEmail
+} from "../utils/email";
 
 export async function getListUser(req: express.Request, res: express.Response) {
 	try {
@@ -22,11 +31,15 @@ export async function getListUser(req: express.Request, res: express.Response) {
 	} catch (error) {
 		throwResumeError(
 			HTTP_STATUS.SERVICE_UNAVAILABLE,
-			MESSAGES.DB_CONNECTIVITY_ERROR,
+			ERROR_MESSAGES.DB_CONNECTIVITY_ERROR,
 			req,
 			error
 		);
 	}
+}
+
+export async function getAuthUser(req: express.Request, res: express.Response) {
+	res.status(HTTP_STATUS.OK).send(getUserProps(res.locals.userData._doc));
 }
 
 export async function postRegisterUser(
@@ -34,7 +47,11 @@ export async function postRegisterUser(
 	res: express.Response
 ) {
 	if (await (User as any).emailTaken(req.body.email)) {
-		throwResumeError(HTTP_STATUS.CONFLICT, MESSAGES.EMAIL_ALREADY_IN_USE, req);
+		throwResumeError(
+			HTTP_STATUS.CONFLICT,
+			ERROR_MESSAGES.EMAIL_ALREADY_IN_USE,
+			req
+		);
 	}
 	const user = new User({
 		...req.body
@@ -47,8 +64,8 @@ export async function postRegisterUser(
 		sendVerificationEmail(doc._doc, emailToken);
 	} catch (error) {
 		throwResumeError(
-			HTTP_STATUS.SERVICE_UNAVAILABLE,
-			MESSAGES.DB_CONNECTIVITY_ERROR,
+			HTTP_STATUS.INTERNAL_SERVER_ERROR,
+			ERROR_MESSAGES.DB_CONNECTIVITY_ERROR,
 			req,
 			error
 		);
@@ -61,7 +78,11 @@ export async function postLoginUser(
 	let user = await User.findOne({ email: req.body.email });
 	const compare = user && (await user.comparePassword(req.body.password));
 	if (!user || !compare) {
-		throwResumeError(HTTP_STATUS.FORBIDDEN, MESSAGES.INVALID_CREDENTIALS, req);
+		throwResumeError(
+			HTTP_STATUS.UNAUTHORIZED,
+			ERROR_MESSAGES.INVALID_CREDENTIALS,
+			req
+		);
 	}
 	const session: any = req.session;
 	session.user = {
@@ -72,7 +93,7 @@ export async function postLoginUser(
 		if (err) {
 			throwResumeError(
 				HTTP_STATUS.INTERNAL_SERVER_ERROR,
-				MESSAGES.LOGIN_ERROR,
+				ERROR_MESSAGES.LOGIN_ERROR,
 				req,
 				err
 			);
@@ -88,7 +109,7 @@ export function postLogoutUser(
 		if (err) {
 			throwResumeError(
 				HTTP_STATUS.INTERNAL_SERVER_ERROR,
-				MESSAGES.LOGOUT_ERROR,
+				ERROR_MESSAGES.LOGOUT_ERROR,
 				req,
 				err
 			);
@@ -98,6 +119,19 @@ export function postLogoutUser(
 	});
 }
 
+export async function postForgetPassword(
+	req: express.Request,
+	res: express.Response
+) {
+	let user = await User.findOne({ email: req.body.email });
+	if (user) {
+		const token = user.generateForgetPasswordToken();
+		sendForgetPasswordEmail(user, token);
+	}
+	res.status(HTTP_STATUS.OK).send({
+		message: MESSAGES.FORGET_PASSWORD
+	});
+}
 const getUserProps = (user: any) => {
 	return filterProps(user, ["__v", "password"], { _id: "id" });
 };

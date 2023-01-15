@@ -1,14 +1,10 @@
 import { combineReducers } from 'redux';
-import articles from './articles_reducer';
-import users from './users_reducer';
-import site from './site_reducer';
-import notifications from './notification_reducer';
+import userData from './user_reducer';
+import notificationData from './notification_reducer';
 
 const appReducers = combineReducers({
-    articles,
-    users,
-    site,
-    notifications
+    userData,
+    notificationData
 });
 
 export default appReducers;

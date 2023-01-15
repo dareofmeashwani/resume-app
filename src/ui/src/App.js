@@ -5,6 +5,12 @@ import MainLayout from "./hoc/mainLayout";
 import Home from "./components/home";
 import Header from "./components/Header";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { isAuthUser } from "./store/actions/user_actions";
+
 const darkTheme = createTheme({
 	palette: {
 		mode: "dark",
@@ -14,8 +20,24 @@ const darkTheme = createTheme({
 	}
 });
 
-const app = () => {
-	console.log("app");
+const App = () => {
+	const dispatch = useDispatch();
+	dispatch(isAuthUser());
+	const notifications = useSelector((state) => {
+		return state.notificationData;
+	});
+	React.useEffect(() => {
+		if (Object.keys(notifications).length === 0) {
+			toast.dismiss();
+			return;
+		}
+		const type = notifications.type;
+		const title = notifications.title || notifications.message;
+		const position = notifications.position || toast.POSITION.BOTTOM_LEFT;
+		toast[type](title, {
+			position
+		});
+	}, [notifications]);
 	return (
 		<BrowserRouter>
 			<ThemeProvider theme={darkTheme}>
@@ -39,7 +61,8 @@ const app = () => {
 					/>
 				</MainLayout>
 			</ThemeProvider>
+			<ToastContainer />
 		</BrowserRouter>
 	);
 };
-export default app;
+export default App;

@@ -1,5 +1,5 @@
 import * as express from "express";
-import { HTTP_STATUS, MESSAGES, ROLES } from "../utils/constants";
+import { HTTP_STATUS, ERROR_MESSAGES, ROLES } from "../utils/constants";
 import { throwResumeError } from "../utils/resumeError";
 import { getWeekStartEnd, filterProps, unique } from "../utils/helpers";
 import config from "../config";
@@ -36,7 +36,7 @@ export const getMeetingList = async function (
 	} catch (error) {
 		throwResumeError(
 			HTTP_STATUS.SERVICE_UNAVAILABLE,
-			MESSAGES.DB_CONNECTIVITY_ERROR,
+			ERROR_MESSAGES.DB_CONNECTIVITY_ERROR,
 			req,
 			error
 		);
@@ -55,7 +55,7 @@ export const getMeeting = async function (
 	} catch (error) {
 		throwResumeError(
 			HTTP_STATUS.SERVICE_UNAVAILABLE,
-			MESSAGES.DB_CONNECTIVITY_ERROR,
+			ERROR_MESSAGES.DB_CONNECTIVITY_ERROR,
 			req,
 			error
 		);
@@ -72,7 +72,7 @@ export const createMeeting = async (
 	} catch (error) {
 		throwResumeError(
 			HTTP_STATUS.SERVICE_UNAVAILABLE,
-			MESSAGES.DB_CONNECTIVITY_ERROR,
+			ERROR_MESSAGES.DB_CONNECTIVITY_ERROR,
 			req,
 			error
 		);
@@ -114,7 +114,7 @@ export const createMeeting = async (
 		} catch (error) {
 			throwResumeError(
 				HTTP_STATUS.INTERNAL_SERVER_ERROR,
-				MESSAGES.ZOOM_CONNECTIVITY_ERROR,
+				ERROR_MESSAGES.ZOOM_CONNECTIVITY_ERROR,
 				req,
 				error
 			);
@@ -133,7 +133,7 @@ export const createMeeting = async (
 		zoom.del(response.id);
 		throwResumeError(
 			HTTP_STATUS.SERVICE_UNAVAILABLE,
-			MESSAGES.DB_CONNECTIVITY_ERROR,
+			ERROR_MESSAGES.DB_CONNECTIVITY_ERROR,
 			req,
 			error
 		);
@@ -161,7 +161,7 @@ export const patchMeeting = async (
 	} catch (error) {
 		throwResumeError(
 			HTTP_STATUS.SERVICE_UNAVAILABLE,
-			MESSAGES.DB_CONNECTIVITY_ERROR,
+			ERROR_MESSAGES.DB_CONNECTIVITY_ERROR,
 			req,
 			error
 		);
@@ -205,7 +205,7 @@ export const patchMeeting = async (
 	} catch (error) {
 		throwResumeError(
 			HTTP_STATUS.INTERNAL_SERVER_ERROR,
-			MESSAGES.ZOOM_CONNECTIVITY_ERROR,
+			ERROR_MESSAGES.ZOOM_CONNECTIVITY_ERROR,
 			req,
 			error
 		);
@@ -226,13 +226,13 @@ export const deleteMeeting = async (
 	} catch (error) {
 		throwResumeError(
 			HTTP_STATUS.SERVICE_UNAVAILABLE,
-			MESSAGES.DB_CONNECTIVITY_ERROR,
+			ERROR_MESSAGES.DB_CONNECTIVITY_ERROR,
 			req,
 			error
 		);
 	}
 	if (!response) {
-		throwResumeError(HTTP_STATUS.NOT_FOUND, MESSAGES.NOT_FOUND_ERROR, req);
+		throwResumeError(HTTP_STATUS.NOT_FOUND, ERROR_MESSAGES.NOT_FOUND_ERROR, req);
 	}
 	let attendees: any = unique([
 		...response._doc.members,
@@ -246,7 +246,7 @@ export const deleteMeeting = async (
 	} catch (error) {
 		throwResumeError(
 			HTTP_STATUS.INTERNAL_SERVER_ERROR,
-			MESSAGES.ZOOM_CONNECTIVITY_ERROR,
+			ERROR_MESSAGES.ZOOM_CONNECTIVITY_ERROR,
 			req,
 			error
 		);
@@ -257,7 +257,7 @@ export const deleteMeeting = async (
 	} catch (error) {
 		throwResumeError(
 			HTTP_STATUS.SERVICE_UNAVAILABLE,
-			MESSAGES.DB_CONNECTIVITY_ERROR,
+			ERROR_MESSAGES.DB_CONNECTIVITY_ERROR,
 			req,
 			error
 		);
@@ -291,7 +291,7 @@ export async function getMeetingStatus(
 	} catch (error) {
 		throwResumeError(
 			HTTP_STATUS.SERVICE_UNAVAILABLE,
-			MESSAGES.DB_CONNECTIVITY_ERROR,
+			ERROR_MESSAGES.DB_CONNECTIVITY_ERROR,
 			req,
 			error
 		);
@@ -313,13 +313,13 @@ export async function zoomResendInvite(
 	} catch (error) {
 		throwResumeError(
 			HTTP_STATUS.SERVICE_UNAVAILABLE,
-			MESSAGES.DB_CONNECTIVITY_ERROR,
+			ERROR_MESSAGES.DB_CONNECTIVITY_ERROR,
 			req,
 			error
 		);
 	}
 	if (!response) {
-		throwResumeError(HTTP_STATUS.NOT_FOUND, MESSAGES.NOT_FOUND_ERROR, req);
+		throwResumeError(HTTP_STATUS.NOT_FOUND, ERROR_MESSAGES.NOT_FOUND_ERROR, req);
 	}
 	let attendees: any = unique([
 		...response._doc.members,

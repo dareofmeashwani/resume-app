@@ -40,6 +40,12 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/AdminList"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "403":
+     $ref: "#/components/responses/Forbidden"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
 
  /user:
   get:
@@ -47,6 +53,7 @@ paths:
     - User
    x-middleware:
     - loginCheck
+    - emailVerifyCheck
     - permissionsCheck
    x-permissions:
     - ADMIN
@@ -59,6 +66,12 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/UserList"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "403":
+     $ref: "#/components/responses/Forbidden"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
 
  /user/login:
   post:
@@ -72,6 +85,12 @@ paths:
    responses:
     "202":
      $ref: "#/components/responses/UserDetail"
+    "400":
+     $ref: "#/components/responses/BadRequest"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
 
  /user/register:
   post:
@@ -82,20 +101,41 @@ paths:
    requestBody:
     required: true
     $ref: "#/components/requestBodies/UserRegisterBody"
-
    responses:
     "201":
      $ref: "#/components/responses/UserDetail"
     "400":
      $ref: "#/components/responses/BadRequest"
+    "409":
+     $ref: "#/components/responses/Conflict"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
+
+ /user/forgetPassword:
+  post:
+   tags:
+    - User
+   summary: forget user password
+   operationId: postForgetPassword
+   requestBody:
+    required: true
+    $ref: "#/components/requestBodies/ForgetPasswordBody"
+   responses:
+    "200":
+     description: "forget password success message"
+     content:
+      application/json:
+       schema:
+        $ref: "#/components/schemas/Message"
+    "400":
+     $ref: "#/components/responses/BadRequest"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
 
  /user/logout:
   post:
    x-middleware:
     - loginCheck
-    - permissionsCheck
-   tags:
-    - User
    summary: Logout logged-in user
    operationId: postLogoutUser
    responses:
@@ -105,11 +145,31 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/Empty"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
 
- /email/verify:
+ /user/isAuth:
+  get:
+   tags:
+    - User
+   x-middleware:
+    - loginCheck
+   summary: logged in User auth check
+   operationId: getAuthUser
+   responses:
+    "200":
+     $ref: "#/components/responses/UserDetail"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
+
+ /user/emailVerify:
   patch:
    tags:
-    - Email
+    - User
    summary: email verification
    operationId: emailVerify
    requestBody:
@@ -119,13 +179,13 @@ paths:
     "200":
      $ref: "#/components/responses/UserDetail"
 
- /email/resendVerification:
+ /user/resendEmailVerification:
   post:
    x-middleware:
     - loginCheck
     - permissionsCheck
    tags:
-    - Email
+    - User
    summary: resend email verification
    operationId: emailResendVerification
    responses:
@@ -1007,6 +1067,13 @@ components:
      schema:
       allOf:
        - $ref: "#/components/schemas/RegisterUserDetail"
+  ForgetPasswordBody:
+   description: forget user password
+   content:
+    application/json:
+     schema:
+      allOf:
+       - $ref: "#/components/schemas/ForgetPasswordDetail"
   EmailVerifyBody:
    description: verify user email
    content:
@@ -1145,28 +1212,42 @@ components:
     application/json:
      schema:
       allOf:
-       - $ref: "#/components/schemas/Empty"
+       - $ref: "#/components/schemas/Error"
   InternalServerError:
    description: internal server error
    content:
     application/json:
      schema:
       allOf:
-       - $ref: "#/components/schemas/Empty"
+       - $ref: "#/components/schemas/Error"
   NotFound:
    description: not found
    content:
     application/json:
      schema:
       allOf:
-       - $ref: "#/components/schemas/Empty"
+       - $ref: "#/components/schemas/Error"
   Forbidden:
    description: forbidden error
    content:
     application/json:
      schema:
       allOf:
-       - $ref: "#/components/schemas/Empty"
+       - $ref: "#/components/schemas/Error"
+  Unauthorized:
+   description: unauthorized error
+   content:
+    application/json:
+     schema:
+      allOf:
+       - $ref: "#/components/schemas/Error"
+  Conflict:
+   description: conflict error
+   content:
+    application/json:
+     schema:
+      allOf:
+       - $ref: "#/components/schemas/Error"
   Logout:
    description: user logged out
    content:
@@ -1219,6 +1300,18 @@ components:
 
   Error:
    type: object
+   required:
+    - message
+    - code
+   properties:
+    message:
+     type: string
+     example: failed reason
+    code:
+     type: string
+     items:
+      type: string
+      example: unique error identifier
 
   ResourceList:
    required:
@@ -1251,6 +1344,14 @@ components:
      type: string
      format: date-time
      maxLength: 25
+  Message:
+   required:
+   - message
+   type: object
+   properties:
+    message:
+     type: string
+     maxLength: 256
   #######################################
   ##########  User Schemas  #############
   #######################################
@@ -1295,6 +1396,7 @@ components:
     email:
      type: string
      maxLength: 256
+     format: email
     password:
      type: string
      maxLength: 25
@@ -1338,6 +1440,7 @@ components:
     email:
      type: string
      maxLength: 256
+     format: email
     firstname:
      type: string
      maxLength: 100
@@ -1371,7 +1474,16 @@ components:
    properties:
     token:
      type: string
+     maxLength: 1024
+  ForgetPasswordDetail:
+   type: object
+   required:
+    - email
+   properties:
+    email:
+     type: string
      maxLength: 256
+     format: email
   #######################################
   ########  Education Schemas  ##########
   #######################################

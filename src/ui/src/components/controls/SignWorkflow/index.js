@@ -7,33 +7,35 @@ import ForgetPassword from "./ForgetPassword";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 
+import { useDispatch, useSelector } from "react-redux";
+import {
+	signInUser,
+	signUpUser,
+	forgetUserPassword
+} from "../../../store/actions/user_actions";
+
 export default function SignWorkflow(props) {
-	const handleReset = function (event) {
-		event.preventDefault();
-		const data = new FormData(event.currentTarget);
-		console.log({
-			email: data.get("email"),
-			password: data.get("password")
-		});
-	};
-	const handleSignIn = function (event) {
-		event.preventDefault();
-		const data = new FormData(event.currentTarget);
-		console.log({
-			email: data.get("email"),
-			password: data.get("password")
-		});
-	};
-	const handleSignUp = function (event) {
-		event.preventDefault();
-		const data = new FormData(event.currentTarget);
-		console.log({
-			email: data.get("email"),
-			password: data.get("password")
-		});
-	};
 	let [type, setType] = React.useState(constants.SIGNIN);
 	let [message, setMessage] = React.useState("");
+	const dispatch = useDispatch();
+	const handleReset = function (event) {
+		dispatch(forgetUserPassword(event));
+	};
+	const handleSignIn = function (event) {
+		dispatch(signInUser(event));
+	};
+	const handleSignUp = function (event) {
+		dispatch(signUpUser(event));
+	};
+	const forgetPasswordMessage = useSelector((state) => {
+		return state.userData.forgetPasswordMessage;
+	});
+	React.useEffect(() => {
+		if (forgetPasswordMessage) {
+			setMessage(forgetPasswordMessage.message);
+			setType(constants.CONFIRMATION);
+		}
+	}, [forgetPasswordMessage]);
 	React.useEffect(() => {
 		setType(props.type);
 	}, [props.type]);

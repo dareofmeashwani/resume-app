@@ -4,9 +4,10 @@ import jwt from "jsonwebtoken";
 import validator from "validator";
 import config from "../config";
 import { throwResumeError } from "../utils/resumeError";
-import { HTTP_STATUS, MESSAGES, ROLES } from "../utils/constants";
+import { HTTP_STATUS, ERROR_MESSAGES, ROLES, TOKEN_TYPES } from "../utils/constants";
 import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
-import { date } from "express-openapi-validator/dist/framework/base.serdes";
+import { generateToken, verifyToken } from "../utils/helpers";
+import { constants } from "buffer";
 
 const userSchema = new mongoose.Schema({
 	email: {
@@ -17,7 +18,7 @@ const userSchema = new mongoose.Schema({
 		lowercase: true,
 		validate(value: string) {
 			if (!validator.isEmail(value)) {
-				throwResumeError(HTTP_STATUS.BAD_REQUEST, MESSAGES.INVALID_EMAIL);
+				throwResumeError(HTTP_STATUS.BAD_REQUEST, ERROR_MESSAGES.INVALID_EMAIL);
 			}
 		}
 	},
@@ -70,7 +71,7 @@ const userSchema = new mongoose.Schema({
 		required: true,
 		validate(value: string) {
 			if (!validator.isMobilePhone(value)) {
-				throwResumeError(HTTP_STATUS.BAD_REQUEST, MESSAGES.INVALID_MOBILE);
+				throwResumeError(HTTP_STATUS.BAD_REQUEST, ERROR_MESSAGES.INVALID_MOBILE);
 			}
 		}
 	},
@@ -83,24 +84,12 @@ const userSchema = new mongoose.Schema({
 userSchema.pre("save", async function (next: any) {
 	let user = this as any;
 	if (user.isModified("password")) {
-		const salt = await bcrypt.genSalt(10);
+		const salt = await bcrypt.genSalt(Number(config.HASH_SALT));
 		const hash = await bcrypt.hash(user.password, salt);
 		user.password = hash;
 	}
 	next();
 });
-
-userSchema.methods.generateToken = function () {
-	let user = this;
-	const userObj = {
-		_id: user._id.toHexString(),
-		email: user.email
-	};
-	const token = jwt.sign(userObj, config.PRIVATE_KEY, {
-		expiresIn: config.SESSION_EXPIRY
-	});
-	return token;
-};
 
 userSchema.methods.comparePassword = async function (
 	candidatePassword: string
@@ -112,22 +101,20 @@ userSchema.methods.comparePassword = async function (
 
 userSchema.statics.emailTaken = async function (email: string) {
 	const user = await this.findOne({ email });
-	return !!user;
+	return user;
 };
 
-userSchema.methods.generateEmailActivationToken = function () {
-	let user = this;
-	const userObj = {
-		email: user.email,
-		timestamp: new Date().toISOString()
-	};
-	const token = jwt.sign(userObj, config.PRIVATE_KEY, { expiresIn: "1d" });
-	return token;
+userSchema.methods.generateEmailVerificationToken = function () {
+	return generateToken(this, TOKEN_TYPES.EMAIL);
 };
 
-userSchema.statics.validateToken = function(token){
-    return jwt.verify(token, config.PRIVATE_KEY);
-}
+userSchema.methods.generateForgetPasswordToken = function () {
+	return generateToken(this, TOKEN_TYPES.FORGET_PASSWORD);
+};
+
+userSchema.statics.validateToken = function (token) {
+	return verifyToken(token);
+};
 
 userSchema.plugin(mongooseAggregatePaginate);
 

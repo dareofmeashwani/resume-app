@@ -1,5 +1,5 @@
 import * as express from "express";
-import { HTTP_STATUS, MESSAGES } from "../utils/constants";
+import { HTTP_STATUS, ERROR_MESSAGES } from "../utils/constants";
 import { throwResumeError } from "../utils/resumeError";
 
 export default function createEndpoints(
@@ -19,7 +19,7 @@ export default function createEndpoints(
 		} catch (error) {
 			throwResumeError(
 				HTTP_STATUS.SERVICE_UNAVAILABLE,
-				MESSAGES.DB_CONNECTIVITY_ERROR,
+				ERROR_MESSAGES.DB_CONNECTIVITY_ERROR,
 				req,
 				error
 			);
@@ -37,7 +37,7 @@ export default function createEndpoints(
 		} catch (error) {
 			throwResumeError(
 				HTTP_STATUS.SERVICE_UNAVAILABLE,
-				MESSAGES.DB_CONNECTIVITY_ERROR,
+				ERROR_MESSAGES.DB_CONNECTIVITY_ERROR,
 				req,
 				error
 			);
@@ -51,7 +51,7 @@ export default function createEndpoints(
 		} catch (error) {
 			throwResumeError(
 				HTTP_STATUS.SERVICE_UNAVAILABLE,
-				MESSAGES.DB_CONNECTIVITY_ERROR,
+				ERROR_MESSAGES.DB_CONNECTIVITY_ERROR,
 				req,
 				error,
 			);
@@ -73,7 +73,7 @@ export default function createEndpoints(
 		} catch (error) {
 			throwResumeError(
 				HTTP_STATUS.SERVICE_UNAVAILABLE,
-				MESSAGES.DB_CONNECTIVITY_ERROR,
+				ERROR_MESSAGES.DB_CONNECTIVITY_ERROR,
 				req,
 				error
 			);
@@ -90,7 +90,7 @@ export default function createEndpoints(
 		} catch (error) {
 			throwResumeError(
 				HTTP_STATUS.SERVICE_UNAVAILABLE,
-				MESSAGES.DB_CONNECTIVITY_ERROR,
+				ERROR_MESSAGES.DB_CONNECTIVITY_ERROR,
 				req,
 				error,
 			);
