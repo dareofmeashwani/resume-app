@@ -3,6 +3,7 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 import GoogleFontLoader from "react-google-font-loader";
 import MainLayout from "./hoc/mainLayout";
 import Home from "./components/sections/home";
+import Contact from "./components/sections/contact";
 import Header from "./components/Header";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { ToastContainer } from "react-toastify";
@@ -50,7 +51,7 @@ const App = () => {
 						<Route path="/meeting" element={<Home />} />
 						<Route path="/gallery" element={<Home />} />
 						<Route path="/download" element={<Home />} />
-						<Route path="/contact" element={<Home />} />
+						<Route path="/contact" element={<Contact />} />
 					</Routes>
 					<GoogleFontLoader
 						fonts={[
