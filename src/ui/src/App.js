@@ -11,7 +11,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { isAuthUser } from "./store/actions/user_actions";
-
+import particlesConfig from "./particlesConfig";
+import Particles from "react-tsparticles";
+import { loadFull } from "tsparticles";
 const darkTheme = createTheme({
 	palette: {
 		mode: "dark",
@@ -39,31 +41,45 @@ const App = () => {
 			position
 		});
 	}, [notifications]);
-	return (
-		<BrowserRouter>
-			<ThemeProvider theme={darkTheme}>
-				<MainLayout>
-					<Header />
-					<Routes>
-						<Route path="/" element={<Home />} />
-						<Route path="/home" element={<Home />} />
-						<Route path="/aboutMe" element={<Home />} />
-						<Route path="/meeting" element={<Home />} />
-						<Route path="/gallery" element={<Home />} />
-						<Route path="/download" element={<Home />} />
-						<Route path="/contact" element={<Contact />} />
-					</Routes>
-					<GoogleFontLoader
-						fonts={[
-							{ font: "Roboto", weights: [300, 400, 900] },
-							{ font: "Fredoka One" },
-							{ font: "Rubik Gemstones" }
-						]}
-					/>
-				</MainLayout>
-			</ThemeProvider>
-			<ToastContainer />
-		</BrowserRouter>
-	);
+	/*return (
+		<div className="App">
+			
+			<Particles/>
+			</div>
+	);*/
+	const particlesInit = (engine) => {
+		loadFull(engine);
+	  };
+	  return (
+		<div>
+		  <Particles init={particlesInit} options={particlesConfig} />
+	
+		  <BrowserRouter>
+				<ThemeProvider theme={darkTheme}>
+					<MainLayout>
+						<Header />
+						<Routes>
+							<Route path="/" element={<Home />} />
+							<Route path="/home" element={<Home />} />
+							<Route path="/aboutMe" element={<Home />} />
+							<Route path="/meeting" element={<Home />} />
+							<Route path="/gallery" element={<Home />} />
+							<Route path="/downloads" element={<Home />} />
+							<Route path="/contact" element={<Contact />} />
+						</Routes>
+
+						<GoogleFontLoader
+							fonts={[
+								{ font: "Roboto", weights: [300, 400, 900] },
+								{ font: "Fredoka One" },
+								{ font: "Rubik Gemstones" }
+							]}
+						/>
+					</MainLayout>
+				</ThemeProvider>
+				<ToastContainer />
+			</BrowserRouter>
+		</div>
+	  );
 };
 export default App;

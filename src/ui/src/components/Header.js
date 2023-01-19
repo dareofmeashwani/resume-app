@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import AppBar from "./controls/AppBar";
-import { redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import HLine from "./controls/HLine";
 import SignWorkflow from "./controls/SignWorkflow";
 import getText from "../messages";
@@ -10,6 +10,7 @@ import { signOut } from "../store/actions/user_actions";
 import { useDispatch, useSelector } from "react-redux";
 
 const Header = (props) => {
+	const navigate = useNavigate();
 	const [drawerState, setDrawerState] = React.useState({
 		open: false,
 		content: SignWorkflow
@@ -34,17 +35,21 @@ const Header = (props) => {
 		});
 	}, [user]);
 	const routeHandler = (oEvent) => {
+		oEvent.preventDefault();
 		const key = oEvent.target.getAttribute("data-key");
 		switch (key) {
 			case "logout":
 				dispatch(signOut());
 				break;
+			case "aboutme":
+			case "gallery":
+			case "downloads":
 			case "meeting":
 			case "contact":
-				redirect("/" + key);
+				navigate("/" + key);
 				break;
 			default:
-				console.log("Home");
+				navigate("/");
 		}
 	};
 	return (

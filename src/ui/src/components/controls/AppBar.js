@@ -85,7 +85,7 @@ function ResponsiveAppBar(props) {
 						noWrap
 						component="a"
 						onClick={HandleItemClick}
-						href="#"
+						href="/"
 						sx={{
 							mr: 2,
 							display: { xs: "none", md: "flex" },

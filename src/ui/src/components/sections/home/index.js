@@ -3,9 +3,7 @@ import Box from "@mui/material/Box";
 const Home = () => {
 	return (
 		<>
-							<Box sx={{ margin: "4rem",fontSize: 100 }}>
-								Development In Progress
-							</Box>
+			<Box sx={{ margin: "4rem", fontSize: 100 }}>Development In Progress</Box>
 		</>
 	);
 };
