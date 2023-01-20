@@ -53,7 +53,6 @@ const App = () => {
 	  return (
 		<div>
 		  <Particles init={particlesInit} options={particlesConfig} />
-	
 		  <BrowserRouter>
 				<ThemeProvider theme={darkTheme}>
 					<MainLayout>
