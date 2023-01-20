@@ -1,10 +1,43 @@
 import React from "react";
 import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import TextareaAutosize from "@mui/base/TextareaAutosize";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import GitHubIcon from '@mui/icons-material/GitHub';
-import EmailIcon from '@mui/icons-material/Email';
+import GitHubIcon from "@mui/icons-material/GitHub";
+import EmailIcon from "@mui/icons-material/Email";
+import TextField from "@mui/material/TextField";
+import getText from "../../../messages";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { errorHelper } from "../../../utils";
 const Contact = () => {
+	const phoneRegExp =
+		/^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+	const formik = useFormik({
+		initialValues: {
+			name: "",
+			email: "",
+			mobile: "",
+			subject: "",
+			description: ""
+		},
+		validationSchema: Yup.object({
+			name: Yup.string().required(getText("inputFirstNameRequired")),
+			email: Yup.string()
+				.required(getText("inputEmailRequired"))
+				.email(getText("invalidEmailInputWarning")),
+			mobile: Yup.string()
+				.required(getText("inputMobileNumberRequired"))
+				.matches(phoneRegExp, getText("inputInvalidMobileNumber")),
+			subject: Yup.string().required(getText("inputFirstNameRequired"))
+		}),
+		onSubmit: (values) => {
+			console.log(values);
+		}
+	});
 	return (
 		<>
 			<Box
@@ -15,7 +48,7 @@ const Contact = () => {
 					marginBottom: "8%",
 					alignContent: "center",
 					justifyContent: "center",
-					textAlign: "center",
+					textAlign: "center"
 				}}
 			>
 				<Box
@@ -36,13 +69,127 @@ const Contact = () => {
 						}}
 					>
 						<Grid item>
-							<LinkedInIcon sx={{ transform: "scale(4)" }} href="/"/>
+							<Link
+								href="https://www.linkedin.com/in/connect2ashwaniverma"
+								target="_blank"
+								sx={{
+									transform: "scale(4)",
+									backgroundColor: "transparent",
+									color: "#ffffff"
+								}}
+							>
+								<LinkedInIcon sx={{ transform: "scale(4)" }} href="/" />
+							</Link>
 						</Grid>
 						<Grid item>
-							<GitHubIcon sx={{ transform: "scale(4)" }} />
+							<Link
+								href="https://github.com/dareofmeashwani"
+								target="_blank"
+								sx={{
+									transform: "scale(4)",
+									backgroundColor: "transparent",
+									color: "#ffffff"
+								}}
+							>
+								<GitHubIcon sx={{ transform: "scale(4)" }} href="/" />
+							</Link>
 						</Grid>
 						<Grid item>
-							<EmailIcon sx={{ transform: "scale(4)" }} />
+							<Link
+								href="mailto:connect2ashwaniverma@gmail.com"
+								target="_blank"
+								sx={{
+									transform: "scale(4)",
+									backgroundColor: "transparent",
+									color: "#ffffff"
+								}}
+							>
+								<EmailIcon sx={{ transform: "scale(4)" }} />
+							</Link>
+						</Grid>
+					</Grid>
+				</Box>
+			</Box>
+			<Box
+				sx={{
+					marginLeft: "15%",
+					marginRight: "15%",
+					marginBottom: "15%"
+				}}
+			>
+				<Typography variant="h6">{getText("writeToMe")}</Typography>
+				<Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 3 }}>
+					<Grid container spacing={2}>
+						<Grid item xs={12}>
+							<TextField
+								autoFocus
+								required
+								sx={{ width: "25rem" }}
+								autoComplete="given-name"
+								name="name"
+								id="name"
+								label={getText("name")}
+								{...formik.getFieldProps("name")}
+								{...errorHelper(formik, "name")}
+							/>
+						</Grid>
+						<Grid item xs={12}>
+							<TextField
+								required
+								sx={{ width: "25rem" }}
+								id="email"
+								type="email"
+								label={getText("emailAddress")}
+								name="email"
+								autoComplete="email"
+								{...formik.getFieldProps("email")}
+								{...errorHelper(formik, "email")}
+							/>
+						</Grid>
+						<Grid item xs={12}>
+							<TextField
+								required
+								sx={{ width: "25rem" }}
+								id="mobile"
+								type="tel"
+								label={getText("mobile")}
+								name="mobile"
+								autoComplete="mobile"
+								{...formik.getFieldProps("mobile")}
+								{...errorHelper(formik, "mobile")}
+							/>
+						</Grid>
+						<Grid item xs={12}>
+							<TextField
+								required
+								sx={{ width: "25rem" }}
+								autoComplete="subject"
+								name="subject"
+								id="subject"
+								label={getText("subject")}
+								{...formik.getFieldProps("subject")}
+								{...errorHelper(formik, "subject")}
+							/>
+						</Grid>
+						<Grid item xs={12}>
+							<Typography>{getText("details")}</Typography>
+							<TextareaAutosize
+								style={{ width: "25rem", height: "10rem", backgroundColor: "inherit" }}
+								autoComplete="details"
+								name="description"
+								id="description"
+								{...formik.getFieldProps("description")}
+								{...errorHelper(formik, "description")}
+							/>
+						</Grid>
+						<Grid item xs={12}>
+							<Button
+								type="submit"
+								variant="contained"
+								sx={{ mt: 3, mb: 2 }}
+							>
+								{getText("signIn")}
+							</Button>
 						</Grid>
 					</Grid>
 				</Box>

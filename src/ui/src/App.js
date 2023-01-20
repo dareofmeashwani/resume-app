@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { Routes, Route, HashRouter } from "react-router-dom";
 import GoogleFontLoader from "react-google-font-loader";
 import MainLayout from "./hoc/mainLayout";
 import Home from "./components/sections/home";
@@ -41,30 +41,24 @@ const App = () => {
 			position
 		});
 	}, [notifications]);
-	/*return (
-		<div className="App">
-			
-			<Particles/>
-			</div>
-	);*/
 	const particlesInit = (engine) => {
 		loadFull(engine);
-	  };
-	  return (
+	};
+	return (
 		<div>
-		  <Particles init={particlesInit} options={particlesConfig} />
-		  <BrowserRouter>
+			<Particles init={particlesInit} options={particlesConfig} />
+			<HashRouter>
 				<ThemeProvider theme={darkTheme}>
 					<MainLayout>
 						<Header />
 						<Routes>
-							<Route path="/" element={<Home />} />
-							<Route path="/home" element={<Home />} />
-							<Route path="/aboutMe" element={<Home />} />
-							<Route path="/meeting" element={<Home />} />
-							<Route path="/gallery" element={<Home />} />
-							<Route path="/downloads" element={<Home />} />
-							<Route path="/contact" element={<Contact />} />
+							<Route path="" element={<Home />} />
+							<Route path="home" element={<Home />} />
+							<Route path="aboutMe" element={<Home />} />
+							<Route path="meeting" element={<Home />} />
+							<Route path="gallery" element={<Home />} />
+							<Route path="downloads" element={<Home />} />
+							<Route path="contact" element={<Contact />} />
 						</Routes>
 
 						<GoogleFontLoader
@@ -77,8 +71,8 @@ const App = () => {
 					</MainLayout>
 				</ThemeProvider>
 				<ToastContainer />
-			</BrowserRouter>
+			</HashRouter>
 		</div>
-	  );
+	);
 };
 export default App;

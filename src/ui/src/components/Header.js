@@ -46,10 +46,10 @@ const Header = (props) => {
 			case "downloads":
 			case "meeting":
 			case "contact":
-				navigate("/" + key);
+				navigate(key);
 				break;
 			default:
-				navigate("/");
+				navigate("#");
 		}
 	};
 	return (

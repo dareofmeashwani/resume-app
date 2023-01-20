@@ -11,6 +11,7 @@ const messages = {
 	contact: "Contact",
 	signIn: "Sign In",
 	signUp: "Sign Up",
+	name: "Name",
 	dontHaveAccount: "Don't have an account? Sign Up",
 	haveAccountSignIn: "Already have an account? Sign in",
 	forgetYourPassword: "Forgot password?",
@@ -33,6 +34,9 @@ const messages = {
 	lastname: "Last Name",
 	mobile: "Mobile",
 	birthday: "Birthday",
+	subject: "Subject",
+	details: "Details",
+	writeToMe: "Write To Me",
 	loginFailed:
 		"Unable to login, please check detail for more information"
 };
