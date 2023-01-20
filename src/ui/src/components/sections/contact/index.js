@@ -2,6 +2,8 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import GitHubIcon from '@mui/icons-material/GitHub';
+import EmailIcon from '@mui/icons-material/Email';
 const Contact = () => {
 	return (
 		<>
@@ -25,6 +27,7 @@ const Contact = () => {
 					<Grid
 						flexDirection="row"
 						container
+						height="100%"
 						sx={{
 							padding: "10%",
 							display: "flex",
@@ -33,13 +36,13 @@ const Contact = () => {
 						}}
 					>
 						<Grid item>
-							<LinkedInIcon sx={{ transform: "scale(4)" }} />
+							<LinkedInIcon sx={{ transform: "scale(4)" }} href="/"/>
 						</Grid>
 						<Grid item>
-							<LinkedInIcon sx={{ transform: "scale(4)" }} />
+							<GitHubIcon sx={{ transform: "scale(4)" }} />
 						</Grid>
 						<Grid item>
-							<LinkedInIcon sx={{ transform: "scale(4)" }} />
+							<EmailIcon sx={{ transform: "scale(4)" }} />
 						</Grid>
 					</Grid>
 				</Box>
