@@ -8,6 +8,7 @@ import { isAuthUser } from "../store/actions/user_actions";
 import particlesConfig from "./particlesConfig";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
+import BusyIndicator from "../components/BusyIndicator";
 
 const particlesInit = (engine) => {
 	loadFull(engine);
@@ -38,6 +39,7 @@ const MainLayout = (props) => {
 				{props.children}
 			</Container>
 			<ToastContainer />
+			<BusyIndicator/>
 			<Particles init={particlesInit} options={particlesConfig} />
 		</>
 	);
