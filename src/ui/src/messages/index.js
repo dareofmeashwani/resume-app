@@ -37,8 +37,10 @@ const messages = {
 	subject: "Subject",
 	details: "Details",
 	writeToMe: "Write To Me",
-	loginFailed:
-		"Unable to login, please check detail for more information"
+	submit: "Submit",
+	loginFailed: "Unable to login, please check detail for more information",
+	inputNameRequired: "Sorry the name is required",
+	inputSubjectRequired: "Sorry the subject is required"
 };
 
 export default function getText(key) {

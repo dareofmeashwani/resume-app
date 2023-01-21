@@ -9,10 +9,10 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import EmailIcon from "@mui/icons-material/Email";
 import TextField from "@mui/material/TextField";
-import getText from "../../../messages";
+import getText from "../../messages";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { errorHelper } from "../../../utils";
+import { errorHelper } from "../../utils";
 const Contact = () => {
 	const phoneRegExp =
 		/^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -25,14 +25,17 @@ const Contact = () => {
 			description: ""
 		},
 		validationSchema: Yup.object({
-			name: Yup.string().required(getText("inputFirstNameRequired")),
+			name: Yup.string().required(getText("inputNameRequired")).max(200),
 			email: Yup.string()
 				.required(getText("inputEmailRequired"))
-				.email(getText("invalidEmailInputWarning")),
+				.email(getText("invalidEmailInputWarning"))
+				.max(256),
 			mobile: Yup.string()
 				.required(getText("inputMobileNumberRequired"))
-				.matches(phoneRegExp, getText("inputInvalidMobileNumber")),
-			subject: Yup.string().required(getText("inputFirstNameRequired"))
+				.matches(phoneRegExp, getText("inputInvalidMobileNumber"))
+				.max(13),
+			subject: Yup.string().required(getText("inputSubjectRequired")).max(200),
+			description: Yup.string().max(500)
 		}),
 		onSubmit: (values) => {
 			console.log(values);
@@ -42,8 +45,8 @@ const Contact = () => {
 		<>
 			<Box
 				sx={{
-					marginLeft: "15%",
-					marginRight: "15%",
+					marginLeft: "20%",
+					marginRight: "20%",
 					marginTop: "8%",
 					marginBottom: "8%",
 					alignContent: "center",
@@ -53,8 +56,8 @@ const Contact = () => {
 			>
 				<Box
 					sx={{
-						border: 5,
-						height: 280
+						border: 4,
+						height: 220
 					}}
 				>
 					<Grid
@@ -73,12 +76,11 @@ const Contact = () => {
 								href="https://www.linkedin.com/in/connect2ashwaniverma"
 								target="_blank"
 								sx={{
-									transform: "scale(4)",
 									backgroundColor: "transparent",
 									color: "#ffffff"
 								}}
 							>
-								<LinkedInIcon sx={{ transform: "scale(4)" }} href="/" />
+								<LinkedInIcon sx={{ transform: "scale(3)" }} />
 							</Link>
 						</Grid>
 						<Grid item>
@@ -86,12 +88,11 @@ const Contact = () => {
 								href="https://github.com/dareofmeashwani"
 								target="_blank"
 								sx={{
-									transform: "scale(4)",
 									backgroundColor: "transparent",
 									color: "#ffffff"
 								}}
 							>
-								<GitHubIcon sx={{ transform: "scale(4)" }} href="/" />
+								<GitHubIcon sx={{ transform: "scale(3)" }} href="/" />
 							</Link>
 						</Grid>
 						<Grid item>
@@ -99,12 +100,11 @@ const Contact = () => {
 								href="mailto:connect2ashwaniverma@gmail.com"
 								target="_blank"
 								sx={{
-									transform: "scale(4)",
 									backgroundColor: "transparent",
 									color: "#ffffff"
 								}}
 							>
-								<EmailIcon sx={{ transform: "scale(4)" }} />
+								<EmailIcon sx={{ transform: "scale(3)" }} />
 							</Link>
 						</Grid>
 					</Grid>
@@ -112,9 +112,9 @@ const Contact = () => {
 			</Box>
 			<Box
 				sx={{
-					marginLeft: "15%",
-					marginRight: "15%",
-					marginBottom: "15%"
+					marginLeft: "20%",
+					marginRight: "20%",
+					marginBottom: "5%"
 				}}
 			>
 				<Typography variant="h6">{getText("writeToMe")}</Typography>
@@ -122,7 +122,6 @@ const Contact = () => {
 					<Grid container spacing={2}>
 						<Grid item xs={12}>
 							<TextField
-								autoFocus
 								required
 								sx={{ width: "25rem" }}
 								autoComplete="given-name"
@@ -174,21 +173,21 @@ const Contact = () => {
 						<Grid item xs={12}>
 							<Typography>{getText("details")}</Typography>
 							<TextareaAutosize
-								style={{ width: "25rem", height: "10rem", backgroundColor: "inherit" }}
+								style={{
+									width: "25rem",
+									height: "10rem",
+									backgroundColor: "inherit",
+									color: "inherit"
+								}}
 								autoComplete="details"
 								name="description"
 								id="description"
 								{...formik.getFieldProps("description")}
-								{...errorHelper(formik, "description")}
 							/>
 						</Grid>
 						<Grid item xs={12}>
-							<Button
-								type="submit"
-								variant="contained"
-								sx={{ mt: 3, mb: 2 }}
-							>
-								{getText("signIn")}
+							<Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
+								{getText("submit")}
 							</Button>
 						</Grid>
 					</Grid>
