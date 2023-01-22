@@ -11,3 +11,6 @@ export const VERIFY_MOBILE = 'verify_mobile'
 export const ERROR_GLOBAL = 'error_global';
 export const SUCCESS_GLOBAL = 'success_global';
 export const CLEAR_NOTIFICATION_GLOBAL = 'clear_notification_global'
+export const CLEAR_BUSY_INDICATOR_GLOBAL = 'clear_busy_indicator_global'
+export const SET_BUSY_INDICATOR_GLOBAL = 'set_busy_indicator_global'
+export const RESET_BUSY_INDICATOR_GLOBAL = 'reset_busy_indicator_global'

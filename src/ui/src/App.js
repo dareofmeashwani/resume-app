@@ -8,6 +8,9 @@ import Header from "./components/Header";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Footer from "./components/Footer";
 import Particle from "./components/controls/Particle";
+import BusyIndicator from "./components/BusyIndicator";
+import { useDispatch } from "react-redux";
+import { isAuthUser } from "./store/actions/user_actions";
 const darkTheme = createTheme({
 	palette: {
 		mode: "dark",
@@ -18,9 +21,12 @@ const darkTheme = createTheme({
 });
 
 const App = () => {
+	const dispatch = useDispatch();
+	dispatch(isAuthUser());
 	return (
 		<>
 			<Particle />
+			<BusyIndicator />
 			<HashRouter>
 				<ThemeProvider theme={darkTheme}>
 					<Header />

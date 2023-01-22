@@ -1,4 +1,4 @@
-import * as users from "./index";
+import * as actions from "./index";
 import axios from "axios";
 import { removeCookieToken, getCookieToken } from "../../utils/cookie";
 import { HTTP_STATUS } from "../../utils/constants";
@@ -7,25 +7,28 @@ axios.defaults.headers.post["Content-Type"] = "application/json";
 
 export const signInUser = (values) => {
 	return async (dispatch) => {
+		dispatch(actions.setBusyIndicator());
 		try {
 			const user = await axios.post(`/api/v1/user/login`, {
 				email: values.email,
 				password: values.password
 			});
-			dispatch(users.authUser(user.data));
-			dispatch(users.clearGlobalNotifications());
+			dispatch(actions.authUser(user.data));
+			dispatch(actions.clearGlobalNotifications());
 		} catch (error) {
 			dispatch(
-				users.errorGlobal({
+				actions.errorGlobal({
 					...error.response.data
 				})
 			);
 		}
+		dispatch(actions.resetBusyIndicator());
 	};
 };
 
 export const signUpUser = (values) => {
 	return async (dispatch) => {
+		dispatch(actions.setBusyIndicator());
 		try {
 			const user = await axios.post(`/api/v1/user/register`, {
 				email: values.email,
@@ -36,71 +39,79 @@ export const signUpUser = (values) => {
 				dob: new Date(values.birthday).toISOString(),
 				mobile: values.mobile
 			});
-			dispatch(users.authUser(user.data));
-			dispatch(users.clearGlobalNotifications());
+			dispatch(actions.authUser(user.data));
+			dispatch(actions.clearGlobalNotifications());
 		} catch (error) {
 			dispatch(
-				users.errorGlobal({
+				actions.errorGlobal({
 					...error.response.data
 				})
 			);
 		}
+		dispatch(actions.resetBusyIndicator());
 	};
 };
 
 export const forgetUserPassword = (values) => {
 	return async (dispatch) => {
+		dispatch(actions.setBusyIndicator());
 		try {
 			const response = await axios.post(`/api/v1/user/forgetPassword`, {
 				email: values.email
 			});
-			dispatch(users.forgetPassword(response.data));
+			dispatch(actions.forgetPassword(response.data));
 		} catch (error) {
 			dispatch(
-				users.errorGlobal({
+				actions.errorGlobal({
 					...error.response.data
 				})
 			);
 		}
+		dispatch(actions.resetBusyIndicator());
 	};
 };
 
 export const signOut = () => {
 	return async (dispatch) => {
+		dispatch(actions.setBusyIndicator());
 		try {
 			await axios.post(`/api/v1/user/logout`);
-			dispatch(users.signOut(null));
+			dispatch(actions.signOut(null));
 			removeCookieToken();
 		} catch (error) {
 			dispatch(
-				users.errorGlobal({
+				actions.errorGlobal({
 					...error.response.data
 				})
 			);
 		}
+		dispatch(actions.resetBusyIndicator());
 	};
 };
 
 export const isAuthUser = () => {
 	return async (dispatch) => {
+		dispatch(actions.setBusyIndicator());
 		try {
 			if (!getCookieToken()) {
+				dispatch(actions.resetBusyIndicator());
 				return;
 			}
 			const response = await axios.get(`/api/v1/user/isAuth`);
-			dispatch(users.authUser(response.data));
+			dispatch(actions.authUser(response.data));
 		} catch (error) {
 			if (error.response.status === HTTP_STATUS.UNAUTHORIZED) {
-				dispatch(users.signOut());
+				dispatch(actions.signOut());
 				removeCookieToken();
 			} else {
 				dispatch(
-					users.errorGlobal({
+					actions.errorGlobal({
 						...error.response.data
 					})
 				);
 			}
 		}
+		dispatch(actions.resetBusyIndicator());
 	};
 };
 
@@ -112,10 +123,10 @@ export const changeEmail = (data) => {
 				newemail: data.newemail
 			});
 
-			dispatch(users.changeUserEmail(data.newemail));
-			dispatch(users.successGlobal("Good job!!"));
+			dispatch(actions.changeUserEmail(data.newemail));
+			dispatch(actions.successGlobal("Good job!!"));
 		} catch (error) {
-			dispatch(users.errorGlobal(error.response.data.message));
+			dispatch(actions.errorGlobal(error.response.data.message));
 		}
 	};
 };
@@ -131,10 +142,10 @@ export const updateUserProfile = (data) => {
 				...getState().users.data,
 				...profile.data
 			};
-			dispatch(users.updateUserProfile(userData));
-			dispatch(users.successGlobal("Profile updated"));
+			dispatch(actions.updateUserProfile(userData));
+			dispatch(actions.successGlobal("Profile updated"));
 		} catch (error) {
-			dispatch(users.errorGlobal(error.response.data.message));
+			dispatch(actions.errorGlobal(error.response.data.message));
 		}
 	};
 };
@@ -143,9 +154,9 @@ export const contactUs = (data) => {
 	return async (dispatch) => {
 		try {
 			await axios.post(`/api/users/contact`, data);
-			dispatch(users.successGlobal("We will contact you back"));
+			dispatch(actions.successGlobal("We will contact you back"));
 		} catch (error) {
-			dispatch(users.errorGlobal(error.response.data.message));
+			dispatch(actions.errorGlobal(error.response.data.message));
 		}
 	};
 };
@@ -157,11 +168,11 @@ export const accountVerify = (token) => {
 			await axios.get(`/api/users/verify?validation=${token}`);
 
 			if (user) {
-				dispatch(users.emailVerify());
+				dispatch(actions.emailVerify());
 			}
-			dispatch(users.successGlobal("Account verified !!"));
+			dispatch(actions.successGlobal("Account verified !!"));
 		} catch (error) {
-			dispatch(users.errorGlobal(error.response.data.message));
+			dispatch(actions.errorGlobal(error.response.data.message));
 		}
 	};
 };

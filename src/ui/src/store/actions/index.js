@@ -7,8 +7,11 @@ import {
 	UPDATE_USER_PROFILE,
 	VERIFY_EMAIL,
 	VERIFY_MOBILE,
-    CLEAR_NOTIFICATION_GLOBAL,
+	CLEAR_NOTIFICATION_GLOBAL,
 	FORGET_PASSWORD,
+	SET_BUSY_INDICATOR_GLOBAL,
+	RESET_BUSY_INDICATOR_GLOBAL,
+	CLEAR_BUSY_INDICATOR_GLOBAL
 } from "../types";
 
 /////// notification /////////////
@@ -28,6 +31,20 @@ export const clearGlobalNotifications = (msg) => ({
 	payload: msg
 });
 
+/////// busy indicator /////////////
+
+export const setBusyIndicator = () => ({
+	type: SET_BUSY_INDICATOR_GLOBAL
+});
+
+export const resetBusyIndicator = () => ({
+	type: RESET_BUSY_INDICATOR_GLOBAL
+});
+
+export const clearBusyIndicator = () => ({
+	type: CLEAR_BUSY_INDICATOR_GLOBAL
+});
+
 /////// users /////////////
 
 export const authUser = (user) => ({
@@ -39,12 +56,10 @@ export const signOut = () => ({
 	type: SIGN_OUT
 });
 
-export const forgetPassword = (data) =>({
+export const forgetPassword = (data) => ({
 	type: FORGET_PASSWORD,
 	payload: data
-})
-
-
+});
 
 export const changeUserEmail = (data) => ({
 	type: CHANGE_USER_EMAIL,

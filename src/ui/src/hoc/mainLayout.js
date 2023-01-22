@@ -3,20 +3,10 @@ import { Container } from "react-bootstrap";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
-import { isAuthUser } from "../store/actions/user_actions";
-import particlesConfig from "./particlesConfig";
-import Particles from "react-tsparticles";
-import { loadFull } from "tsparticles";
+import { useSelector } from "react-redux";
 import BusyIndicator from "../components/BusyIndicator";
 
-const particlesInit = (engine) => {
-	loadFull(engine);
-};
-
 const MainLayout = (props) => {
-	const dispatch = useDispatch();
-	dispatch(isAuthUser());
 	const notifications = useSelector((state) => {
 		return state.notificationData;
 	});
@@ -35,11 +25,9 @@ const MainLayout = (props) => {
 
 	return (
 		<>
-			<Container>
-				{props.children}
-			</Container>
+			<Container>{props.children}</Container>
 			<ToastContainer />
-			<BusyIndicator/>
+			<BusyIndicator />
 		</>
 	);
 };

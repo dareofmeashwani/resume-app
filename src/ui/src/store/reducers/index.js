@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
-import userData from './user_reducer';
-import notificationData from './notification_reducer';
+import userData from './userReducer';
+import notificationData from './notificationReducer';
+import busyIndicatorData from './busyIndicatorReducer';
 
 const appReducers = combineReducers({
     userData,
-    notificationData
+    notificationData,
+    busyIndicatorData
 });
 
 export default appReducers;
