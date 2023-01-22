@@ -10,7 +10,7 @@ import Footer from "./components/Footer";
 import Particle from "./components/controls/Particle";
 import BusyIndicator from "./components/BusyIndicator";
 import { useDispatch } from "react-redux";
-import { isAuthUser } from "./store/actions/user_actions";
+import { isAuthUser } from "./store/actions/userActions";
 const darkTheme = createTheme({
 	palette: {
 		mode: "dark",

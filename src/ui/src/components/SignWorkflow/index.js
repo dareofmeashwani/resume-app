@@ -12,7 +12,7 @@ import {
 	signInUser,
 	signUpUser,
 	forgetUserPassword
-} from "../../store/actions/user_actions";
+} from "../../store/actions/userActions";
 
 export default function SignWorkflow(props) {
 	let [type, setType] = React.useState(constants.SIGNIN);

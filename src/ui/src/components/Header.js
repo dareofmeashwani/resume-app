@@ -6,7 +6,7 @@ import SignWorkflow from "./SignWorkflow";
 import getText from "../messages";
 import SwipeableEdgeDrawer from "./controls/Drawer";
 import * as constants from "../utils/constants";
-import { signOut } from "../store/actions/user_actions";
+import { signOut } from "../store/actions/userActions";
 import { useDispatch, useSelector } from "react-redux";
 
 const Header = (props) => {

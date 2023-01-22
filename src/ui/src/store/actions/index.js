@@ -11,7 +11,11 @@ import {
 	FORGET_PASSWORD,
 	SET_BUSY_INDICATOR_GLOBAL,
 	RESET_BUSY_INDICATOR_GLOBAL,
-	CLEAR_BUSY_INDICATOR_GLOBAL
+	CLEAR_BUSY_INDICATOR_GLOBAL,
+	QUERY_SUCCESS,
+	QUERY_FAILURE,
+	CLEAR_QUERY,
+	QUERY_ALL
 } from "../types";
 
 /////// notification /////////////
@@ -44,6 +48,29 @@ export const resetBusyIndicator = () => ({
 export const clearBusyIndicator = () => ({
 	type: CLEAR_BUSY_INDICATOR_GLOBAL
 });
+
+/////// query /////////////
+
+export const querySuccess = (data) => ({
+	type: QUERY_SUCCESS,
+	payload: data
+});
+
+export const queryFailure = (data) => ({
+	type: QUERY_FAILURE,
+	payload: data
+});
+
+export const queryClear = () => ({
+	type: CLEAR_QUERY,
+});
+
+export const queryList = (data) => ({
+	type: QUERY_ALL,
+	payload: data
+});
+
+
 
 /////// users /////////////
 

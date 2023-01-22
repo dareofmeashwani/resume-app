@@ -14,7 +14,6 @@ export const signInUser = (values) => {
 				password: values.password
 			});
 			dispatch(actions.authUser(user.data));
-			dispatch(actions.clearGlobalNotifications());
 		} catch (error) {
 			dispatch(
 				actions.errorGlobal({
@@ -40,7 +39,6 @@ export const signUpUser = (values) => {
 				mobile: values.mobile
 			});
 			dispatch(actions.authUser(user.data));
-			dispatch(actions.clearGlobalNotifications());
 		} catch (error) {
 			dispatch(
 				actions.errorGlobal({

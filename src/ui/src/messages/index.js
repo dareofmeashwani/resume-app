@@ -40,7 +40,9 @@ const messages = {
 	submit: "Submit",
 	loginFailed: "Unable to login, please check detail for more information",
 	inputNameRequired: "Sorry the name is required",
-	inputSubjectRequired: "Sorry the subject is required"
+	inputSubjectRequired: "Sorry the subject is required",
+	ok: "Ok",
+	querySuccessMsg: "Your Query has been successfully submitted. I will reach out to you soon. Thank You"
 };
 
 export default function getText(key) {

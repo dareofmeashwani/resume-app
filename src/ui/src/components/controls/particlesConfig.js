@@ -1,6 +1,6 @@
 const particlesOptions = {
 	particles: {
-		number: { value: 200, density: { enable: true, value_area: 800 } },
+		number: { value: 150, density: { enable: true, value_area: 800 } },
 		color: { value: "#ffffff", opacity: 0.15 },
 		shape: {
 			type: "circle",

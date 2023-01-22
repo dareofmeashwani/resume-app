@@ -1,7 +1,7 @@
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 import { useCallback } from "react";
-import particlesConfig from "../../hoc/particlesConfig";
+import particlesConfig from "./particlesConfig";
 
 const Particle = () => {
 	const particlesInit = useCallback(async (engine) => {

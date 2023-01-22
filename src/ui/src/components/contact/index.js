@@ -13,7 +13,11 @@ import getText from "../../messages";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { errorHelper } from "../../utils";
+import { sendQuery,queryClear } from "../../store/actions/queryActions";
+import OkDialog from "../controls/OkDialog";
+import { useDispatch, useSelector } from "react-redux";
 const Contact = () => {
+	const dispatch = useDispatch();
 	const phoneRegExp =
 		/^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 	const formik = useFormik({
@@ -38,11 +42,26 @@ const Contact = () => {
 			description: Yup.string().max(500)
 		}),
 		onSubmit: (values) => {
-			console.log(values);
+			dispatch(sendQuery(values));
+			formik.resetForm();
 		}
 	});
+	let [message, setMessage] = React.useState("");
+	const onCloseDialog = () => {
+		setMessage("");
+		dispatch(queryClear())
+	};
+	const queryData = useSelector((state) => {
+		return state.queryData;
+	});
+	React.useEffect(() => {
+		if (queryData && queryData.type === "success") {
+			setMessage(getText("querySuccessMsg"));
+		}
+	}, [queryData]);
 	return (
 		<>
+			<OkDialog closeHandler={onCloseDialog} message={message} />
 			<Box
 				sx={{
 					marginLeft: "20%",
