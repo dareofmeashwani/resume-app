@@ -1,19 +1,27 @@
 # [ashwanikumarverma.co.in](http://ashwanikumarverma.co.in/)
 
 ## MERN Tech Stack:
-    Back-end - NodeJs, ExpressJs, MongoDB, Mongoose
-    Front-end - ReactJs Material UI
+
+Back-end - NodeJs, ExpressJs, MongoDB, Mongoose
+
+Front-end - ReactJs Material UI
 
 ## Features:
-    Zoom SDK integration
-    User SignIn/SignUp/SignOut workflow
-    User Info Update
-    Live Chat with admin
-    Content Management by admin
+
+Zoom SDK integration
+
+User SignIn/SignUp/SignOut workflow
+
+User Info Update
+
+Live Chat with admin
+
+Content Management by admin
 
 
 ## Prerequisites
-    NodeJs, Yarn,
+
+NodeJs, Yarn
 
 ## Setup
     yarn setup
@@ -24,7 +32,9 @@
 ## Production
     yarn build:prod
 
-## [Demo](http://ashwanikumarverma.co.in/)
+
+[Demo](http://ashwanikumarverma.co.in/)
+
 
 
 https://github.com/ericellb/React-Discord-API
