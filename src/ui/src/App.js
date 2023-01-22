@@ -11,6 +11,7 @@ import Particle from "./components/controls/Particle";
 import BusyIndicator from "./components/BusyIndicator";
 import { useDispatch } from "react-redux";
 import { isAuthUser } from "./store/actions/userActions";
+import Downloads from "./components/downloads";
 const darkTheme = createTheme({
 	palette: {
 		mode: "dark",
@@ -37,7 +38,7 @@ const App = () => {
 							<Route path="aboutMe" element={<Home />} />
 							<Route path="meeting" element={<Home />} />
 							<Route path="gallery" element={<Home />} />
-							<Route path="downloads" element={<Home />} />
+							<Route path="downloads" element={<Downloads />} />
 							<Route path="contact" element={<Contact />} />
 						</Routes>
 					</MainLayout>

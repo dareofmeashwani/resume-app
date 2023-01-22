@@ -16,6 +16,7 @@ import { errorHelper } from "../../utils";
 import { sendQuery,queryClear } from "../../store/actions/queryActions";
 import OkDialog from "../controls/OkDialog";
 import { useDispatch, useSelector } from "react-redux";
+import FacebookIcon from '@mui/icons-material/Facebook';
 const Contact = () => {
 	const dispatch = useDispatch();
 	const phoneRegExp =
@@ -124,6 +125,18 @@ const Contact = () => {
 								}}
 							>
 								<EmailIcon sx={{ transform: "scale(3)" }} />
+							</Link>
+						</Grid>
+						<Grid item>
+							<Link
+								href="https://www.facebook.com/dareofmeashwani"
+								target="_blank"
+								sx={{
+									backgroundColor: "transparent",
+									color: "#ffffff"
+								}}
+							>
+								<FacebookIcon sx={{ transform: "scale(3)" }} />
 							</Link>
 						</Grid>
 					</Grid>
