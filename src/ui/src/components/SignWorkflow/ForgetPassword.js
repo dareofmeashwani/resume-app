@@ -6,10 +6,10 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
 import Typography from "@mui/material/Typography";
-import NoRefLink from "../NoRefLink";
-import * as constants from "../../../utils/constants";
-import getText from "../../../messages";
-import { errorHelper } from "../../../utils";
+import NoRefLink from "../controls/NoRefLink";
+import * as constants from "../../utils/constants";
+import getText from "../../messages";
+import { errorHelper } from "../../utils";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 

@@ -6,13 +6,13 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import Typography from "@mui/material/Typography";
-import NoRefLink from "../NoRefLink";
-import * as constants from "../../../utils/constants";
-import getText from "../../../messages";
-import GenderRadio from "../GenderRadio";
+import NoRefLink from "../controls/NoRefLink";
+import * as constants from "../../utils/constants";
+import getText from "../../messages";
+import GenderRadio from "../controls/GenderRadio";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { errorHelper } from "../../../utils";
+import { errorHelper } from "../../utils";
 export default function SignUp(props) {
 	const setType = props.setType;
 	const handleSignUp = props.handleSignUp;

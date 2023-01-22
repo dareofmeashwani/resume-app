@@ -1,8 +1,8 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Copyright from "../Copyright";
-import * as constants from "../../../utils/constants";
-import Confirmation from "../Confirmation";
+import Copyright from "../controls/Copyright";
+import * as constants from "../../utils/constants";
+import Confirmation from "../controls/Confirmation";
 import ForgetPassword from "./ForgetPassword";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
@@ -12,7 +12,7 @@ import {
 	signInUser,
 	signUpUser,
 	forgetUserPassword
-} from "../../../store/actions/user_actions";
+} from "../../store/actions/user_actions";
 
 export default function SignWorkflow(props) {
 	let [type, setType] = React.useState(constants.SIGNIN);

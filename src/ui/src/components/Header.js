@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import AppBar from "./controls/AppBar";
 import { useNavigate } from "react-router-dom";
 import HLine from "./controls/HLine";
-import SignWorkflow from "./controls/SignWorkflow";
+import SignWorkflow from "./SignWorkflow";
 import getText from "../messages";
 import SwipeableEdgeDrawer from "./controls/Drawer";
 import * as constants from "../utils/constants";

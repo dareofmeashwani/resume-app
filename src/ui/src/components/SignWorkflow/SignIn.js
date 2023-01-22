@@ -8,10 +8,10 @@ import LockOpenIcon from "@mui/icons-material/LockOpen";
 import Typography from "@mui/material/Typography";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import NoRefLink from "../NoRefLink";
-import * as constants from "../../../utils/constants";
-import getText from "../../../messages";
-import { errorHelper } from "../../../utils";
+import NoRefLink from "../controls/NoRefLink";
+import * as constants from "../../utils/constants";
+import getText from "../../messages";
+import { errorHelper } from "../../utils";
 
 export default function SignIn(props) {
 	const setType = props.setType;
