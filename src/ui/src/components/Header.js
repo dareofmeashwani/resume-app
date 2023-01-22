@@ -49,7 +49,7 @@ const Header = (props) => {
 				navigate(key);
 				break;
 			default:
-				navigate("#");
+				navigate("/");
 		}
 	};
 	return (

@@ -40,7 +40,6 @@ const MainLayout = (props) => {
 			</Container>
 			<ToastContainer />
 			<BusyIndicator/>
-			<Particles init={particlesInit} options={particlesConfig} />
 		</>
 	);
 };
