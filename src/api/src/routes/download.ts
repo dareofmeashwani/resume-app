@@ -4,6 +4,19 @@ import * as path from "path";
 import fs from "fs";
 import { throwResumeError } from "../utils/resumeError";
 import { HTTP_STATUS, ERROR_MESSAGES } from "../utils/constants";
+
+
+export const downloadsList = function (
+	req: express.Request,
+	res: express.Response
+) {
+	const filesPath = path.join(__dirname, "../downloads");
+	const fileList = fs
+		.readdirSync(filesPath)
+		.map((file) => encodeURI(`${config.DOMAIN_ADDRESS}/api/v1/downloads/${file}`));
+	res.status(HTTP_STATUS.OK).send(fileList);
+};
+
 export const downloadFile = function (
 	req: express.Request,
 	res: express.Response
@@ -12,7 +25,7 @@ export const downloadFile = function (
 	if (filename.includes("/")) {
 		throwResumeError(HTTP_STATUS.FORBIDDEN, ERROR_MESSAGES.INVALID_OPERATION, req);
 	}
-	const filePath = path.join(__dirname, "../download/" + filename);
+	const filePath = path.join(__dirname, "../downloads/" + filename);
 	if (!fs.existsSync(filePath)) {
 		throwResumeError(HTTP_STATUS.NOT_FOUND, ERROR_MESSAGES.NOT_FOUND_ERROR, req);
 	}

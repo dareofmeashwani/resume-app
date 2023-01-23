@@ -4,7 +4,7 @@ import { HTTP_STATUS, ERROR_MESSAGES } from "../utils/constants";
 import { sendVerificationEmail } from "../utils/email";
 import { filterProps } from "../utils/helpers";
 import { ResumeError, throwResumeError } from "../utils/resumeError";
-export async function emailVerify(req: express.Request, res: express.Response) {
+export async function emailVerifyToken(req: express.Request, res: express.Response) {
 	let decodedToken;
 	try {
 		decodedToken = (User as any).validateToken(req.body.token);

@@ -85,8 +85,7 @@ const Contact = () => {
 						container
 						height="100%"
 						sx={{
-							padding: "10%",
-							display: "flex",
+							
 							justifyContent: "space-evenly",
 							alignItems: "center"
 						}}

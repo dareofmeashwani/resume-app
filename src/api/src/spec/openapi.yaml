@@ -166,12 +166,12 @@ paths:
     "500":
      $ref: "#/components/responses/InternalServerError"
 
- /user/emailVerify:
+ /user/emailVerifyToken:
   patch:
    tags:
     - User
    summary: email verification
-   operationId: emailVerify
+   operationId: emailVerifyToken
    requestBody:
     required: true
     $ref: "#/components/requestBodies/EmailVerifyBody"
@@ -840,6 +840,10 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/QueryList"
+    "403":
+     $ref: "#/components/responses/Forbidden"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
   post:
    tags:
     - Query
@@ -855,6 +859,10 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/QueryDetail"
+    "400":
+     $ref: "#/components/responses/BadRequest"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
 
  /meetingStatus:
   get:
@@ -983,7 +991,25 @@ paths:
     "200":
      $ref: "#/components/schemas/Empty"
 
- /download/{filename}:
+ /downloads:
+  get:
+   summary: downloadable link list
+   operationId: downloadsList
+   tags:
+    - Downloads
+   responses:
+    "200":
+     description: return list of downloadable content links
+     content:
+      application/json:
+       schema:
+        type: array
+        items:
+         type: string
+    "500":
+     $ref: "#/components/responses/InternalServerError"
+
+ /downloads/{filename}:
   get:
    summary: downloadable content
    operationId: downloadFile
@@ -1015,6 +1041,8 @@ paths:
        schema:
         type: string
        description: the value is `attachment; filename="abc.pdf"`
+    "500":
+     $ref: "#/components/responses/InternalServerError"
 
  /images:
   get:
@@ -1031,6 +1059,8 @@ paths:
         type: array
         items:
          type: string
+    "500":
+     $ref: "#/components/responses/InternalServerError"
  /images/{filename}:
   get:
    parameters:
@@ -1047,6 +1077,8 @@ paths:
        schema:
         type: string
         format: binary
+    "500":
+     $ref: "#/components/responses/InternalServerError"
 
 components:
  #######################################
