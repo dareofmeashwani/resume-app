@@ -19,7 +19,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"ashwaniverma.verma@rediff.com\",\r\n    \"password\": \"password\",\r\n    \"firstname\": \"Ashwani\",\r\n    \"gender\": \"Male\",\r\n    \"lastname\": \"Verma\",\r\n    \"dob\": \"2022-11-18T16:05:38.099Z\",\r\n    \"mobile\": \"8791890959\"\r\n}",
+							"raw": "{\r\n    \"email\": \"ashwaniverma.verma2@rediff.com\",\r\n    \"password\": \"password\",\r\n    \"firstname\": \"Ashwani\",\r\n    \"gender\": \"Male\",\r\n    \"lastname\": \"Verma\",\r\n    \"dob\": \"2022-11-18T16:05:38.099Z\",\r\n    \"mobile\": \"1234567890\",\r\n    \"mobile2\": \"1234567890\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -84,6 +84,24 @@
 					"response": []
 				},
 				{
+					"name": "Is User Authorized",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/user/isAuth",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"user",
+								"isAuth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "User Logout",
 					"request": {
 						"method": "POST",
@@ -96,6 +114,78 @@
 							"path": [
 								"user",
 								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User forget password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"ashwaniverma.verma@rediff.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/user/forgetPassword",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"user",
+								"forgetPassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Email Token",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNvbm5lY3QyYXNod2FuaXZlcm1hQGdtYWlsLmNvbSIsInRpbWVzdGFtcCI6IjIwMjItMTItMDdUMTY6MTg6MzMuNDk0WiIsImlhdCI6MTY3MDQyOTkxMywiZXhwIjoxNjcwNTE2MzEzfQ.QOKbE9ErRK8KOBP_JvmVc-tW-RsTokcO2ZlhfNQUVHY\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/user/emailVerifyToken",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"user",
+								"emailVerifyToken"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Resend verification email",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/user/resendEmailVerification",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"user",
+								"resendEmailVerification"
 							]
 						}
 					},
@@ -1160,65 +1250,6 @@
 			]
 		},
 		{
-			"name": "Email",
-			"item": [
-				{
-					"name": "Verify Email",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNvbm5lY3QyYXNod2FuaXZlcm1hQGdtYWlsLmNvbSIsInRpbWVzdGFtcCI6IjIwMjItMTItMDdUMTY6MTg6MzMuNDk0WiIsImlhdCI6MTY3MDQyOTkxMywiZXhwIjoxNjcwNTE2MzEzfQ.QOKbE9ErRK8KOBP_JvmVc-tW-RsTokcO2ZlhfNQUVHY\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{apiUrl}}/email/verify",
-							"host": [
-								"{{apiUrl}}"
-							],
-							"path": [
-								"email",
-								"verify"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Resend verification email",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"token\": \"dgfbhbjbhbjbjbjbjhbjhbjgcc\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{apiUrl}}/email/resendVerification",
-							"host": [
-								"{{apiUrl}}"
-							],
-							"path": [
-								"email",
-								"resendVerification"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
 			"name": "Meeting",
 			"item": [
 				{
@@ -1478,6 +1509,70 @@
 			]
 		},
 		{
+			"name": "Downloads",
+			"item": [
+				{
+					"name": "Download file",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/downloads/test.txt",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"downloads",
+								"test.txt"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Downloadable content",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/downloads",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"downloads"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Healthz",
 			"request": {
 				"method": "GET",
@@ -1489,36 +1584,6 @@
 					],
 					"path": [
 						"healthz"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Downloads",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{apiUrl}}/download/test.txt",
-					"host": [
-						"{{apiUrl}}"
-					],
-					"path": [
-						"download",
-						"test.txt"
 					]
 				}
 			},
