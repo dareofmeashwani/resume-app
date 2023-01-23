@@ -44,7 +44,7 @@ NodeJs, Yarn
     Rest API
     Zoom APi/SDK integration
     Gmail email service integration
-
+    Dropbox sdk integration for blob content 
 
 [Demo](http://ashwanikumarverma.co.in/)
 

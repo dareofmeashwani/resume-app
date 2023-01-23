@@ -135,3 +135,6 @@ yarn-error.log*
 .DS_Store
 
 **/build
+
+src/api/src/downloads
+src/api/src/images
