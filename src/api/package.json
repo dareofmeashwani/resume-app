@@ -7,7 +7,7 @@
     "start": "node build/server.js",
     "build": "tsc && npm run copyFiles",
     "clean": "rm -rf build && rm -rf node_modules",
-    "copyFiles": "cp-cli src/spec build/spec && cp-cli src/download build/download && cp-cli src/images build/images"
+    "copyFiles": "cp-cli src/spec build/spec"
   },
   "author": "",
   "license": "ISC",
