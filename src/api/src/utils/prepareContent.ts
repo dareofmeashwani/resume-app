@@ -4,8 +4,7 @@ import * as path from "path";
 import fs from "fs";
 async function downloadFile(dbx: Dropbox, filepath: string) {
 	return new Promise<any>((resolve, reject) => {
-		const localPath = path.join(__dirname, "../" + filepath);
-		console.log(filepath + " : " + localPath);
+		const localPath = path.join(__dirname, path.join("../", filepath));
 		if (fs.existsSync(localPath)) {
 			resolve(null);
 			return;
@@ -37,7 +36,9 @@ async function downloadFile(dbx: Dropbox, filepath: string) {
 }
 
 async function downloadFolder(dbx: Dropbox, folder: string) {
-	fs.mkdirSync(path.join(__dirname, "../" + folder), { recursive: true });
+	fs.mkdirSync(path.join(__dirname, path.join("../", folder)), {
+		recursive: true
+	});
 	let response = await dbx.filesListFolder({ path: "/" + folder });
 	await response.result.entries.map((fileMeta: any) =>
 		downloadFile(dbx, fileMeta.path_display)
