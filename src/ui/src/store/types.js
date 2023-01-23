@@ -23,3 +23,9 @@ export const QUERY_SUCCESS = 'query_success'
 export const QUERY_FAILURE = 'query_failure'
 export const CLEAR_QUERY = 'clear_query'
 export const QUERY_ALL = 'query_all'
+
+/// query
+export const DOWNLOADS_LINKS = "downloads_links"
+
+/// query
+export const IMAGES_LINKS = "images_links"

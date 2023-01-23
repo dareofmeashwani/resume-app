@@ -5,6 +5,7 @@ import fs from "fs";
 async function downloadFile(dbx: Dropbox, filepath: string) {
 	return new Promise<any>((resolve, reject) => {
 		const localPath = path.join(__dirname, "../" + filepath);
+		console.log(filepath + " : " + localPath);
 		if (fs.existsSync(localPath)) {
 			resolve(null);
 			return;
@@ -22,6 +23,7 @@ async function downloadFile(dbx: Dropbox, filepath: string) {
 								console.log(err);
 								reject(err);
 							}
+							console.log(filepath + " : " + localPath);
 							resolve(null);
 						}
 					);
@@ -44,7 +46,7 @@ async function downloadFolder(dbx: Dropbox, folder: string) {
 
 export default async function downloadContent() {
 	var dbx = new Dropbox({ accessToken: config.DROPBOX_ACCESS_TOKEN });
-    await downloadFolder(dbx,"downloads");
-    await downloadFolder(dbx,"images");
+	await downloadFolder(dbx, "downloads");
+	await downloadFolder(dbx, "images");
 	console.log("Serving Content downloaded successfully");
 }

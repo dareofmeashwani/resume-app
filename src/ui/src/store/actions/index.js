@@ -15,7 +15,9 @@ import {
 	QUERY_SUCCESS,
 	QUERY_FAILURE,
 	CLEAR_QUERY,
-	QUERY_ALL
+	QUERY_ALL,
+	DOWNLOADS_LINKS,
+	IMAGES_LINKS
 } from "../types";
 
 /////// notification /////////////
@@ -70,7 +72,19 @@ export const queryList = (data) => ({
 	payload: data
 });
 
+/////// downloads /////////////
 
+export const downloadableLinks = (data) => ({
+	type: DOWNLOADS_LINKS,
+	payload: data
+});
+
+/////// images /////////////
+
+export const imagesLinks = (data) => ({
+	type: IMAGES_LINKS,
+	payload: data
+});
 
 /////// users /////////////
 

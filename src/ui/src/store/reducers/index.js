@@ -3,6 +3,8 @@ import userData from "./userReducer";
 import notificationData from "./notificationReducer";
 import busyIndicatorData from "./busyIndicatorReducer";
 import queryData from "./queryReducer";
+import downloadsData from "./downloadsReducer";
+import imagesData from "./imagesReducer";
 
 const appReducers = combineReducers({
 	userData,
