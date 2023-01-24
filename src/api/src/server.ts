@@ -45,7 +45,7 @@ async function main() {
 	applyGlobalMiddleware("post");
 	const port = config.PORT;
 	app.use(express.static(path.join(__dirname, "public")));
-	await prepareContent();
+	//await prepareContent();
 	app.listen(port, () => {
 		console.log(`Server running on port ${port}`);
 	});
