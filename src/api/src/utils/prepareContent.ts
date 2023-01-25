@@ -1,53 +1,40 @@
-import { Dropbox } from "dropbox";
 import config from "../config";
-import * as path from "path";
 import fs from "fs";
-async function downloadFile(dbx: Dropbox, filepath: string) {
-	return new Promise<any>((resolve, reject) => {
-		const localPath = path.join(__dirname, path.join("../", filepath));
-		if (fs.existsSync(localPath)) {
-			resolve(null);
-			return;
-		}
-		return dbx
-			.filesDownload({ path: filepath })
-			.then(function (response: any) {
-				if (response.result.fileBinary !== undefined) {
-					fs.writeFile(
-						localPath,
-						response.result.fileBinary,
-						"binary",
-						function (err: any) {
-							if (err) {
-								console.log(err);
-								reject(err);
-							}
-							console.log(filepath + " : " + localPath);
-							resolve(null);
-						}
-					);
-				}
-			})
-			.catch(function (err) {
-				console.log(err);
-				reject(err);
-			});
+import https from "https";
+import path from "path";
+import admZip from "adm-zip";
+function downloadFile(url: string, filename: string) {
+	const file = fs.createWriteStream(filename);
+	return new Promise((resolve, reject) => {
+		const download = (url: string) => {
+			https
+				.get(url, (response: any) => {
+					if (response.statusCode == 302) {
+						download(response.headers.location);
+					} else {
+						response.pipe(file);
+						file.on("finish", () => {
+							file.close(()=>{
+								console.log("Download Completed");
+								resolve(null);
+							});
+						});
+					}
+				})
+				.on("error", (err) => {
+					reject(err);
+				});
+		};
+		download(url);
 	});
 }
-
-async function downloadFolder(dbx: Dropbox, folder: string) {
-	fs.mkdirSync(path.join(__dirname, path.join("../", folder)), {
-		recursive: true
-	});
-	let response = await dbx.filesListFolder({ path: "/" + folder });
-	await response.result.entries.map((fileMeta: any) =>
-		downloadFile(dbx, fileMeta.path_display)
-	);
+async function unzipFile(filename: string, targetDir: string = "./") {
+	var zip = new admZip(filename);
+	zip.extractAllTo(targetDir, true);
 }
-
 export default async function downloadContent() {
-	var dbx = new Dropbox({ accessToken: config.DROPBOX_ACCESS_TOKEN });
-	await downloadFolder(dbx, "downloads");
-	await downloadFolder(dbx, "images");
-	console.log("Serving Content downloaded successfully");
+	const filePath = path.join(__dirname, "../temp.zip");
+	await downloadFile(config.CONTENT_URL, filePath);
+	unzipFile(filePath, "./src");
+	fs.unlinkSync(filePath);
 }
