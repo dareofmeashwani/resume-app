@@ -10,7 +10,9 @@ const appReducers = combineReducers({
 	userData,
 	notificationData,
 	busyIndicatorData,
-	queryData
+	queryData,
+	downloadsData,
+	imagesData
 });
 
 export default appReducers;

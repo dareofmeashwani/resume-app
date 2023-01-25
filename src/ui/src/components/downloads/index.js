@@ -1,11 +1,28 @@
 import React from "react";
 import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
+import { getDownloadList } from "../../store/actions/downloadsActions";
+import { useDispatch, useSelector } from "react-redux";
 const Downloads = (props) => {
-
-    
-
-
-
+	const dispatch = useDispatch();
+	const downloadsData = useSelector((state) => {
+		return state.downloadsData.data;
+	});
+	if (!downloadsData) {
+		dispatch(getDownloadList());
+	}
+	const transformLink = (link, index) => {
+		const lastIndex = link.lastIndexOf("/");
+		const filename = decodeURI(link.slice(lastIndex + 1));
+		return (
+			<Box key={index + ""}>
+				{index + 1 + ": "}
+				<Link color="inherit" href={link} target="_blank" rel="noopener noreferrer">
+					{filename}
+				</Link>
+			</Box>
+		);
+	};
 	return (
 		<Box
 			sx={{
@@ -17,7 +34,7 @@ const Downloads = (props) => {
 				textAlign: "left"
 			}}
 		>
-			Downloads
+			{downloadsData ? downloadsData.map(transformLink) : null}
 		</Box>
 	);
 };
