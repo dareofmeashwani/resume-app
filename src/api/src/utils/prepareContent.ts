@@ -34,7 +34,8 @@ async function unzipFile(filename: string, targetDir: string = "./") {
 }
 export default async function downloadContent() {
 	const filePath = path.join(__dirname, "../temp.zip");
+	console.log(filePath);
 	await downloadFile(config.CONTENT_URL, filePath);
-	unzipFile(filePath, "./src");
+	unzipFile(filePath,path.join(__dirname, "../"));
 	fs.unlinkSync(filePath);
 }
