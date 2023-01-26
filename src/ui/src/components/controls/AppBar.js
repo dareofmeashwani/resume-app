@@ -14,6 +14,7 @@ import MenuItem from "@mui/material/MenuItem";
 import EngineeringIcon from "@mui/icons-material/Engineering";
 import getText from "../../messages";
 import NoRefLink from "./NoRefLink";
+import HLine from "./HLine";
 
 function stringToColor(string) {
 	let hash = 0;
@@ -76,7 +77,7 @@ function ResponsiveAppBar(props) {
 		}
 	};
 	return (
-		<AppBar position="static" color="primary">
+		<AppBar color="primary" position="sticky">
 			<Container maxWidth="xxl">
 				<Toolbar disableGutters sx={{ width: "100%" }}>
 					<EngineeringIcon sx={{ display: { xs: "none", md: "flex" }, mr: 2 }} />
@@ -245,6 +246,7 @@ function ResponsiveAppBar(props) {
 					)}
 				</Toolbar>
 			</Container>
+			<HLine/>
 		</AppBar>
 	);
 }

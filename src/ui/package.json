@@ -32,7 +32,7 @@
     "web-vitals": "^3.0.4",
     "yup": "^0.32.11",
     "react-tsparticles": "^2.7.1",
-    "tsparticles": "2.0.6"
+    "tsparticles": "^2.0.6"
   },
   "scripts": {
     "dev": "react-scripts start",

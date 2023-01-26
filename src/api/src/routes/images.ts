@@ -9,7 +9,7 @@ var mime = {
 	gif: "image/gif",
 	jpg: "image/jpeg",
 	png: "image/png",
-	svg: "image/svg+xml",
+	svg: "image/svg+xml"
 };
 
 export const imageList = function (
@@ -19,25 +19,11 @@ export const imageList = function (
 	const filesPath = path.join(__dirname, "../images");
 	const fileList = fs
 		.readdirSync(filesPath)
-		.map((file) => encodeURI(`${config.DOMAIN_ADDRESS}/api/v1/images/${file}`));
+		.map((file) => ({
+			thumbnail: encodeURI(
+				`${config.DOMAIN_ADDRESS}/images/thumbnails/${file}`
+			),
+			img: encodeURI(`${config.DOMAIN_ADDRESS}/images/${file}`)
+		}));
 	res.status(HTTP_STATUS.OK).send(fileList);
-};
-
-export const getImage = function (req: express.Request, res: express.Response) {
-	const filename = req.params.filename;
-	const filePath = path.join(__dirname, "../images/" + filename);
-	if (!fs.existsSync(filePath)) {
-		throwResumeError(HTTP_STATUS.NOT_FOUND, ERROR_MESSAGES.NOT_FOUND_ERROR, req);
-	}
-	const ext: string = path.extname(filename).slice(1);
-	let type = (mime as any)[ext];
-	let stream = fs.createReadStream(filePath);
-	stream.on("open", function () {
-		res.set("Content-Type", type);
-		stream.pipe(res);
-	});
-	stream.on("error", function () {
-		res.set("Content-Type", "text/plain");
-		res.status(404).end("Not found");
-	});
 };

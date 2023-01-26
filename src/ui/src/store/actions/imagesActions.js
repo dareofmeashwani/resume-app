@@ -7,7 +7,7 @@ export const getImageList = () => {
 	return async (dispatch) => {
 		dispatch(actions.setBusyIndicator());
 		try {
-			const response = await axios.get(`/api/v1/images`);
+			const response = await axios.get(`/api/v1/imagesList`);
 			dispatch(actions.imagesLinks(response.data));
 		} catch (error) {
 			dispatch(

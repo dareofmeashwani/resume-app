@@ -67,8 +67,8 @@ const Contact = () => {
 				sx={{
 					marginLeft: "20%",
 					marginRight: "20%",
-					marginTop: "8%",
-					marginBottom: "8%",
+					marginTop: "5%",
+					marginBottom: "5%",
 					alignContent: "center",
 					justifyContent: "center",
 					textAlign: "center"

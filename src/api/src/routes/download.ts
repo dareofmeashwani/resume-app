@@ -22,7 +22,7 @@ export const downloadFile = function (
 	res: express.Response
 ) {
 	const filename = req.params.filename;
-	if (filename.includes("/")) {
+	if (filename.includes("..")) {
 		throwResumeError(HTTP_STATUS.FORBIDDEN, ERROR_MESSAGES.INVALID_OPERATION, req);
 	}
 	const filePath = path.join(__dirname, "../downloads/" + filename);

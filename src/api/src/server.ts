@@ -16,7 +16,6 @@ import {
 } from "./middleware/auth";
 import prepareContent from "./utils/prepareContent";
 
-
 async function main() {
 	const app = express();
 	const applyGlobalMiddleware = (type: string) => {
@@ -45,6 +44,7 @@ async function main() {
 	applyGlobalMiddleware("post");
 	const port = config.PORT;
 	app.use(express.static(path.join(__dirname, "public")));
+	app.use("/images", express.static(path.join(__dirname, "images")));
 	await prepareContent();
 	app.listen(port, () => {
 		console.log(`Server running on port ${port}`);

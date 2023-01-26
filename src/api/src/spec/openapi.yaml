@@ -1044,7 +1044,7 @@ paths:
     "500":
      $ref: "#/components/responses/InternalServerError"
 
- /images:
+ /imagesList:
   get:
    summary: image list
    operationId: imageList
@@ -1058,25 +1058,15 @@ paths:
        schema:
         type: array
         items:
-         type: string
-    "500":
-     $ref: "#/components/responses/InternalServerError"
- /images/{filename}:
-  get:
-   parameters:
-    - $ref: "#/components/parameters/Filename"
-   summary: serve binary image
-   operationId: getImage
-   tags:
-    - Images
-   responses:
-    "200":
-     description: return image
-     content:
-      application/octet-stream:
-       schema:
-        type: string
-        format: binary
+         type: object
+         required:
+           - img
+           - thumbnail
+         properties:
+           img:
+            type: string
+           thumbnail:
+            type: string
     "500":
      $ref: "#/components/responses/InternalServerError"
 
@@ -1378,7 +1368,7 @@ components:
      maxLength: 25
   Message:
    required:
-   - message
+    - message
    type: object
    properties:
     message:
@@ -2151,7 +2141,6 @@ components:
    type: string
    maxLength: 256
    minLength: 1
-   pattern: '^[\w.-]+(/[\w./-]+[\w./-]+)?$'
 
  #######################################
  ############  Parameters  #############

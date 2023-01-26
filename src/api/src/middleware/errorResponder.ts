@@ -9,7 +9,7 @@ export default function errorResponder(
 ) {
 	if (error.path) {
 		error = new ResumeError(
-			HTTP_STATUS.BAD_REQUEST,
+			HTTP_STATUS.NOT_FOUND,
 			{
 				message: error.message,
 				code: ERROR_MESSAGES.SPEC_VALIDATION_FAILED.code

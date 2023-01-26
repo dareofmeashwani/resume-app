@@ -8,9 +8,11 @@ const Downloads = (props) => {
 	const downloadsData = useSelector((state) => {
 		return state.downloadsData.data;
 	});
-	if (!downloadsData) {
-		dispatch(getDownloadList());
-	}
+	React.useEffect(() => {
+		if (!downloadsData) {
+			dispatch(getDownloadList());
+		}
+	}, []);
 	const transformLink = (link, index) => {
 		const lastIndex = link.lastIndexOf("/");
 		const filename = decodeURI(link.slice(lastIndex + 1));
@@ -28,8 +30,8 @@ const Downloads = (props) => {
 			sx={{
 				marginLeft: "20%",
 				marginRight: "20%",
-				marginTop: "8%",
-				marginBottom: "8%",
+				marginTop: "5%",
+				marginBottom: "5%",
 				alignContent: "left",
 				textAlign: "left"
 			}}

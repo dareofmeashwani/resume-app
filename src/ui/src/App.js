@@ -12,6 +12,7 @@ import BusyIndicator from "./components/BusyIndicator";
 import { useDispatch } from "react-redux";
 import { isAuthUser } from "./store/actions/userActions";
 import Downloads from "./components/downloads";
+import Gallery from "./components/gallery";
 const darkTheme = createTheme({
 	palette: {
 		mode: "dark",
@@ -37,7 +38,7 @@ const App = () => {
 							<Route path="home" element={<Home />} />
 							<Route path="aboutMe" element={<Home />} />
 							<Route path="meeting" element={<Home />} />
-							<Route path="gallery" element={<Home />} />
+							<Route path="gallery" element={<Gallery />} />
 							<Route path="downloads" element={<Downloads />} />
 							<Route path="contact" element={<Contact />} />
 						</Routes>

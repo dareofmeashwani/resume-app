@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import AppBar from "./controls/AppBar";
 import { useNavigate } from "react-router-dom";
-import HLine from "./controls/HLine";
 import SignWorkflow from "./SignWorkflow";
 import getText from "../messages";
 import SwipeableEdgeDrawer from "./controls/Drawer";
@@ -84,7 +83,6 @@ const Header = (props) => {
 				pages={pages}
 			/>
 			<SwipeableEdgeDrawer initial={drawerState} />
-			<HLine />
 		</>
 	);
 };
