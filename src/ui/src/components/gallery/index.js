@@ -1,6 +1,5 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import ImageList from "@mui/material/ImageList";
@@ -8,7 +7,6 @@ import ImageListItem from "@mui/material/ImageListItem";
 import { getImageList } from "../../store/actions/imagesActions";
 import { useDispatch, useSelector } from "react-redux";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 
@@ -45,7 +43,6 @@ const Gallery = (props) => {
 							boxShadow: "none"
 						}
 					}}
-					display="flex"
 				>
 					<DialogTitle>
 						<Box alignItems="end">
@@ -54,9 +51,14 @@ const Gallery = (props) => {
 							</IconButton>
 						</Box>
 					</DialogTitle>
-					<DialogContent>
+					<DialogContent onClick={onCloseDialog}>
 						<img
-							style={{ maxWidth: "100%", maxHeight: "calc(100vh - 64px)" }}
+							style={{
+								maxWidth: "calc(100vh - 64px)",
+								maxHeight: "calc(100vh - 64px)",
+								width: "100%",
+								height: "100%"
+							}}
 							src={src}
 							alt={src}
 						/>
@@ -77,11 +79,20 @@ const Gallery = (props) => {
 				{imagesData ? (
 					<ImageList
 						sx={{
-							transform: "translateZ(0)"
+							flexWrap: "nowrap",
+							// Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
+							transform: "translateZ(0)",
+
+							// Hide Scrollbar
+							"-ms-overflow-style": "none" /* IE and Edge */,
+							"scrollbar-width": "none" /* Firefox */,
+							"&::-webkit-scrollbar": {
+								/* Chrome */ display: "none"
+							}
 						}}
 						rowHeight={200}
 						gap={5}
-						cols={4}
+						cols={5}
 					>
 						{imagesData.map((item, index) => (
 							<ImageListItem
@@ -90,7 +101,12 @@ const Gallery = (props) => {
 								onClick={onImageOpen}
 								data-key={item.img}
 							>
-								<img src={item.thumbnail} alt={item.img} loading="lazy" data-key={item.img} />
+								<img
+									src={item.thumbnail}
+									alt={item.img}
+									loading="lazy"
+									data-key={item.img}
+								/>
 							</ImageListItem>
 						))}
 					</ImageList>

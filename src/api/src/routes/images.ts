@@ -1,9 +1,8 @@
 import * as express from "express";
 import * as path from "path";
-import { HTTP_STATUS, ERROR_MESSAGES } from "../utils/constants";
+import { HTTP_STATUS } from "../utils/constants";
 import fs from "fs";
 import config from "../config";
-import { throwResumeError } from "../utils/resumeError";
 
 var mime = {
 	gif: "image/gif",
@@ -19,10 +18,9 @@ export const imageList = function (
 	const filesPath = path.join(__dirname, "../images");
 	const fileList = fs
 		.readdirSync(filesPath)
+		.filter((file) => fs.lstatSync(path.join(filesPath, file)).isFile())
 		.map((file) => ({
-			thumbnail: encodeURI(
-				`${config.DOMAIN_ADDRESS}/images/thumbnails/${file}`
-			),
+			thumbnail: encodeURI(`${config.DOMAIN_ADDRESS}/images/thumbnails/${file}`),
 			img: encodeURI(`${config.DOMAIN_ADDRESS}/images/${file}`)
 		}));
 	res.status(HTTP_STATUS.OK).send(fileList);
