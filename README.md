@@ -4,7 +4,7 @@
 
 Back-end - NodeJs, ExpressJs, MongoDB, Mongoose
 
-Front-end - ReactJs Material UI
+Front-end - ReactJs, Material UI
 
 ## Features
 
@@ -33,6 +33,7 @@ NodeJs, Yarn
 ## Production
 
     yarn build:prod
+    yarn start:prod
 
 ## What you will learn from it
     Express session management with mongodb store

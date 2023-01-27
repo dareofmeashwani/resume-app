@@ -11,7 +11,7 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import EngineeringIcon from "@mui/icons-material/Engineering";
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import getText from "../../messages";
 import NoRefLink from "./NoRefLink";
 import HLine from "./HLine";
@@ -80,7 +80,7 @@ function ResponsiveAppBar(props) {
 		<AppBar color="primary" position="sticky">
 			<Container maxWidth="xxl">
 				<Toolbar disableGutters sx={{ width: "100%" }}>
-					<EngineeringIcon sx={{ display: { xs: "none", md: "flex" }, mr: 2 }} />
+					<ManageAccountsIcon sx={{ display: { xs: "none", md: "flex" }, mr: 2 }} />
 					<Typography
 						variant="h6"
 						noWrap
@@ -143,7 +143,7 @@ function ResponsiveAppBar(props) {
 							))}
 						</Menu>
 					</Box>
-					<EngineeringIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+					<ManageAccountsIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
 					<Typography
 						variant="h5"
 						noWrap

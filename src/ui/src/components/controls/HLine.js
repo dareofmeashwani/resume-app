@@ -1,7 +1,13 @@
 import React from "react";
 
 const HLine = () => {
-	return <div className="horizontalLine"></div>;
+	return (
+		<div
+			style={{
+				borderBottom: "4px solid #dbdbdb"
+			}}
+		></div>
+	);
 };
 
 export default HLine;
