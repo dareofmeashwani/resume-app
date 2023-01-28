@@ -1,6 +1,7 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
+import Grid from "@mui/material/Unstable_Grid2";
 import CloseIcon from "@mui/icons-material/Close";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
@@ -54,8 +55,6 @@ const Gallery = (props) => {
 					<DialogContent onClick={onCloseDialog}>
 						<img
 							style={{
-								maxWidth: "calc(100vh - 64px)",
-								maxHeight: "calc(100vh - 64px)",
 								width: "100%",
 								height: "100%"
 							}}
@@ -77,39 +76,23 @@ const Gallery = (props) => {
 				}}
 			>
 				{imagesData ? (
-					<ImageList
-						sx={{
-							flexWrap: "nowrap",
-							// Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
-							transform: "translateZ(0)",
-
-							// Hide Scrollbar
-							"-ms-overflow-style": "none" /* IE and Edge */,
-							"scrollbar-width": "none" /* Firefox */,
-							"&::-webkit-scrollbar": {
-								/* Chrome */ display: "none"
-							}
-						}}
-						rowHeight={200}
-						gap={5}
-						cols={5}
+					<Grid
+						container
 					>
 						{imagesData.map((item, index) => (
-							<ImageListItem
+							<img
 								key={index}
-								style={{ cursor: "pointer" }}
+								style={{ cursor: "pointer", padding:".25rem" }}
 								onClick={onImageOpen}
+								src={item.thumbnail}
+								alt={item.img}
+								loading="lazy"
 								data-key={item.img}
-							>
-								<img
-									src={item.thumbnail}
-									alt={item.img}
-									loading="lazy"
-									data-key={item.img}
-								/>
-							</ImageListItem>
+								height="200px"
+								width="200px"
+							/>
 						))}
-					</ImageList>
+					</Grid>
 				) : null}
 			</Box>
 		</>
