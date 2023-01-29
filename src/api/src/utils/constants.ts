@@ -94,5 +94,6 @@ export const TOKEN_TYPES = {
 
 export const MESSAGES = {
 	FORGET_PASSWORD:
-		"Password reset link has been sent to your email, Please follow the link & reset your account password."
+		"Password reset link has been sent to your email, Please follow the link & reset your account password.",
+	EMAIL_VERIFIED: "Your email has been successfully verified"
 };

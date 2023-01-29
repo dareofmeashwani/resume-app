@@ -1,6 +1,6 @@
 import * as express from "express";
 import { User } from "../models/userModel";
-import { HTTP_STATUS, ERROR_MESSAGES } from "../utils/constants";
+import { HTTP_STATUS, ERROR_MESSAGES, MESSAGES } from "../utils/constants";
 import { sendVerificationEmail } from "../utils/email";
 import { filterProps } from "../utils/helpers";
 import { ResumeError, throwResumeError } from "../utils/resumeError";
@@ -20,7 +20,9 @@ export async function emailVerifyToken(req: express.Request, res: express.Respon
 			user.emailVerified = true;
 			await user.save();
 		}
-		res.status(HTTP_STATUS.OK).send(getUserProps(user._doc));
+		res.status(HTTP_STATUS.OK).send({
+			message: MESSAGES.EMAIL_VERIFIED
+		});
 	} catch (error) {
 		if (error instanceof ResumeError) {
 			throw error;

@@ -87,8 +87,8 @@ paths:
      $ref: "#/components/responses/UserDetail"
     "400":
      $ref: "#/components/responses/BadRequest"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
+    "404":
+     $ref: "#/components/responses/NotFound"
     "500":
      $ref: "#/components/responses/InternalServerError"
 
@@ -129,6 +129,8 @@ paths:
         $ref: "#/components/schemas/Message"
     "400":
      $ref: "#/components/responses/BadRequest"
+    "404":
+     $ref: "#/components/responses/NotFound"
     "500":
      $ref: "#/components/responses/InternalServerError"
 
@@ -177,13 +179,20 @@ paths:
     $ref: "#/components/requestBodies/EmailVerifyBody"
    responses:
     "200":
-     $ref: "#/components/responses/UserDetail"
+     description: "email verification success message"
+     content:
+      application/json:
+       schema:
+        $ref: "#/components/schemas/Message"
+    "400":
+     $ref: "#/components/responses/BadRequest"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
 
  /user/resendEmailVerification:
   post:
    x-middleware:
     - loginCheck
-    - permissionsCheck
    tags:
     - User
    summary: resend email verification
@@ -191,6 +200,10 @@ paths:
    responses:
     "200":
      $ref: "#/components/schemas/Empty"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
  /educations:
   get:
    tags:
@@ -204,6 +217,8 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/EducationList"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
   post:
    x-permissions:
     - ADMIN
@@ -225,6 +240,14 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/EducationDetail"
+    "400":
+     $ref: "#/components/responses/BadRequest"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "403":
+     $ref: "#/components/responses/Forbidden"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
 
  /educations/{educationId}:
   parameters:
@@ -241,6 +264,10 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/EducationDetail"
+    "404":
+     $ref: "#/components/responses/NotFound"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
   patch:
    x-permissions:
     - ADMIN
@@ -262,6 +289,16 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/EducationDetail"
+    "400":
+     $ref: "#/components/responses/BadRequest"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "403":
+     $ref: "#/components/responses/Forbidden"
+    "404":
+     $ref: "#/components/responses/NotFound"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
   delete:
    tags:
     - Education
@@ -280,6 +317,14 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/Empty"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "403":
+     $ref: "#/components/responses/Forbidden"
+    "404":
+     $ref: "#/components/responses/NotFound"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
 
  /extraCurriculars:
   get:
@@ -294,6 +339,8 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/ExtraCurricularList"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
   post:
    tags:
     - ExtraCurricular
@@ -315,6 +362,14 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/ExtraCurricularDetail"
+    "400":
+     $ref: "#/components/responses/BadRequest"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "403":
+     $ref: "#/components/responses/Forbidden"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
 
  /extraCurriculars/{extraCurricularId}:
   parameters:
@@ -331,6 +386,8 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/ExtraCurricularDetail"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
   patch:
    tags:
     - ExtraCurricular
@@ -352,6 +409,16 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/ExtraCurricularDetail"
+    "400":
+     $ref: "#/components/responses/BadRequest"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "403":
+     $ref: "#/components/responses/Forbidden"
+    "404":
+     $ref: "#/components/responses/NotFound"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
   delete:
    tags:
     - ExtraCurricular
@@ -370,6 +437,16 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/Empty"
+    "400":
+     $ref: "#/components/responses/BadRequest"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "403":
+     $ref: "#/components/responses/Forbidden"
+    "404":
+     $ref: "#/components/responses/NotFound"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
 
  /projects:
   get:
@@ -384,6 +461,8 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/ProjectList"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
   post:
    tags:
     - Project
@@ -405,6 +484,14 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/ProjectDetail"
+    "400":
+     $ref: "#/components/responses/BadRequest"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "403":
+     $ref: "#/components/responses/Forbidden"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
 
  /projects/{projectId}:
   parameters:
@@ -421,6 +508,10 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/ProjectDetail"
+    "404":
+     $ref: "#/components/responses/NotFound"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
   patch:
    tags:
     - Project
@@ -442,6 +533,16 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/ProjectDetail"
+    "400":
+     $ref: "#/components/responses/BadRequest"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "403":
+     $ref: "#/components/responses/Forbidden"
+    "404":
+     $ref: "#/components/responses/NotFound"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
   delete:
    tags:
     - Project
@@ -460,6 +561,14 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/Empty"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "403":
+     $ref: "#/components/responses/Forbidden"
+    "404":
+     $ref: "#/components/responses/NotFound"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
 
  /responsibilities:
   get:
@@ -474,6 +583,8 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/ResponsibilityList"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
   post:
    tags:
     - Responsibility
@@ -495,6 +606,14 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/ResponsibilityDetail"
+    "400":
+     $ref: "#/components/responses/BadRequest"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "403":
+     $ref: "#/components/responses/Forbidden"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
 
  /responsibilities/{responsibilityId}:
   parameters:
@@ -511,6 +630,10 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/ResponsibilityDetail"
+    "404":
+     $ref: "#/components/responses/NotFound"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
   patch:
    tags:
     - Responsibility
@@ -532,6 +655,16 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/ResponsibilityDetail"
+    "400":
+     $ref: "#/components/responses/BadRequest"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "403":
+     $ref: "#/components/responses/Forbidden"
+    "404":
+     $ref: "#/components/responses/NotFound"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
   delete:
    tags:
     - Responsibility
@@ -550,6 +683,14 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/Empty"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "403":
+     $ref: "#/components/responses/Forbidden"
+    "404":
+     $ref: "#/components/responses/NotFound"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
 
  /skills:
   get:
@@ -564,6 +705,8 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/SkillList"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
   post:
    tags:
     - Skill
@@ -585,6 +728,14 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/SkillDetail"
+    "400":
+     $ref: "#/components/responses/BadRequest"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "403":
+     $ref: "#/components/responses/Forbidden"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
 
  /skills/{skillId}:
   parameters:
@@ -601,6 +752,10 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/SkillDetail"
+    "404":
+     $ref: "#/components/responses/NotFound"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
   patch:
    tags:
     - Skill
@@ -622,6 +777,16 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/SkillDetail"
+    "400":
+     $ref: "#/components/responses/BadRequest"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "403":
+     $ref: "#/components/responses/Forbidden"
+    "404":
+     $ref: "#/components/responses/NotFound"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
   delete:
    tags:
     - Skill
@@ -640,6 +805,14 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/Empty"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "403":
+     $ref: "#/components/responses/Forbidden"
+    "404":
+     $ref: "#/components/responses/NotFound"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
 
  /trainings:
   get:
@@ -654,6 +827,8 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/TrainingList"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
   post:
    tags:
     - Training
@@ -675,6 +850,14 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/TrainingDetail"
+    "400":
+     $ref: "#/components/responses/BadRequest"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "403":
+     $ref: "#/components/responses/Forbidden"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
 
  /trainings/{trainingId}:
   parameters:
@@ -691,6 +874,10 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/TrainingDetail"
+    "404":
+     $ref: "#/components/responses/NotFound"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
   patch:
    tags:
     - Training
@@ -712,6 +899,16 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/TrainingDetail"
+    "400":
+     $ref: "#/components/responses/BadRequest"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "403":
+     $ref: "#/components/responses/Forbidden"
+    "404":
+     $ref: "#/components/responses/NotFound"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
   delete:
    tags:
     - Training
@@ -730,6 +927,14 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/Empty"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "403":
+     $ref: "#/components/responses/Forbidden"
+    "404":
+     $ref: "#/components/responses/NotFound"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
 
  /workExperiences:
   get:
@@ -744,6 +949,8 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/WorkExperienceList"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
   post:
    tags:
     - WorkExperience
@@ -765,6 +972,14 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/WorkExperienceDetail"
+    "400":
+     $ref: "#/components/responses/BadRequest"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "403":
+     $ref: "#/components/responses/Forbidden"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
 
  /workExperiences/{workExperienceId}:
   parameters:
@@ -781,6 +996,10 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/WorkExperienceDetail"
+    "404":
+     $ref: "#/components/responses/NotFound"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
   patch:
    tags:
     - WorkExperience
@@ -802,6 +1021,16 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/WorkExperienceDetail"
+    "400":
+     $ref: "#/components/responses/BadRequest"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "403":
+     $ref: "#/components/responses/Forbidden"
+    "404":
+     $ref: "#/components/responses/NotFound"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
   delete:
    tags:
     - WorkExperience
@@ -820,6 +1049,14 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/Empty"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "403":
+     $ref: "#/components/responses/Forbidden"
+    "404":
+     $ref: "#/components/responses/NotFound"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
 
  /query:
   get:
@@ -840,6 +1077,8 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/QueryList"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
     "403":
      $ref: "#/components/responses/Forbidden"
     "500":
@@ -873,7 +1112,6 @@ paths:
    x-middleware:
     - loginCheck
     - emailVerifyCheck
-    - permissionsCheck
    summary: list system meetings status
    operationId: getMeetingStatus
    responses:
@@ -883,6 +1121,12 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/MeetingStatusList"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "403":
+     $ref: "#/components/responses/Forbidden"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
 
  /meetings:
   get:
@@ -891,7 +1135,6 @@ paths:
    x-middleware:
     - loginCheck
     - emailVerifyCheck
-    - permissionsCheck
    summary: list meetings
    operationId: getMeetingList
    responses:
@@ -901,13 +1144,18 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/MeetingList"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "403":
+     $ref: "#/components/responses/Forbidden"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
   post:
    tags:
     - Meeting
    x-middleware:
     - loginCheck
     - emailVerifyCheck
-    - permissionsCheck
    summary: create Meeting
    operationId: createMeeting
    requestBody:
@@ -920,6 +1168,14 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/MeetingDetail"
+    "400":
+     $ref: "#/components/responses/BadRequest"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "403":
+     $ref: "#/components/responses/Forbidden"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
 
  /meetings/{meetingId}:
   parameters:
@@ -930,7 +1186,6 @@ paths:
    x-middleware:
     - loginCheck
     - emailVerifyCheck
-    - permissionsCheck
    summary: get meeting
    operationId: getMeeting
    responses:
@@ -940,13 +1195,20 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/MeetingDetail"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "403":
+     $ref: "#/components/responses/Forbidden"
+    "404":
+     $ref: "#/components/responses/NotFound"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
   patch:
    tags:
     - Meeting
    x-middleware:
     - loginCheck
     - emailVerifyCheck
-    - permissionsCheck
    summary: modify meeting
    operationId: patchMeeting
    requestBody:
@@ -959,13 +1221,22 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/MeetingDetail"
+    "400":
+     $ref: "#/components/responses/BadRequest"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "403":
+     $ref: "#/components/responses/Forbidden"
+    "404":
+     $ref: "#/components/responses/NotFound"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
   delete:
    tags:
     - Meeting
    x-middleware:
     - loginCheck
     - emailVerifyCheck
-    - permissionsCheck
    summary: delete meeting
    operationId: deleteMeeting
    responses:
@@ -975,6 +1246,14 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/Empty"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "403":
+     $ref: "#/components/responses/Forbidden"
+    "404":
+     $ref: "#/components/responses/NotFound"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
 
  /meetings/{meetingId}/resendInvite:
   parameters:
@@ -990,6 +1269,14 @@ paths:
    responses:
     "200":
      $ref: "#/components/schemas/Empty"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "403":
+     $ref: "#/components/responses/Forbidden"
+    "404":
+     $ref: "#/components/responses/NotFound"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
 
  /downloads:
   get:
@@ -1041,6 +1328,8 @@ paths:
        schema:
         type: string
        description: the value is `attachment; filename="abc.pdf"`
+    "404":
+     $ref: "#/components/responses/NotFound"
     "500":
      $ref: "#/components/responses/InternalServerError"
 
