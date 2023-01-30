@@ -1,7 +1,7 @@
 import * as express from "express";
 import { HTTP_STATUS, ERROR_MESSAGES } from "../utils/constants";
 import Query from "../models/queryModel";
-import { throwResumeError } from "../utils/resumeError";
+import { throwResumeError } from "../utils/errorHelper";
 import { filterProps } from "../utils/helpers";
 import { sendQueryNotificationToAdmin } from "../utils/email";
 

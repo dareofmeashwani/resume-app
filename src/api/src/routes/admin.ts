@@ -1,7 +1,7 @@
 import * as express from "express";
 import { HTTP_STATUS, ERROR_MESSAGES, ROLES } from "../utils/constants";
 import { User } from "../models/userModel";
-import { throwResumeError } from "../utils/resumeError";
+import { throwResumeError } from "../utils/errorHelper";
 import { filterProps } from "../utils/helpers";
 
 const getUserProps = (user: any) => {

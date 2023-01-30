@@ -3,18 +3,18 @@ import { User } from "../models/userModel";
 import { HTTP_STATUS, ERROR_MESSAGES, MESSAGES } from "../utils/constants";
 import { sendVerificationEmail } from "../utils/email";
 import { filterProps } from "../utils/helpers";
-import { ResumeError, throwResumeError } from "../utils/resumeError";
+import { ResumeError, throwResumeError } from "../utils/errorHelper";
 export async function emailVerifyToken(req: express.Request, res: express.Response) {
 	let decodedToken;
 	try {
 		decodedToken = (User as any).validateToken(req.body.token);
 	} catch (error) {
-		throwResumeError(HTTP_STATUS.FORBIDDEN, ERROR_MESSAGES.INVALID_TOKEN, req, error);
+		throwResumeError(HTTP_STATUS.BAD_REQUEST, ERROR_MESSAGES.INVALID_TOKEN, req, error);
 	}
 	try {
 		let user = await User.findOne({ email: decodedToken.email });
 		if (!user) {
-			throwResumeError(HTTP_STATUS.FORBIDDEN, ERROR_MESSAGES.INVALID_TOKEN, req);
+			throwResumeError(HTTP_STATUS.BAD_REQUEST, ERROR_MESSAGES.INVALID_TOKEN, req);
 		}
 		if (!user.emailVerified) {
 			user.emailVerified = true;
@@ -48,7 +48,3 @@ export async function emailResendVerification(
 	res.send(HTTP_STATUS.OK);
 	sendVerificationEmail(user, emailToken);
 }
-
-const getUserProps = (user: any) => {
-	return filterProps(user, ["__v", "password"], { _id: "id" });
-};

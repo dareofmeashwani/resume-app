@@ -2,7 +2,7 @@ import * as express from "express";
 import config from "../config";
 import * as path from "path";
 import fs from "fs";
-import { throwResumeError } from "../utils/resumeError";
+import { throwResumeError } from "../utils/errorHelper";
 import { HTTP_STATUS, ERROR_MESSAGES } from "../utils/constants";
 
 

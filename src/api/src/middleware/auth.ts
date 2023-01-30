@@ -1,7 +1,7 @@
 import express from "express";
 import { User } from "../models/userModel";
 import { HTTP_STATUS, ERROR_MESSAGES, ROLES } from "../utils/constants";
-import { throwResumeError } from "../utils/resumeError";
+import { throwResumeError } from "../utils/errorHelper";
 export async function loginCheck(
 	req: express.Request,
 	res: express.Response,

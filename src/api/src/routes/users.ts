@@ -7,7 +7,7 @@ import {
 } from "../utils/constants";
 import { User } from "../models/userModel";
 import { SESSION_ID } from "../utils/constants";
-import { throwResumeError } from "../utils/resumeError";
+import { throwResumeError } from "../utils/errorHelper";
 import { filterProps } from "../utils/helpers";
 import {
 	sendVerificationEmail,
@@ -79,7 +79,7 @@ export async function postLoginUser(
 	const compare = user && (await user.comparePassword(req.body.password));
 	if (!user || !compare) {
 		throwResumeError(
-			HTTP_STATUS.UNAUTHORIZED,
+			HTTP_STATUS.NOT_FOUND,
 			ERROR_MESSAGES.INVALID_CREDENTIALS,
 			req
 		);

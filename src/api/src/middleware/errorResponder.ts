@@ -1,6 +1,6 @@
 import express from "express";
 import { HTTP_STATUS, ERROR_MESSAGES } from "../utils/constants";
-import { ResumeError } from "../utils/resumeError";
+import { ResumeError } from "../utils/errorHelper";
 export default function errorResponder(
 	error: ResumeError | any,
 	req: express.Request,
@@ -9,7 +9,7 @@ export default function errorResponder(
 ) {
 	if (error.path) {
 		error = new ResumeError(
-			HTTP_STATUS.NOT_FOUND,
+			error.status,
 			{
 				message: error.message,
 				code: ERROR_MESSAGES.SPEC_VALIDATION_FAILED.code
@@ -27,9 +27,9 @@ export default function errorResponder(
 		);
 	}
 	const errorJson = error.toJson();
-	errorJson.resquestId = (req as any).requestId;
+	errorJson.requestId = (req as any).requestId;
 	console.log("########## ERROR ##########");
-	console.log("Request Id : " + errorJson.resquestId);
+	console.log("Request Id : " + errorJson.requestId);
 	console.log(errorJson);
 	res.status(error.statusCode).send(errorJson);
 }

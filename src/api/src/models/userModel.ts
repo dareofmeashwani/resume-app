@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import validator from "validator";
 import config from "../config";
-import { throwResumeError } from "../utils/resumeError";
+import { throwResumeError } from "../utils/errorHelper";
 import { HTTP_STATUS, ERROR_MESSAGES, ROLES, TOKEN_TYPES } from "../utils/constants";
 import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 import { generateToken, verifyToken } from "../utils/helpers";

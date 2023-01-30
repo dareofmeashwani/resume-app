@@ -1,6 +1,6 @@
 import * as express from "express";
 import { HTTP_STATUS, ERROR_MESSAGES, ROLES } from "../utils/constants";
-import { throwResumeError } from "../utils/resumeError";
+import { throwResumeError } from "../utils/errorHelper";
 import { getWeekStartEnd, filterProps, unique } from "../utils/helpers";
 import config from "../config";
 import meetingModel from "../models/meetingModel";
@@ -51,6 +51,13 @@ export const getMeeting = async function (
 			_id: req.params.meetingId,
 			createdBy: res.locals.userData.id
 		});
+		if(!response){
+			throwResumeError(
+				HTTP_STATUS.NOT_FOUND,
+				ERROR_MESSAGES.NOT_FOUND_ERROR,
+				req
+			);
+		}
 		res.status(HTTP_STATUS.OK).send(getProps(response._doc));
 	} catch (error) {
 		throwResumeError(
@@ -158,6 +165,13 @@ export const patchMeeting = async (
 			},
 			{ new: true }
 		);
+		if(!response){
+			throwResumeError(
+				HTTP_STATUS.NOT_FOUND,
+				ERROR_MESSAGES.NOT_FOUND_ERROR,
+				req
+			);
+		}
 	} catch (error) {
 		throwResumeError(
 			HTTP_STATUS.SERVICE_UNAVAILABLE,
@@ -237,7 +251,7 @@ export const deleteMeeting = async (
 	let attendees: any = unique([
 		...response._doc.members,
 		res.locals.userData.email,
-		admins.map((admin)=> admin.email)
+		admins.map((admin) => admin.email)
 	]);
 	let zoomData;
 	try {
@@ -324,7 +338,7 @@ export async function zoomResendInvite(
 	let attendees: any = unique([
 		...response._doc.members,
 		res.locals.userData.email,
-		admins.map((admin)=> admin.email)
+		admins.map((admin) => admin.email)
 	]);
 	sendZoomInvite(
 		res.locals.userData,

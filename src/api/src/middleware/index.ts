@@ -24,8 +24,7 @@ const validatorOptions = {
 	validateResponses: true,
 	
 };
-const openApiValidatorMw = OpenApiValidator.
-middleware(validatorOptions);
+const openApiValidatorMw = OpenApiValidator.middleware(validatorOptions);
 const bodyParserMw = bodyParser.json();
 
 export default {

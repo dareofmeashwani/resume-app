@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 import validator from "validator";
 import { HTTP_STATUS, ERROR_MESSAGES } from "../utils/constants";
-import { throwResumeError } from "../utils/resumeError";
+import { throwResumeError } from "../utils/errorHelper";
 const MeetingSchema = new mongoose.Schema({
 	title: {
 		type: String,
