@@ -13,10 +13,10 @@ import getText from "../../messages";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { errorHelper } from "../../utils";
-import { sendQuery,queryClear } from "../../store/actions/queryActions";
+import { sendQuery, queryClear } from "../../store/actions/queryActions";
 import OkDialog from "../controls/OkDialog";
 import { useDispatch, useSelector } from "react-redux";
-import FacebookIcon from '@mui/icons-material/Facebook';
+import FacebookIcon from "@mui/icons-material/Facebook";
 const Contact = () => {
 	const dispatch = useDispatch();
 	const phoneRegExp =
@@ -50,7 +50,7 @@ const Contact = () => {
 	let [message, setMessage] = React.useState("");
 	const onCloseDialog = () => {
 		setMessage("");
-		dispatch(queryClear())
+		dispatch(queryClear());
 	};
 	const queryData = useSelector((state) => {
 		return state.queryData;
@@ -74,72 +74,63 @@ const Contact = () => {
 					textAlign: "center"
 				}}
 			>
-				<Box
+				<Grid
+					container
 					sx={{
+						justifyContent: "space-evenly",
+						alignItems: "center",
 						border: 4,
-						height: 220
+						padding:"4rem"
 					}}
 				>
-					<Grid
-						flexDirection="row"
-						container
-						height="100%"
+					<Link
+						href="https://www.linkedin.com/in/connect2ashwaniverma"
+						target="_blank"
 						sx={{
-							
-							justifyContent: "space-evenly",
-							alignItems: "center"
+							backgroundColor: "transparent",
+							color: "#ffffff",
+							margin: "2rem"
 						}}
 					>
-						<Grid item>
-							<Link
-								href="https://www.linkedin.com/in/connect2ashwaniverma"
-								target="_blank"
-								sx={{
-									backgroundColor: "transparent",
-									color: "#ffffff"
-								}}
-							>
-								<LinkedInIcon sx={{ transform: "scale(3)" }} />
-							</Link>
-						</Grid>
-						<Grid item>
-							<Link
-								href="https://github.com/dareofmeashwani"
-								target="_blank"
-								sx={{
-									backgroundColor: "transparent",
-									color: "#ffffff"
-								}}
-							>
-								<GitHubIcon sx={{ transform: "scale(3)" }} href="/" />
-							</Link>
-						</Grid>
-						<Grid item>
-							<Link
-								href="mailto:connect2ashwaniverma@gmail.com"
-								target="_blank"
-								sx={{
-									backgroundColor: "transparent",
-									color: "#ffffff"
-								}}
-							>
-								<EmailIcon sx={{ transform: "scale(3)" }} />
-							</Link>
-						</Grid>
-						<Grid item>
-							<Link
-								href="https://www.facebook.com/dareofmeashwani"
-								target="_blank"
-								sx={{
-									backgroundColor: "transparent",
-									color: "#ffffff"
-								}}
-							>
-								<FacebookIcon sx={{ transform: "scale(3)" }} />
-							</Link>
-						</Grid>
-					</Grid>
-				</Box>
+						<LinkedInIcon sx={{ transform: "scale(3)" }} />
+					</Link>
+
+					<Link
+						href="https://github.com/dareofmeashwani"
+						target="_blank"
+						sx={{
+							backgroundColor: "transparent",
+							color: "#ffffff",
+							margin: "2rem"
+						}}
+					>
+						<GitHubIcon sx={{ transform: "scale(3)" }} href="/" />
+					</Link>
+
+					<Link
+						href="mailto:connect2ashwaniverma@gmail.com"
+						target="_blank"
+						sx={{
+							backgroundColor: "transparent",
+							color: "#ffffff",
+							margin: "2rem"
+						}}
+					>
+						<EmailIcon sx={{ transform: "scale(3)" }} />
+					</Link>
+
+					<Link
+						href="https://www.facebook.com/dareofmeashwani"
+						target="_blank"
+						sx={{
+							backgroundColor: "transparent",
+							color: "#ffffff",
+							margin: "2rem"
+						}}
+					>
+						<FacebookIcon sx={{ transform: "scale(3)" }} />
+					</Link>
+				</Grid>
 			</Box>
 			<Box
 				sx={{
