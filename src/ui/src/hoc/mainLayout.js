@@ -25,7 +25,7 @@ const MainLayout = (props) => {
 
 	return (
 		<>
-			<Container>{props.children}</Container>
+			<Container style={{marginBottom: "10%"}}>{props.children}</Container>
 			<ToastContainer />
 			<BusyIndicator />
 		</>

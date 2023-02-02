@@ -5,6 +5,13 @@ import busyIndicatorData from "./busyIndicatorReducer";
 import queryData from "./queryReducer";
 import downloadsData from "./downloadsReducer";
 import imagesData from "./imagesReducer";
+import educationsData from "./educationsReducer";
+import extracurricularsData from "./extracurricularsReducer";
+import projectsData from "./projectsReducer";
+import responsibilitiesData from "./responsibilitiesReducer";
+import skillsData from "./skillsReducer";
+import trainingsData from "./trainingsReducer";
+import workExperiencesData from "./workExperiencesReducer";
 
 const appReducers = combineReducers({
 	userData,
@@ -12,7 +19,14 @@ const appReducers = combineReducers({
 	busyIndicatorData,
 	queryData,
 	downloadsData,
-	imagesData
+	imagesData,
+	educationsData,
+	extracurricularsData,
+	projectsData,
+	responsibilitiesData,
+	skillsData,
+	trainingsData,
+	workExperiencesData
 });
 
 export default appReducers;

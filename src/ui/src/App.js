@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { isAuthUser } from "./store/actions/userActions";
 import Downloads from "./components/downloads";
 import Gallery from "./components/gallery";
+import AboutMe from "./components/aboutMe";
 const darkTheme = createTheme({
 	palette: {
 		mode: "dark",
@@ -36,7 +37,7 @@ const App = () => {
 						<Routes>
 							<Route path="" element={<Contact />} />
 							<Route path="home" element={<Home />} />
-							<Route path="aboutMe" element={<Home />} />
+							<Route path="aboutMe" element={<AboutMe />} />
 							<Route path="meeting" element={<Home />} />
 							<Route path="gallery" element={<Gallery />} />
 							<Route path="downloads" element={<Downloads />} />

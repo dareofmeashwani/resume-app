@@ -9,7 +9,7 @@ export default function notificationReducer(state = {}, action) {
 		case ERROR_GLOBAL:
 			return { type: 'error', ...action.payload };
 		case SUCCESS_GLOBAL:
-			return { type: 'error', ...action.payload };
+			return { type: 'success', ...action.payload };
 		case CLEAR_NOTIFICATION_GLOBAL:
 			return {};
 		default:

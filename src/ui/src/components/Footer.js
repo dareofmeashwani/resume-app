@@ -7,7 +7,6 @@ const Footer = (props) => {
 	return (
 		<Paper
 			sx={{
-				marginTop: "calc(10% + 60px)",
 				width: "100%",
 				position: "fixed",
 				bottom: 0,
