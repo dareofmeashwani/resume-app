@@ -9,6 +9,7 @@ import config from "./config";
 import * as api from "./routes";
 import middleware from "./middleware";
 import connectDb from "./utils/connectDb";
+import mongoose from "mongoose";
 import {
 	loginCheck,
 	emailVerifyCheck,
@@ -38,7 +39,18 @@ async function main() {
 			permissionsCheck
 		}
 	});
-	connectDb();
+	const mongoUri = `mongodb+srv://${config.DB_USERNAME}:${config.DB_PASSWORD}@${config.DB_HOSTNAME}?retryWrites=true&w=majority`;
+	mongoose.connect(
+		mongoUri,
+		{
+			serverSelectionTimeoutMS: 5000,
+			socketTimeoutMS: 45000,
+			dbName: config.DB_NAME
+		},
+		() => {
+			console.log("Connect to mongodb");
+		}
+	);
 	applyGlobalMiddleware("pre");
 	connect(app);
 	applyGlobalMiddleware("post");
