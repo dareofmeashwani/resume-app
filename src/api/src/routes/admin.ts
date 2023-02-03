@@ -1,8 +1,8 @@
 import * as express from "express";
-import { HTTP_STATUS, ERROR_MESSAGES, ROLES } from "../utils/constants";
+import { HTTP_STATUS, ERROR_MESSAGES, ROLES, query } from "../utils/constants";
 import { User } from "../models/userModel";
 import { throwResumeError } from "../utils/errorHelper";
-import { filterProps } from "../utils/helpers";
+import { filterProps, processQueryParam } from "../utils/helpers";
 
 const getUserProps = (user: any) => {
 	return filterProps(
@@ -25,6 +25,13 @@ const getUserProps = (user: any) => {
 
 export async function getAdminList(req: express.Request, res: express.Response) {
 	try {
+		const options = processQueryParam(
+			[query.limit, query.page, query.sort],
+			req.query
+		);
+		if (options.sort) {
+			options.sort = { createdAt: options.sort };
+		}
 		const users = await User.aggregatePaginate(
 			User.aggregate([
 				{

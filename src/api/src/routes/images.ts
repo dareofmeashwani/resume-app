@@ -4,13 +4,6 @@ import { HTTP_STATUS } from "../utils/constants";
 import fs from "fs";
 import config from "../config";
 
-var mime = {
-	gif: "image/gif",
-	jpg: "image/jpeg",
-	png: "image/png",
-	svg: "image/svg+xml"
-};
-
 export const imageList = function (
 	req: express.Request,
 	res: express.Response

@@ -97,3 +97,26 @@ export const MESSAGES = {
 		"Password reset link has been sent to your email, Please follow the link & reset your account password.",
 	EMAIL_VERIFIED: "Your email has been successfully verified"
 };
+
+export const query = {
+	sort: {
+		default: "desc",
+		key: "sort",
+		type: String
+	},
+	limit: {
+		key: "limit",
+		type: Number,
+		default: 25
+	},
+	page: {
+		key: "page",
+		type: Number,
+		default: 0
+	},
+	status: {
+		key: "status",
+		type: String,
+		default: "public"
+	}
+}

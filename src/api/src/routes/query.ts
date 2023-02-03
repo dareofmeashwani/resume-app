@@ -1,8 +1,8 @@
 import * as express from "express";
-import { HTTP_STATUS, ERROR_MESSAGES } from "../utils/constants";
+import { HTTP_STATUS, ERROR_MESSAGES, query } from "../utils/constants";
 import Query from "../models/queryModel";
 import { throwResumeError } from "../utils/errorHelper";
-import { filterProps } from "../utils/helpers";
+import { filterProps, processQueryParam } from "../utils/helpers";
 import { sendQueryNotificationToAdmin } from "../utils/email";
 
 export async function getQueryList(
@@ -10,12 +10,14 @@ export async function getQueryList(
 	res: express.Response
 ) {
 	try {
-		/*const options = {
-            page: req.body.page,
-            limit,
-            sort:{_id:'asc'}
-        }*/
-		const queries = await Query.aggregatePaginate(Query.aggregate());
+		const options = processQueryParam(
+			[query.limit, query.page, query.sort],
+			req.query
+		);
+		if (options.sort) {
+			options.sort = { createdAt: options.sort };
+		}
+		const queries = await Query.aggregatePaginate(Query.aggregate(), options);
 		queries.docs = queries.docs.map((user: any) => getProps(user));
 		res.status(HTTP_STATUS.OK).send(queries);
 	} catch (error) {

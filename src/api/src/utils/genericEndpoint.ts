@@ -1,6 +1,7 @@
 import * as express from "express";
-import { HTTP_STATUS, ERROR_MESSAGES } from "./constants";
+import { HTTP_STATUS, ERROR_MESSAGES, query } from "./constants";
 import { throwResumeError } from "./errorHelper";
+import { processQueryParam } from "./helpers";
 
 export default function createEndpoints(
 	model: any,
@@ -12,7 +13,14 @@ export default function createEndpoints(
 		res: express.Response
 	) {
 		try {
-			const docList = await model.aggregatePaginate(model.aggregate());
+			const options = processQueryParam(
+				[query.limit, query.page, query.sort, query.status],
+				req.query
+			);
+			if (options.sort) {
+				options.sort = { createdAt: options.sort };
+			}
+			const docList = await model.aggregatePaginate(model.aggregate(), options);
 			docList.docs = docList.docs.map((doc: any) => propsFn(doc));
 			res.status(HTTP_STATUS.OK).send(docList);
 			return docList;

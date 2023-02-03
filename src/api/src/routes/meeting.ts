@@ -1,7 +1,7 @@
 import * as express from "express";
-import { HTTP_STATUS, ERROR_MESSAGES, ROLES } from "../utils/constants";
+import { HTTP_STATUS, ERROR_MESSAGES, ROLES, query } from "../utils/constants";
 import { throwResumeError } from "../utils/errorHelper";
-import { getWeekStartEnd, filterProps, unique } from "../utils/helpers";
+import { getWeekStartEnd, filterProps, unique, processQueryParam } from "../utils/helpers";
 import config from "../config";
 import meetingModel from "../models/meetingModel";
 import * as zoom from "../utils/zoomApi";
@@ -22,6 +22,13 @@ export const getMeetingList = async function (
 	res: express.Response
 ) {
 	try {
+		const options = processQueryParam(
+			[query.limit, query.page, query.sort],
+			req.query
+		);
+		if (options.sort) {
+			options.sort = { createdAt: options.sort };
+		}
 		const docList = await meetingModel.aggregatePaginate(
 			meetingModel.aggregate([
 				{
@@ -29,7 +36,8 @@ export const getMeetingList = async function (
 						createdBy: res.locals.userData.id
 					}
 				}
-			])
+			]),
+			options
 		);
 		docList.docs = docList.docs.map((doc: any) => getProps(doc));
 		res.status(HTTP_STATUS.OK).send(docList);

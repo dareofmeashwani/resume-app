@@ -81,3 +81,16 @@ export function verifyToken(token: string) {
 	const decryptedToken = jwt.verify(token, config.PRIVATE_KEY2) as any;
 	return jwt.verify(decryptedToken.data, config.PRIVATE_KEY);
 }
+
+export function processQueryParam(queryList: any[], reqQuery: any) {
+	const params: any = {};
+	queryList &&
+		queryList.forEach((query) => {
+			const key = query.key;
+			const value = reqQuery[key] || query.default;
+			if (value) {
+				params[key] = (query.type && query.type(value)) || value;
+			}
+		});
+	return params;
+}

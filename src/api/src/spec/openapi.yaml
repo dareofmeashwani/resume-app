@@ -33,6 +33,10 @@ paths:
     - permissionsCheck
    summary: list of admin detail
    operationId: getAdminList
+   parameters:
+    - $ref: "#/components/parameters/Sort"
+    - $ref: "#/components/parameters/Page"
+    - $ref: "#/components/parameters/Limit"
    responses:
     "200":
      description: "list of admin detail"
@@ -59,6 +63,10 @@ paths:
     - ADMIN
    summary: list of user detail
    operationId: getListUser
+   parameters:
+    - $ref: "#/components/parameters/Sort"
+    - $ref: "#/components/parameters/Page"
+    - $ref: "#/components/parameters/Limit"
    responses:
     "200":
      description: "list of user detail"
@@ -208,6 +216,11 @@ paths:
     - Education
    summary: list educations
    operationId: getEducationList
+   parameters:
+    - $ref: "#/components/parameters/Sort"
+    - $ref: "#/components/parameters/Page"
+    - $ref: "#/components/parameters/Limit"
+    - $ref: "#/components/parameters/Status"
    responses:
     "200":
      description: returns list of educations
@@ -330,6 +343,11 @@ paths:
     - ExtraCurricular
    summary: list extra curriculars
    operationId: getExtraCurricularList
+   parameters:
+    - $ref: "#/components/parameters/Sort"
+    - $ref: "#/components/parameters/Page"
+    - $ref: "#/components/parameters/Limit"
+    - $ref: "#/components/parameters/Status"
    responses:
     "200":
      description: returns list of extra curricular
@@ -452,6 +470,11 @@ paths:
     - Project
    summary: list project
    operationId: getProjectList
+   parameters:
+    - $ref: "#/components/parameters/Sort"
+    - $ref: "#/components/parameters/Page"
+    - $ref: "#/components/parameters/Limit"
+    - $ref: "#/components/parameters/Status"
    responses:
     "200":
      description: returns list of project
@@ -574,6 +597,11 @@ paths:
     - Responsibility
    summary: list responsibilities
    operationId: getResponsibilityList
+   parameters:
+    - $ref: "#/components/parameters/Sort"
+    - $ref: "#/components/parameters/Page"
+    - $ref: "#/components/parameters/Limit"
+    - $ref: "#/components/parameters/Status"
    responses:
     "200":
      description: returns list of responsibilities
@@ -696,6 +724,11 @@ paths:
     - Skill
    summary: list skill
    operationId: getSkillList
+   parameters:
+    - $ref: "#/components/parameters/Sort"
+    - $ref: "#/components/parameters/Page"
+    - $ref: "#/components/parameters/Limit"
+    - $ref: "#/components/parameters/Status"
    responses:
     "200":
      description: returns list of skill
@@ -818,6 +851,11 @@ paths:
     - Training
    summary: list training
    operationId: getTrainingList
+   parameters:
+    - $ref: "#/components/parameters/Sort"
+    - $ref: "#/components/parameters/Page"
+    - $ref: "#/components/parameters/Limit"
+    - $ref: "#/components/parameters/Status"
    responses:
     "200":
      description: returns list of training
@@ -940,6 +978,11 @@ paths:
     - WorkExperience
    summary: list Work Experiences
    operationId: getWorkExperienceList
+   parameters:
+    - $ref: "#/components/parameters/Sort"
+    - $ref: "#/components/parameters/Page"
+    - $ref: "#/components/parameters/Limit"
+    - $ref: "#/components/parameters/Status"
    responses:
     "200":
      description: returns list of Work Experiences
@@ -1068,6 +1111,10 @@ paths:
     - ADMIN
    summary: list queries
    operationId: getQueryList
+   parameters:
+    - $ref: "#/components/parameters/Sort"
+    - $ref: "#/components/parameters/Page"
+    - $ref: "#/components/parameters/Limit"
    responses:
     "200":
      description: returns list of submitted queries
@@ -1135,6 +1182,10 @@ paths:
     - emailVerifyCheck
    summary: list meetings
    operationId: getMeetingList
+   parameters:
+    - $ref: "#/components/parameters/Sort"
+    - $ref: "#/components/parameters/Page"
+    - $ref: "#/components/parameters/Limit"
    responses:
     "200":
      description: returns list of meetings
@@ -2428,7 +2479,18 @@ components:
    type: string
    maxLength: 256
    minLength: 1
-
+  Sort:
+   type: string
+   default: asc
+   enum:
+    - asc
+    - desc
+  Status:
+   type: string
+   default: public
+   enum:
+    - public
+    - draft
  #######################################
  ############  Parameters  #############
  #######################################
@@ -2515,4 +2577,35 @@ components:
    required: true
    schema:
     allOf:
-     - $ref: "#/components/schemas/Filename"
+     - $ref: "#/components/schemas/Sort"
+  Sort:
+   name: sort
+   description: sort query parameter
+   in: query
+   required: false
+   schema:
+    allOf:
+     - $ref: "#/components/schemas/Sort"
+  Limit:
+   name: limit
+   description: limit query parameter
+   in: query
+   required: false
+   schema:
+    default: 25
+    type: integer
+  Page:
+   name: page
+   description: page query parameter
+   in: query
+   required: false
+   schema:
+    type: integer
+  Status:
+   name: status
+   description: status query parameter
+   in: query
+   required: false
+   schema:
+    allOf:
+     - $ref: "#/components/schemas/Status"

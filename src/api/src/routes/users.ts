@@ -3,12 +3,13 @@ import {
 	HTTP_STATUS,
 	ERROR_MESSAGES,
 	ROLES,
-	MESSAGES
+	MESSAGES,
+	query
 } from "../utils/constants";
 import { User } from "../models/userModel";
 import { SESSION_ID } from "../utils/constants";
 import { throwResumeError } from "../utils/errorHelper";
-import { filterProps } from "../utils/helpers";
+import { filterProps, processQueryParam } from "../utils/helpers";
 import {
 	sendVerificationEmail,
 	sendWelcomeEmail,
@@ -17,6 +18,13 @@ import {
 
 export async function getListUser(req: express.Request, res: express.Response) {
 	try {
+		const options = processQueryParam(
+			[query.limit, query.page, query.sort],
+			req.query
+		);
+		if (options.sort) {
+			options.sort = { createdAt: options.sort };
+		}
 		const users = await User.aggregatePaginate(
 			User.aggregate([
 				{
@@ -24,7 +32,8 @@ export async function getListUser(req: express.Request, res: express.Response) {
 						role: ROLES.USER
 					}
 				}
-			])
+			]),
+			options
 		);
 		users.docs = users.docs.map((user: any) => getUserProps(user));
 		res.status(HTTP_STATUS.OK).send(users);
