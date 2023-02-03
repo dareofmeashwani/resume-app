@@ -117,6 +117,6 @@ export const query = {
 	status: {
 		key: "status",
 		type: String,
-		default: "public"
+		default: "all"
 	}
 }

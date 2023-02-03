@@ -2487,10 +2487,11 @@ components:
     - desc
   Status:
    type: string
-   default: public
+   default: all
    enum:
     - public
     - draft
+    - all
  #######################################
  ############  Parameters  #############
  #######################################

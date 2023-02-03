@@ -20,7 +20,18 @@ export default function createEndpoints(
 			if (options.sort) {
 				options.sort = { createdAt: options.sort };
 			}
-			const docList = await model.aggregatePaginate(model.aggregate(), options);
+			const docFilter: any = {};
+			if (options.status !== "all") {
+				docFilter.status = options.status;
+			}
+			const docList = await model.aggregatePaginate(
+				model.aggregate([
+					{
+						$match: docFilter
+					}
+				]),
+				options
+			);
 			docList.docs = docList.docs.map((doc: any) => propsFn(doc));
 			res.status(HTTP_STATUS.OK).send(docList);
 			return docList;
