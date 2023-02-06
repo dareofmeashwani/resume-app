@@ -2578,7 +2578,7 @@ components:
    required: true
    schema:
     allOf:
-     - $ref: "#/components/schemas/Sort"
+     - $ref: "#/components/schemas/Filename"
   Sort:
    name: sort
    description: sort query parameter
