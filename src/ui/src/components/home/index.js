@@ -75,15 +75,15 @@ const AboutMe = () => {
 			<ScrollPage>
 				<Animator animation={batch(Fade(), Sticky())}>
 					<Box>
-						<span style={{ fontSize: "30px" }}>
+						<div style={{ fontSize: "30px", textAlign:"center" }}>
 							I have done a B.Tech. from UPTU and an M.Tech. from IIT Kharagpur in Computer
 							Science
-						</span>
+						</div>
 					</Box>
 					<Box>
-						<span style={{ fontSize: "30px" }}>
+						<div style={{ fontSize: "30px", textAlign:"center" }}>
 							Since 2018, I am working with SAP
-						</span>
+						</div>
 					</Box>
 				</Animator>
 			</ScrollPage>
