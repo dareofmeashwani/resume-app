@@ -57,6 +57,13 @@ async function main() {
 	const port = config.PORT;
 	app.use(express.static(path.join(__dirname, "public")));
 	app.use("/images", express.static(path.join(__dirname, "images")));
+	app.get('/*', function(req, res) {
+		res.sendFile(path.join(__dirname, 'public/index.html'), function(err) {
+		  if (err) {
+			res.status(500).send(err)
+		  }
+		})
+	  })
 	await prepareContent();
 	app.listen(port, () => {
 		console.log(`Server running on port ${port}`);

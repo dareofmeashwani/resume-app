@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, HashRouter } from "react-router-dom";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import GoogleFontLoader from "react-google-font-loader";
 import MainLayout from "./hoc/mainLayout";
 import Home from "./components/home";
@@ -30,7 +30,7 @@ const App = () => {
 		<>
 			<Particle />
 			<BusyIndicator />
-			<HashRouter>
+			<BrowserRouter>
 				<ThemeProvider theme={darkTheme}>
 					<Header />
 					<MainLayout>
@@ -53,7 +53,7 @@ const App = () => {
 						]}
 					/>
 				</ThemeProvider>
-			</HashRouter>
+			</BrowserRouter>
 		</>
 	);
 };
