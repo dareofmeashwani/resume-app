@@ -76,7 +76,7 @@ const AboutMe = () => {
 				<Animator animation={batch(Fade(), Sticky())}>
 					<Box>
 						<div style={{ fontSize: "30px", textAlign: "center" }}>
-							I have done a B.Tech. from UPTU and an M.Tech. from IIT Kharagpur in
+							I have done B.Tech. from UPTU and M.Tech. from IIT Kharagpur in
 							Computer Science
 						</div>
 					</Box>
