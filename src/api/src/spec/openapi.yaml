@@ -1545,7 +1545,7 @@ components:
     application/json:
      schema:
       allOf:
-       - $ref: "#/components/schemas/QueryDetailRequired"
+       - $ref: "#/components/schemas/QueryDetailBase"
 
   MeetingBody:
    description: meeting payload for creation
@@ -2308,7 +2308,7 @@ components:
 
   QueryDetail:
    allOf:
-    - $ref: "#/components/schemas/QueryDetailRequired"
+    - $ref: "#/components/schemas/QueryDetailBase"
    type: object
    required:
     - id
@@ -2320,16 +2320,6 @@ components:
     createdAt:
      allOf:
       - $ref: "#/components/schemas/createdAt"
-
-  QueryDetailRequired:
-   allOf:
-    - $ref: "#/components/schemas/QueryDetailBase"
-   type: object
-   required:
-    - name
-    - subject
-    - mobile
-    - email
 
   QueryDetailBase:
    type: object

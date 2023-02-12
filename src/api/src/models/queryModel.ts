@@ -8,11 +8,9 @@ const QuerySchema = new mongoose.Schema({
         type: String,
         maxLength: 200,
         trim: true,
-        required: true,
     },
     subject: {
         type: String,
-        required: true,
         maxLength: 200,
         trim: true
     },
@@ -23,7 +21,6 @@ const QuerySchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        required: true,
         trim: true,
         lowercase: true,
         maxLength: 200,
@@ -36,7 +33,6 @@ const QuerySchema = new mongoose.Schema({
     mobile: {
         type: String,
         maxLength: 13,
-        required: true,
         validate(value : string) {
             if (!validator.isMobilePhone(value)) {
                 throwResumeError(HTTP_STATUS.BAD_REQUEST,ERROR_MESSAGES.INVALID_MOBILE);

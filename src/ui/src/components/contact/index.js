@@ -30,16 +30,14 @@ const Contact = () => {
 			description: ""
 		},
 		validationSchema: Yup.object({
-			name: Yup.string().required(getText("inputNameRequired")).max(200),
+			name: Yup.string().max(200),
 			email: Yup.string()
-				.required(getText("inputEmailRequired"))
 				.email(getText("invalidEmailInputWarning"))
 				.max(256),
 			mobile: Yup.string()
-				.required(getText("inputMobileNumberRequired"))
 				.matches(phoneRegExp, getText("inputInvalidMobileNumber"))
 				.max(13),
-			subject: Yup.string().required(getText("inputSubjectRequired")).max(200),
+			subject: Yup.string().max(200),
 			description: Yup.string().max(500)
 		}),
 		onSubmit: (values) => {
@@ -144,7 +142,6 @@ const Contact = () => {
 					<Grid container spacing={2}>
 						<Grid item xs={12}>
 							<TextField
-								required
 								sx={{ width: "25rem" }}
 								autoComplete="given-name"
 								name="name"
@@ -156,7 +153,6 @@ const Contact = () => {
 						</Grid>
 						<Grid item xs={12}>
 							<TextField
-								required
 								sx={{ width: "25rem" }}
 								id="email"
 								type="email"
@@ -169,7 +165,6 @@ const Contact = () => {
 						</Grid>
 						<Grid item xs={12}>
 							<TextField
-								required
 								sx={{ width: "25rem" }}
 								id="mobile"
 								type="tel"
@@ -182,7 +177,6 @@ const Contact = () => {
 						</Grid>
 						<Grid item xs={12}>
 							<TextField
-								required
 								sx={{ width: "25rem" }}
 								autoComplete="subject"
 								name="subject"
