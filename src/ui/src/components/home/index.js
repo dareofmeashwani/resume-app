@@ -37,9 +37,16 @@ const AboutMe = (props) => {
 			</ScrollPage>
 			<ScrollPage>
 				<Animator animation={FadeOut}>
-					<span style={{ fontSize: "40px", justifyContent: "center" }}>
+					<Box
+						style={{
+							display: "flex",
+							fontSize: "40px",
+							justifyContent: "center",
+							alignItems: "center"
+						}}
+					>
 						A Senior Software Engineer ✨
-					</span>
+					</Box>
 				</Animator>
 			</ScrollPage>
 			<ScrollPage>
@@ -69,14 +76,15 @@ const AboutMe = (props) => {
 			<ScrollPage>
 				<Animator animation={batch(Fade(), Sticky())}>
 					<Box>
-					<span style={{ fontSize: "30px" }}>
-					I have a B.Tech. from UPTU and an M.Tech. from IIT Kharagpur in Computer Science
-					</span>
+						<span style={{ fontSize: "30px" }}>
+							I have a B.Tech. from UPTU and an M.Tech. from IIT Kharagpur in Computer
+							Science
+						</span>
 					</Box>
 					<Box>
-					<span style={{ fontSize: "30px" }}>
-						I am working with SAP since 2018
-					</span>
+						<span style={{ fontSize: "30px" }}>
+							Since 2018, I am working with SAP
+						</span>
 					</Box>
 				</Animator>
 			</ScrollPage>
