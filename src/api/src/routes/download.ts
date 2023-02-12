@@ -11,6 +11,10 @@ export const downloadsList = function (
 	res: express.Response
 ) {
 	const filesPath = path.join(__dirname, "../downloads");
+	if (!fs.existsSync(filesPath)) {
+		res.status(HTTP_STATUS.OK).send([]);
+		return;
+	}
 	const fileList = fs
 		.readdirSync(filesPath)
 		.map((file) => encodeURI(`${config.DOMAIN_ADDRESS}/api/v1/downloads/${file}`));

@@ -17,3 +17,7 @@ export function errorHelper(formik, values) {
 				: null
 	};
 }
+
+export function capitalizeString(text) {
+    return text && typeof (text) === "string" ? text[0].toUpperCase() + text.slice(1) : text;
+}

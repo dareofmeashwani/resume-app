@@ -1,6 +1,5 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import Link from "@mui/material/Link";
 import { getEducationsList } from "../../store/actions/educationsActions";
 import { getExtraCurricularsList } from "../../store/actions/extraCurricularsActions";
 import { getProjectsList } from "../../store/actions/projectsActions";
@@ -9,6 +8,7 @@ import { getSkillsList } from "../../store/actions/skillsActions";
 import { getTrainingsList } from "../../store/actions/trainingsActions";
 import { getWorkExperiencesList } from "../../store/actions/workExperiencesActions";
 import { useDispatch, useSelector } from "react-redux";
+import { capitalizeString } from "../../utils";
 const AboutMe = (props) => {
 	const dispatch = useDispatch();
 	const data = useSelector((state) => {
@@ -70,6 +70,10 @@ const AboutMe = (props) => {
 				textAlign: "left"
 			}}
 		>
+			{Object.keys(data).map((key) => {
+				const title = capitalizeString(key);
+				return title
+			})}
 		</Box>
 	);
 };
