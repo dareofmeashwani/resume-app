@@ -12,7 +12,7 @@ const Downloads = (props) => {
 		if (!downloadsData) {
 			dispatch(getDownloadList());
 		}
-	}, []);
+	}, [dispatch, downloadsData]);
 	const transformLink = (link, index) => {
 		const lastIndex = link.lastIndexOf("/");
 		const filename = decodeURI(link.slice(lastIndex + 1));
@@ -28,8 +28,8 @@ const Downloads = (props) => {
 	return (
 		<Box
 			sx={{
-				marginLeft: "20%",
-				marginRight: "20%",
+				marginLeft: "15%",
+				marginRight: "15%",
 				marginTop: "5%",
 				marginBottom: "5%",
 				alignContent: "left",

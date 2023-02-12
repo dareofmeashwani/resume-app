@@ -9,7 +9,13 @@ import { getTrainingsList } from "../../store/actions/trainingsActions";
 import { getWorkExperiencesList } from "../../store/actions/workExperiencesActions";
 import { useDispatch, useSelector } from "react-redux";
 import { capitalizeString } from "../../utils";
-const AboutMe = (props) => {
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import Typography from "@mui/material/Typography";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+
+const AboutMe = () => {
 	const dispatch = useDispatch();
 	const data = useSelector((state) => {
 		const data = {};
@@ -59,11 +65,15 @@ const AboutMe = (props) => {
 			dispatch(getWorkExperiencesList());
 		}
 	}, []);
+	const [expanded, setExpanded] = React.useState(false);
+	const handlePanelChange = (panel) => (event, isExpanded) => {
+		setExpanded(isExpanded ? panel : false);
+	};
 	return (
 		<Box
 			sx={{
-				marginLeft: "20%",
-				marginRight: "20%",
+				marginLeft: "15%",
+				marginRight: "15%",
 				marginTop: "5%",
 				marginBottom: "5%",
 				alignContent: "left",
@@ -71,8 +81,33 @@ const AboutMe = (props) => {
 			}}
 		>
 			{Object.keys(data).map((key) => {
-				const title = capitalizeString(key);
-				return title
+				if (Array.isArray(data[key].docs) && data[key].docs.length) {
+					return (
+						<Box key={key}>
+							<Accordion
+								style={{ marginTop: ".5rem", marginBottom: "0.5rem" }}
+								expanded={expanded === "panel" + key}
+								onChange={handlePanelChange("panel" + key)}
+							>
+								<AccordionSummary
+									expandIcon={<ExpandMoreIcon />}
+									aria-controls="panel1bh-content"
+									id="panel1bh-header"
+								>
+									<Typography sx={{ width: "33%", flexShrink: 0 }}>
+										{capitalizeString(key)}
+									</Typography>
+								</AccordionSummary>
+								<AccordionDetails>
+									<Typography>
+										
+									</Typography>
+								</AccordionDetails>
+							</Accordion>
+						</Box>
+					);
+				}
+				return null;
 			})}
 		</Box>
 	);

@@ -3,8 +3,6 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Unstable_Grid2";
 import CloseIcon from "@mui/icons-material/Close";
-import ImageList from "@mui/material/ImageList";
-import ImageListItem from "@mui/material/ImageListItem";
 import { getImageList } from "../../store/actions/imagesActions";
 import { useDispatch, useSelector } from "react-redux";
 import Dialog from "@mui/material/Dialog";
@@ -67,8 +65,8 @@ const Gallery = (props) => {
 
 			<Box
 				sx={{
-					marginLeft: "20%",
-					marginRight: "20%",
+					marginLeft: "15%",
+					marginRight: "15%",
 					marginTop: "5%",
 					marginBottom: "5%",
 					alignContent: "left",

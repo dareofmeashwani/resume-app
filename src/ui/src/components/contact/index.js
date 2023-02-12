@@ -65,8 +65,8 @@ const Contact = () => {
 			<OkDialog closeHandler={onCloseDialog} message={message} />
 			<Box
 				sx={{
-					marginLeft: "20%",
-					marginRight: "20%",
+					marginLeft: "15%",
+					marginRight: "15%",
 					marginTop: "5%",
 					marginBottom: "5%",
 					alignContent: "center",
@@ -134,8 +134,8 @@ const Contact = () => {
 			</Box>
 			<Box
 				sx={{
-					marginLeft: "20%",
-					marginRight: "20%",
+					marginLeft: "15%",
+					marginRight: "15%",
 					marginBottom: "5%"
 				}}
 			>
