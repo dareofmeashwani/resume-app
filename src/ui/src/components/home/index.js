@@ -13,7 +13,7 @@ import {
 	MoveOut,
 	Sticky,
 	StickyIn,
-	ZoomIn,
+	ZoomIn
 } from "react-scroll-motion";
 const AboutMe = (props) => {
 	const ZoomInScrollOut = batch(StickyIn(), FadeIn(), ZoomIn());
@@ -69,8 +69,10 @@ const AboutMe = (props) => {
 			<ScrollPage>
 				<Animator animation={batch(Fade(), Sticky())}>
 					<span style={{ fontSize: "30px" }}>
-						I have done B.Tech from UPTU & M.Tech from IIT Kharagpur in Computer
-						Science.
+					I have a B.Tech. from UPTU and an M.Tech. from IIT Kharagpur in Computer Science.
+					</span>
+					<span style={{ fontSize: "30px" }}>
+						I am working with SAP since 2018.
 					</span>
 				</Animator>
 			</ScrollPage>
