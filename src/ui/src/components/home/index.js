@@ -36,7 +36,7 @@ const AboutMe = (props) => {
 				</Animator>
 			</ScrollPage>
 			<ScrollPage>
-				<Animator animation={FadeOut}>
+				<Animator animation={FadeUp}>
 					<Box
 						style={{
 							display: "flex",
