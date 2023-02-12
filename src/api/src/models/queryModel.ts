@@ -25,7 +25,7 @@ const QuerySchema = new mongoose.Schema({
         lowercase: true,
         maxLength: 200,
         validate(value : string) {
-            if (!validator.isEmail(value)) {
+            if (value && !validator.isEmail(value)) {
                 throwResumeError(HTTP_STATUS.BAD_REQUEST,ERROR_MESSAGES.INVALID_EMAIL);
             }
         }
@@ -34,7 +34,7 @@ const QuerySchema = new mongoose.Schema({
         type: String,
         maxLength: 13,
         validate(value : string) {
-            if (!validator.isMobilePhone(value)) {
+            if (value && !validator.isMobilePhone(value)) {
                 throwResumeError(HTTP_STATUS.BAD_REQUEST,ERROR_MESSAGES.INVALID_MOBILE);
             }
         }
