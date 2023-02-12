@@ -1,5 +1,5 @@
 import React from "react";
-
+import Box from "@mui/material/Box";
 import {
 	Animator,
 	ScrollContainer,
@@ -68,12 +68,16 @@ const AboutMe = (props) => {
 			</ScrollPage>
 			<ScrollPage>
 				<Animator animation={batch(Fade(), Sticky())}>
+					<Box>
 					<span style={{ fontSize: "30px" }}>
-					I have a B.Tech. from UPTU and an M.Tech. from IIT Kharagpur in Computer Science.
+					I have a B.Tech. from UPTU and an M.Tech. from IIT Kharagpur in Computer Science
 					</span>
+					</Box>
+					<Box>
 					<span style={{ fontSize: "30px" }}>
-						I am working with SAP since 2018.
+						I am working with SAP since 2018
 					</span>
+					</Box>
 				</Animator>
 			</ScrollPage>
 		</ScrollContainer>
