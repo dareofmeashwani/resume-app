@@ -58,18 +58,18 @@ const AboutMe = (props) => {
 					}}
 				>
 					<span style={{ fontSize: "30px" }}>
-						<Animator animation={MoveOut(-1000, -1000)}>Javascript</Animator>
-						<Animator animation={MoveOut(1000, -1000)}>Rest Api</Animator>
-						<Animator animation={MoveIn(-1000, 1000)}>Python</Animator>
+						<Animator animation={MoveIn(-1000, -1000)}>Javascript</Animator>
 						<Animator animation={MoveIn(1000, -1000)}>NodeJs</Animator>
-						<Animator animation={MoveIn(-1000, -1000)}>Docker</Animator>
-						<Animator animation={MoveIn(1000, 1000)}>Micro Services</Animator>
-						<Animator animation={MoveOut(1000, 1000)}>Typescript</Animator>
-						<Animator animation={MoveOut(-1000, 1000)}>Kubernetes</Animator>
+						<Animator animation={MoveIn(-1000, 1000)}>Typescript</Animator>
+						<Animator animation={MoveIn(1000, -1000)}>ReactJs</Animator>
+						<Animator animation={MoveIn(-1000, -1000)}>Python</Animator>
+						<Animator animation={MoveIn(1000, 1000)}>Docker</Animator>
+						<Animator animation={MoveOut(1000, 1000)}>Kubernetes</Animator>
 						<Animator animation={MoveOut(0, 1000)}>MySQL</Animator>
 						<Animator animation={MoveOut(1000, 0)}>MongoDb</Animator>
-						<Animator animation={MoveIn(-1000, 0)}>ReactJs</Animator>
-						<Animator animation={MoveIn(0, -1000)}>Git</Animator>
+						<Animator animation={MoveOut(-1000, -1000)}>Rest Api</Animator>
+						<Animator animation={MoveOut(-1000, 0)}>Micro-Services</Animator>
+						<Animator animation={MoveOut(-1000, 1000)}>Git</Animator>
 					</span>
 				</div>
 			</ScrollPage>
