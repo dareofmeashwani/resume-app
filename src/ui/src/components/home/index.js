@@ -7,7 +7,6 @@ import {
 	batch,
 	Fade,
 	FadeIn,
-	FadeOut,
 	Move,
 	MoveIn,
 	MoveOut,
@@ -15,7 +14,7 @@ import {
 	StickyIn,
 	ZoomIn
 } from "react-scroll-motion";
-const AboutMe = (props) => {
+const AboutMe = () => {
 	const ZoomInScrollOut = batch(StickyIn(), FadeIn(), ZoomIn());
 	const FadeUp = batch(Fade(), Move(), Sticky());
 	return (
@@ -77,7 +76,7 @@ const AboutMe = (props) => {
 				<Animator animation={batch(Fade(), Sticky())}>
 					<Box>
 						<span style={{ fontSize: "30px" }}>
-							I have a B.Tech. from UPTU and an M.Tech. from IIT Kharagpur in Computer
+							I have done a B.Tech. from UPTU and an M.Tech. from IIT Kharagpur in Computer
 							Science
 						</span>
 					</Box>
