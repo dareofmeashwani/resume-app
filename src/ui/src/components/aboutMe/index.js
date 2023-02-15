@@ -14,16 +14,17 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import getText from "../../messages";
 
 const AboutMe = () => {
 	const dispatch = useDispatch();
-	const data = useSelector((state) => {
+	let data = useSelector((state) => {
 		const data = {};
 		if (state.educationsData.data) {
 			data.educations = state.educationsData.data;
 		}
 		if (state.extracurricularsData.data) {
-			data.extracurriculars = state.extracurricularsData.data;
+			data.extraCurriculars = state.extracurricularsData.data;
 		}
 		if (state.projectsData.data) {
 			data.projects = state.projectsData.data;
@@ -46,7 +47,7 @@ const AboutMe = () => {
 		if (!data.educations) {
 			dispatch(getEducationsList());
 		}
-		if (!data.extracurriculars) {
+		if (!data.extraCurriculars) {
 			dispatch(getExtraCurricularsList());
 		}
 		if (!data.projects) {
@@ -69,6 +70,21 @@ const AboutMe = () => {
 	const handlePanelChange = (panel) => (event, isExpanded) => {
 		setExpanded(isExpanded ? panel : false);
 	};
+	data = [
+		"educations",
+		"workExperiences",
+		"skills",
+		"projects",
+		"trainings",
+		"responsibilities",
+		"extraCurriculars"
+	]
+		.map((resourceType) => ({
+			title: getText(resourceType),
+			response: data[resourceType],
+			key: resourceType
+		}))
+		.filter((item) => !!item.response);
 	return (
 		<Box
 			sx={{
@@ -80,8 +96,10 @@ const AboutMe = () => {
 				textAlign: "left"
 			}}
 		>
-			{Object.keys(data).map((key) => {
-				if (Array.isArray(data[key].docs) && data[key].docs.length) {
+			{data.map((resource) => {
+				const docs = resource.response.docs;
+				const key = resource.key;
+				if (Array.isArray(docs) && docs.length) {
 					return (
 						<Box key={key}>
 							<Accordion
@@ -95,13 +113,28 @@ const AboutMe = () => {
 									id="panel1bh-header"
 								>
 									<Typography sx={{ width: "33%", flexShrink: 0 }}>
-										{capitalizeString(key)}
+										{capitalizeString(resource.title)}
 									</Typography>
 								</AccordionSummary>
 								<AccordionDetails>
-									<Typography>
-										
-									</Typography>
+									{docs.map((document) => {
+										return (
+											<Accordion key={document.id}
+											>
+												<AccordionSummary
+													expandIcon={<ExpandMoreIcon />}
+
+												>
+													<Typography sx={{ flexShrink: 0 }}>
+														{capitalizeString(document.id)}
+													</Typography>
+												</AccordionSummary>
+												<AccordionDetails>
+													<Typography></Typography>
+												</AccordionDetails>
+											</Accordion>
+										);
+									})}
 								</AccordionDetails>
 							</Accordion>
 						</Box>

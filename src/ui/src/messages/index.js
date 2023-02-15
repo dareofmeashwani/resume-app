@@ -42,7 +42,14 @@ const messages = {
 	inputNameRequired: "Sorry the name is required",
 	inputSubjectRequired: "Sorry the subject is required",
 	ok: "Ok",
-	querySuccessMsg: "Your Query has been successfully submitted. I will reach out to you soon. Thank You"
+	querySuccessMsg: "Your Query has been successfully submitted. I will reach out to you soon. Thank You",
+	educations: "Educations",
+	extraCurriculars: "Extra Curriculars",
+	projects: "Projects",
+	responsibilities: "Responsibilities",
+	skills: "Skills",
+	trainings: "Trainings",
+	workExperiences: "Work Experiences"
 };
 
 export default function getText(key) {
