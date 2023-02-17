@@ -23,7 +23,7 @@ const Header = (props) => {
 		{ id: "aboutme", text: getText("aboutMe") },
 		userInfo ? { id: "meeting", text: getText("meeting") } : null,
 		{ id: "gallery", text: getText("gallery") },
-		{ id: "downloads", text: getText("downloads") },
+		//{ id: "downloads", text: getText("downloads") },
 		{ id: "contact", text: getText("contact") }
 	];
 	useEffect(() => {
@@ -42,7 +42,7 @@ const Header = (props) => {
 				break;
 			case "aboutme":
 			case "gallery":
-			case "downloads":
+			//case "downloads":
 			case "meeting":
 			case "contact":
 				navigate(key);

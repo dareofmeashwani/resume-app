@@ -34,25 +34,25 @@ export const EDUCATIONS_LIST = "educations";
 export const EDUCATIONS_CLEAR = "education_CLEAR";
 
 /// Extracurricular
-export const EXTRA_CURRICULARS_LIST = "educations";
-export const EXTRA_CURRICULARS_CLEAR = "education_CLEAR";
+export const EXTRA_CURRICULARS_LIST = "extracurriculars";
+export const EXTRA_CURRICULARS_CLEAR = "extracurriculars_CLEAR";
 
 /// Projects
-export const PROJECTS_LIST = "educations";
-export const PROJECTS_CLEAR = "education_CLEAR";
+export const PROJECTS_LIST = "projects";
+export const PROJECTS_CLEAR = "projects_CLEAR";
 
 /// Responsibilities
-export const RESPONSIBILITIES_LIST = "educations";
-export const RESPONSIBILITIES_CLEAR = "education_CLEAR";
+export const RESPONSIBILITIES_LIST = "responsibilities";
+export const RESPONSIBILITIES_CLEAR = "responsibilities_CLEAR";
 
 /// Skills
-export const SKILLS_LIST = "educations";
-export const SKILLS_CLEAR = "education_CLEAR";
+export const SKILLS_LIST = "skills";
+export const SKILLS_CLEAR = "skills_CLEAR";
 
 /// Training
-export const TRAININGS_LIST = "educations";
-export const TRAININGS_CLEAR = "education_CLEAR";
+export const TRAININGS_LIST = "trainings";
+export const TRAININGS_CLEAR = "trainings_CLEAR";
 
 /// Work experiences
-export const WORK_EXPERIENCES_LIST = "educations";
-export const WORK_EXPERIENCES_CLEAR = "education_CLEAR";
+export const WORK_EXPERIENCES_LIST = "workExperiences";
+export const WORK_EXPERIENCES_CLEAR = "workExperiences_CLEAR";

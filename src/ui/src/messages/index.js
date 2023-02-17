@@ -49,7 +49,11 @@ const messages = {
 	responsibilities: "Responsibilities",
 	skills: "Skills",
 	trainings: "Trainings",
-	workExperiences: "Work Experiences"
+	workExperiences: "Work Experiences",
+	year: "Year",
+	institute: "Institute",
+	cgpaMarks: "CGPA / Marks",
+	degreeProgramme :"Degree / Programme"
 };
 
 export default function getText(key) {
