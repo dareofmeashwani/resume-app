@@ -31,6 +31,8 @@ paths:
     - loginCheck
     - emailVerifyCheck
     - permissionsCheck
+   x-permissions:
+    - ADMIN
    summary: list of admin detail
    operationId: getAdminList
    parameters:
@@ -2477,7 +2479,7 @@ components:
     - desc
   Status:
    type: string
-   default: all
+   default: public
    enum:
     - public
     - draft
@@ -2592,6 +2594,8 @@ components:
    required: false
    schema:
     type: integer
+    minimum: 1
+    maximum: 100
   Status:
    name: status
    description: status query parameter

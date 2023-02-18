@@ -8,12 +8,13 @@ import errorResponder from "./errorResponder";
 import { v4 as uuid } from "uuid";
 
 // openapi spec validation error handler
-const genRequestId = (
+const initializeRequestState = (
 	req: express.Request,
 	res: express.Response,
 	next: express.NextFunction
 ) => {
-	(req as any).requestId = uuid();
+	const request = (req as any);
+	request.requestId = uuid();
 	next();
 };
 // openapi validator middleware
@@ -29,7 +30,7 @@ const bodyParserMw = bodyParser.json();
 
 export default {
 	pre: [
-		genRequestId,
+		initializeRequestState,
 		bodyParserMw,
 		corsMw,
 		openApiValidatorMw,
