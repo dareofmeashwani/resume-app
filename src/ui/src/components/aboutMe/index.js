@@ -137,14 +137,19 @@ function getWorkExpContent(dataItems) {
             item.id
         }>
             <SAccordionSummary aria-controls="panel3d-content" id="panel3d-header">
-                <Typography>Collapsible Group Item #3</Typography>
+                <Typography>{
+                    item.organization
+                }</Typography>
+                <Typography>{
+                    item.organization
+                }</Typography>
             </SAccordionSummary>
             <SAccordionDetails>
                 <Typography>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                                                                                                                                                                                                                    malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor
-                                                                                                                                                                                                                    sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-                                                                                                                                                                                                                    sit amet blandit leo lobortis eget.
+                    lkjglkdfjg                                                                                                                                                                                                             sit amet blandit leo lobortis eget.
+                </Typography>
+                <Typography>
+                    sfdgrdeg                                                                                                                                                                                                         sit amet blandit leo lobortis eget.
                 </Typography>
             </SAccordionDetails>
         </SAccordion>
@@ -237,12 +242,14 @@ const AboutMe = () => {
             }>
                 <AccordionSummary expandIcon={<ExpandMoreIcon/>}
                     aria-controls="panel1bh-content"
-                    id="panel1bh-header" sx={{
-                        justifyContent:"space-between"
-                    }}>
+                    id="panel1bh-header"
+                    sx={
+                        {justifyContent: "space-between"}
+                }>
                     <Typography> {leftTitle} </Typography>
                     {
-                    rightTitle ? <Typography marginRight={"1rem"}> {rightTitle} </Typography> : null
+                    rightTitle ? <Typography marginRight={"1rem"}>
+                        {rightTitle} </Typography> : null
                 } </AccordionSummary>
                 <AccordionDetails> {content} </AccordionDetails>
             </Accordion>
