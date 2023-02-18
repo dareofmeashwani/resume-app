@@ -60,7 +60,7 @@ function getPanelContent(key, dataItems) {
                         dataItems.map((row) => {
                             return <TableRow key={
                                 row.id
-                            } sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                            } >
                                 <TableCell>{
                                     new Date(row.end).getFullYear()
                                 }</TableCell>
@@ -83,17 +83,17 @@ function getPanelContent(key, dataItems) {
                 </Table>
             </TableContainer>;
             /*case "extraCurriculars": response.title = data.title;
-                                break;
-                            case "projects": response.title = data.title;
-                                break;
-                            case "responsibilities": response.title = data.position + " " + data.organization;
-                                break;
-                            case "skills": response.title = data.title;
-                                break;
-                            case "trainings": response.title = data.position + " " + data.organization;
-                                break;
-                            case "workExperiences": response.title = data.position + " " + data.organization;
-                                break;*/
+                break;
+            case "projects": response.title = data.title;
+                break;
+            case "responsibilities": response.title = data.position + " " + data.organization;
+                break;
+            case "skills": response.title = data.title;
+                break;
+            case "trainings": response.title = data.position + " " + data.organization;
+                break;*/
+            //case "workExperiences": response.title = data.position + " " + data.organization;
+            //    break;
     }
     return <Typography> {
         JSON.stringify(dataItems)
