@@ -6,6 +6,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import {getEducationsList} from "../../store/actions/educationsActions";
 import {getExtraCurricularsList} from "../../store/actions/extraCurricularsActions";
 import {getProjectsList} from "../../store/actions/projectsActions";
@@ -14,7 +15,7 @@ import {getSkillsList} from "../../store/actions/skillsActions";
 import {getTrainingsList} from "../../store/actions/trainingsActions";
 import {getWorkExperiencesList} from "../../store/actions/workExperiencesActions";
 import {useDispatch, useSelector} from "react-redux";
-import {capitalizeString} from "../../utils";
+import {capitalizeString, downloadContent} from "../../utils";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -64,19 +65,17 @@ function getPanelContent(key, dataItems) {
                                     new Date(row.end).getFullYear()
                                 }</TableCell>
                                 <TableCell>{
-                                    row.programme
+                                    row.programme + (row.programmeArea?"("+row.programmeArea + ")":"") 
                                 }</TableCell>
                                 <TableCell>{
                                     row.institute
                                 }</TableCell>
                                 <TableCell>{
-                                    `${
+                                    row.gradingType === "cgpa" ? `${
                                         row.obtainedMarks
                                     }/${
                                         row.totalMarks
-                                    }${
-                                        row.gradingType === "cgpa" ? "" : "%"
-                                    }`
+                                    }` : `${row.obtainedMarks*100/row.totalMarks}%`
                                 }</TableCell>
                             </TableRow>
                     })
@@ -175,6 +174,13 @@ const AboutMe = () => {
                 textAlign: "left"
             }
         }>
+            <Box sx={{textAlign: "end"}}>
+                <Button variant="contained" color="success" onClick={
+                    ()=>{downloadContent('/api/v1/downloads/Ashwani_Kumar_Verma.pdf')}
+                }>
+                    {getText("export")}
+                </Button>
+            </Box>
             {
             data.map((resource) => {
                 const docs = resource.response.docs;

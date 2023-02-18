@@ -53,7 +53,8 @@ const messages = {
 	year: "Year",
 	institute: "Institute",
 	cgpaMarks: "CGPA / Marks",
-	degreeProgramme :"Degree / Programme"
+	degreeProgramme :"Degree / Programme",
+	export: "Export"
 };
 
 export default function getText(key) {
