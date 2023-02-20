@@ -17,7 +17,7 @@ import {getSkillsList} from "../../store/actions/skillsActions";
 import {getTrainingsList} from "../../store/actions/trainingsActions";
 import {getWorkExperiencesList} from "../../store/actions/workExperiencesActions";
 import {useDispatch, useSelector} from "react-redux";
-import {capitalizeString, downloadContent} from "../../utils";
+import {capitalizeString, downloadContent, dateDif} from "../../utils";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -42,7 +42,7 @@ const SAccordion = styled((props) => {
         {...props}/>
 })(({theme}) => {
     return {
-            border: `1px solid ${
+            border: `0px solid ${
             theme.palette.divider
         }`,
         '&:not(:last-child)': {
@@ -79,6 +79,37 @@ const SAccordionSummary = styled((props) => (
 const SAccordionDetails = styled(AccordionDetails)(({theme}) => {
     return {padding: theme.spacing(2), borderTop: '1px solid rgba(0, 0, 0, .125)'}
 });
+
+function formatYearMonth(diff) {
+    return "";
+}
+
+function getInnerPanelHeader(data) {
+    let diff = dateDif(data.end, data.start)
+    return <Box sx={
+        {
+            display: 'flex',
+            justifyContent: 'space-between',
+            width: '100%'
+        }
+    }>
+        <Box sx={
+            {display: 'flex'}
+        }>
+            <Typography marginRight={".5rem"}>
+                {
+                data.organization
+            } </Typography>
+            <Typography marginRight={".5rem"}>-</Typography>
+            <Typography> {
+                data.position
+            } </Typography>
+        </Box>
+        <Typography> {
+            formatYearMonth(diff)
+        } </Typography>
+    </Box>
+}
 
 function getEducationsContent(dataItems) {
     return <>
@@ -133,28 +164,49 @@ function getEducationsContent(dataItems) {
 
 function getWorkExpContent(dataItems) {
     return dataItems.map(item => {
+        if (!item.description && !item.techStack && !item.team) {
+            return <Box sx={
+                    {
+                        display: 'flex',
+                        marginTop: "1rem",
+                        marginBottom: "1.5rem",
+                        marginLeft: "2.35rem",
+                        marginRight: "1rem"
+                    }
+                }
+                key={
+                    item.id
+            }>
+                {
+                getInnerPanelHeader(item)
+            } </Box>
+        }
         return <SAccordion key={
             item.id
         }>
             <SAccordionSummary aria-controls="panel3d-content" id="panel3d-header">
-                <Typography>{
-                    item.organization
-                }</Typography>
-                <Typography>{
-                    item.organization
-                }</Typography>
-            </SAccordionSummary>
-            <SAccordionDetails>
-                <Typography>
-                    lkjglkdfjg                                                                                                                                                                                                             sit amet blandit leo lobortis eget.
-                </Typography>
-                <Typography>
-                    sfdgrdeg                                                                                                                                                                                                         sit amet blandit leo lobortis eget.
-                </Typography>
-            </SAccordionDetails>
+                {
+                getInnerPanelHeader(item)
+            } </SAccordionSummary>
+            <SAccordionDetails> {
+                item.team ? <Typography> {
+                    item.team
+                } </Typography> : null
+            }
+                {
+                item.description ? <Typography> {
+                    item.description
+                } </Typography> : null
+            }
+                {
+                item.techStack ? <Typography> {
+                    item.techStack
+                } </Typography> : null
+            } </SAccordionDetails>
         </SAccordion>
     });
 }
+
 function getSkillsContent(dataItems) {
     return <></>;
 }

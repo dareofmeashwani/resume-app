@@ -18,6 +18,11 @@ const WorkExperienceSchema = new mongoose.Schema({
         maxLength: 100,
         trim: true
     },
+    team: {
+        type: String,
+        maxLength: 100,
+        trim: true
+    },
     description: {
         type: String,
         maxLength: 500,
@@ -28,10 +33,9 @@ const WorkExperienceSchema = new mongoose.Schema({
         required: true
     },
     end: {
-        type: Date,
-        required: true
+        type: Date
     },
-    technicalDetail: {
+    techStack: {
         type: String,
         maxLength: 200,
         trim: true

@@ -2258,7 +2258,6 @@ components:
    required:
     - organization
     - position
-    - end
     - start
 
   WorkExperienceDetailBase:
@@ -2270,12 +2269,12 @@ components:
     position:
      type: string
      maxLength: 100
+    team:
+     type: string
+     maxLength: 100
     description:
      type: string
      maxLength: 500
-    area:
-     type: string
-     maxLength: 100
     techStack:
      type: string
      maxLength: 200
