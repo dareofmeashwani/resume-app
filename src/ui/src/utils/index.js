@@ -18,7 +18,7 @@ export function errorHelper(formik, values) {
 }
 
 export function capitalizeString(text) {
-    return text && typeof(text) === "string" ? text[0].toUpperCase() + text.slice(1) : text;
+    return text && typeof (text) === "string" ? text[0].toUpperCase() + text.slice(1) : text;
 }
 
 export function downloadContent(url) {
@@ -57,4 +57,18 @@ export function dateDif(start, end) {
         minutes,
         seconds
     };
+}
+
+export function groupDataByKey(data, key) {
+    const groupedData = {};
+    if (Array.isArray(data)) {
+        data.forEach((item) => {
+            const keyValue = item[key] || "";
+            if (!groupedData[keyValue]) {
+                groupedData[keyValue] = [];
+            }
+            groupedData[keyValue].push(item);
+        })
+    }
+    return groupedData;
 }

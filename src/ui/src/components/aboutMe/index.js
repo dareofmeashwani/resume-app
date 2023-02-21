@@ -1,5 +1,5 @@
 import React from "react";
-import {styled} from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -9,15 +9,15 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import {getEducationsList} from "../../store/actions/educationsActions";
-import {getExtraCurricularsList} from "../../store/actions/extraCurricularsActions";
-import {getProjectsList} from "../../store/actions/projectsActions";
-import {getResponsibilitiesList} from "../../store/actions/responsibilitiesActions";
-import {getSkillsList} from "../../store/actions/skillsActions";
-import {getTrainingsList} from "../../store/actions/trainingsActions";
-import {getWorkExperiencesList} from "../../store/actions/workExperiencesActions";
-import {useDispatch, useSelector} from "react-redux";
-import {capitalizeString, downloadContent, dateDif} from "../../utils";
+import { getEducationsList } from "../../store/actions/educationsActions";
+import { getExtraCurricularsList } from "../../store/actions/extraCurricularsActions";
+import { getProjectsList } from "../../store/actions/projectsActions";
+import { getResponsibilitiesList } from "../../store/actions/responsibilitiesActions";
+import { getSkillsList } from "../../store/actions/skillsActions";
+import { getTrainingsList } from "../../store/actions/trainingsActions";
+import { getWorkExperiencesList } from "../../store/actions/workExperiencesActions";
+import { useDispatch, useSelector } from "react-redux";
+import { capitalizeString, downloadContent, dateDif, groupDataByKey } from "../../utils";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -39,12 +39,11 @@ const SAccordion = styled((props) => {
     return <Accordion disableGutters
         elevation={0}
         square
-        {...props}/>
-})(({theme}) => {
+        {...props} />
+})(({ theme }) => {
     return {
-            border: `0px solid ${
-            theme.palette.divider
-        }`,
+        border: `0px solid ${theme.palette.divider
+            }`,
         '&:not(:last-child)': {
             borderBottom: 0
         },
@@ -56,14 +55,14 @@ const SAccordion = styled((props) => {
 
 const SAccordionSummary = styled((props) => (
     <AccordionSummary expandIcon={
-            (
-                <ArrowForwardIosSharpIcon sx={
-                    {fontSize: '0.9rem'}
-                }/>
-            )
-        }
-        {...props}/>
-))(({theme}) => {
+        (
+            <ArrowForwardIosSharpIcon sx={
+                { fontSize: '0.9rem' }
+            } />
+        )
+    }
+        {...props} />
+))(({ theme }) => {
     return {
         backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, .05)' : 'rgba(0, 0, 0, .03)',
         flexDirection: 'row-reverse',
@@ -76,16 +75,30 @@ const SAccordionSummary = styled((props) => (
     }
 });
 
-const SAccordionDetails = styled(AccordionDetails)(({theme}) => {
-    return {padding: theme.spacing(2), borderTop: '1px solid rgba(0, 0, 0, .125)'}
+const SAccordionDetails = styled(AccordionDetails)(({ theme }) => {
+    return { padding: theme.spacing(2), borderTop: '1px solid rgba(0, 0, 0, .125)' }
 });
 
 function formatYearMonth(diff) {
-    return "";
+    let res = "";
+    if (diff.years === 1) {
+        res += "1 " + getText("year");
+    } else if (diff.years > 1) {
+        res += diff.years + " " + getText("years");
+    }
+    if (res) {
+        res += " ";
+    }
+    if (diff.months === 1) {
+        res += "1 " + getText("month");
+    } else if (diff.months > 1) {
+        res += diff.months + " " + getText("months");
+    }
+    return res
 }
 
 function getInnerPanelHeader(data) {
-    let diff = dateDif(data.end, data.start)
+    let diff = data.start && dateDif(data.end || "", data.start)
     return <Box sx={
         {
             display: 'flex',
@@ -94,19 +107,19 @@ function getInnerPanelHeader(data) {
         }
     }>
         <Box sx={
-            {display: 'flex'}
+            { display: 'flex' }
         }>
             <Typography marginRight={".5rem"}>
                 {
-                data.organization
-            } </Typography>
+                    data.organization
+                } </Typography>
             <Typography marginRight={".5rem"}>-</Typography>
             <Typography> {
                 data.position
             } </Typography>
         </Box>
         <Typography> {
-            formatYearMonth(diff)
+            ((diff && formatYearMonth(diff)) || "")
         } </Typography>
     </Box>
 }
@@ -146,16 +159,13 @@ function getEducationsContent(dataItems) {
                                 row.institute
                             }</TableCell>
                             <TableCell>{
-                                row.gradingType === "cgpa" ? `${
-                                    row.obtainedMarks
-                                }/${
-                                    row.totalMarks
-                                }` : `${
-                                    (row.obtainedMarks * 100 / row.totalMarks)
-                                }%`
+                                row.gradingType === "cgpa" ? `${row.obtainedMarks
+                                    }/${row.totalMarks
+                                    }` : `${(row.obtainedMarks * 100 / row.totalMarks)
+                                    }%`
                             }</TableCell>
                         </TableRow>
-                })
+                    })
                 } </TableBody>
             </Table>
         </TableContainer>
@@ -166,49 +176,61 @@ function getWorkExpContent(dataItems) {
     return dataItems.map(item => {
         if (!item.description && !item.techStack && !item.team) {
             return <Box sx={
-                    {
-                        display: 'flex',
-                        marginTop: "1rem",
-                        marginBottom: "1.5rem",
-                        marginLeft: "2.35rem",
-                        marginRight: "1rem"
-                    }
+                {
+                    display: 'flex',
+                    marginTop: "1rem",
+                    marginBottom: "1.5rem",
+                    marginLeft: "2.35rem",
+                    marginRight: "1rem"
                 }
+            }
                 key={
                     item.id
-            }>
+                }>
                 {
-                getInnerPanelHeader(item)
-            } </Box>
+                    getInnerPanelHeader(item)
+                } </Box>
         }
         return <SAccordion key={
             item.id
         }>
             <SAccordionSummary aria-controls="panel3d-content" id="panel3d-header">
                 {
-                getInnerPanelHeader(item)
-            } </SAccordionSummary>
+                    getInnerPanelHeader(item)
+                } </SAccordionSummary>
             <SAccordionDetails> {
                 item.team ? <Typography> {
                     item.team
                 } </Typography> : null
             }
                 {
-                item.description ? <Typography> {
-                    item.description
-                } </Typography> : null
-            }
+                    item.description ? <Typography> {
+                        item.description
+                    } </Typography> : null
+                }
                 {
-                item.techStack ? <Typography> {
-                    item.techStack
-                } </Typography> : null
-            } </SAccordionDetails>
+                    item.techStack ? <Typography> {
+                        item.techStack
+                    } </Typography> : null
+                } </SAccordionDetails>
         </SAccordion>
     });
 }
 
 function getSkillsContent(dataItems) {
-    return <></>;
+    const groupedData = groupDataByKey(dataItems, "group");
+    const ungroupedItems = groupedData[""];
+    delete groupedData[""];
+    return <Box sx={
+        {
+            display: 'flex',
+            marginTop: "1rem",
+            marginBottom: "1.5rem",
+            marginLeft: "2.35rem",
+            marginRight: "1rem"
+        }
+    }>
+    </Box>;
 }
 function getProjectsContent(dataItems) {
     return <></>;
@@ -251,25 +273,25 @@ const AboutMe = () => {
         return data;
     });
     React.useEffect(() => {
-        if (! data[RESOURCE_NAME.EDUCATIONS]) {
+        if (!data[RESOURCE_NAME.EDUCATIONS]) {
             dispatch(getEducationsList());
         }
-        if (! data[RESOURCE_NAME.EXTRA_CURRI]) {
+        if (!data[RESOURCE_NAME.EXTRA_CURRI]) {
             dispatch(getExtraCurricularsList());
         }
-        if (! data[RESOURCE_NAME.PROJECTS]) {
+        if (!data[RESOURCE_NAME.PROJECTS]) {
             dispatch(getProjectsList());
         }
-        if (! data[RESOURCE_NAME.RESPONSIBILITIES]) {
+        if (!data[RESOURCE_NAME.RESPONSIBILITIES]) {
             dispatch(getResponsibilitiesList());
         }
-        if (! data[RESOURCE_NAME.SKILLS]) {
+        if (!data[RESOURCE_NAME.SKILLS]) {
             dispatch(getSkillsList());
         }
-        if (! data[RESOURCE_NAME.TRAININGS]) {
+        if (!data[RESOURCE_NAME.TRAININGS]) {
             dispatch(getTrainingsList());
         }
-        if (! data[RESOURCE_NAME.WORK_EXP]) {
+        if (!data[RESOURCE_NAME.WORK_EXP]) {
             dispatch(getWorkExperiencesList());
         }
     }, []);
@@ -291,18 +313,18 @@ const AboutMe = () => {
                 }
                 onChange={
                     handlePanelChange("panel" + key)
-            }>
-                <AccordionSummary expandIcon={<ExpandMoreIcon/>}
+                }>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1bh-content"
                     id="panel1bh-header"
                     sx={
-                        {justifyContent: "space-between"}
-                }>
+                        { justifyContent: "space-between" }
+                    }>
                     <Typography> {leftTitle} </Typography>
                     {
-                    rightTitle ? <Typography marginRight={"1rem"}>
-                        {rightTitle} </Typography> : null
-                } </AccordionSummary>
+                        rightTitle ? <Typography marginRight={"1rem"}>
+                            {rightTitle} </Typography> : null
+                    } </AccordionSummary>
                 <AccordionDetails> {content} </AccordionDetails>
             </Accordion>
         </Box>
@@ -336,7 +358,7 @@ const AboutMe = () => {
         RESOURCE_NAME.TRAININGS,
         RESOURCE_NAME.RESPONSIBILITIES,
         RESOURCE_NAME.EXTRA_CURRI,
-    ].map((resourceType) => ({title: getText(resourceType), response: data[resourceType], key: resourceType})).filter((resource) => {
+    ].map((resourceType) => ({ title: getText(resourceType), response: data[resourceType], key: resourceType })).filter((resource) => {
         return resource.response && Array.isArray(resource.response.docs) && resource.response.docs.length
     }).map((resource) => buildPanel(resource));
     return (
@@ -351,17 +373,17 @@ const AboutMe = () => {
             }
         }>
             <Box sx={
-                {textAlign: "end"}
+                { textAlign: "end" }
             }>
                 <Button variant="contained" color="success"
                     onClick={
                         () => {
                             downloadContent('/api/v1/downloads/Ashwani_Kumar_Verma.pdf')
                         }
-                }>
+                    }>
                     {
-                    getText("export")
-                } </Button>
+                        getText("export")
+                    } </Button>
             </Box>
             {data} </Box>
     );

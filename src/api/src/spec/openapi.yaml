@@ -225,7 +225,7 @@ paths:
     - $ref: "#/components/parameters/Status"
    responses:
     "200":
-     description: returns list of educations
+     description: returns list of educatiofindns
      content:
       application/json:
        schema:
@@ -2136,18 +2136,17 @@ components:
     - $ref: "#/components/schemas/SkillDetailBase"
    type: object
    required:
-    - title
-    - description
+    - name
 
   SkillDetailBase:
    type: object
    properties:
-    title:
+    name:
      type: string
      maxLength: 100
-    description:
+    group:
      type: string
-     maxLength: 500
+     maxLength: 50
     experience:
      type: string
      maxLength: 50

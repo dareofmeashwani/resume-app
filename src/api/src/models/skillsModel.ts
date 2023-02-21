@@ -1,17 +1,16 @@
 import mongoose from 'mongoose';
 import mongooseAggregatePaginate from 'mongoose-aggregate-paginate-v2';
 const SkillSchema = new mongoose.Schema({
-    title: {
+    name: {
         type: String,
         required: true,
         maxLength: 100,
         trim: true
     },
-    description: {
+    group: {
         type: String,
-        maxLength: 500,
+        maxLength: 50,
         trim: true,
-        required: true
     },
     experience: {
         type: String,
