@@ -9,6 +9,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Link from "@mui/material/Link";
 import { getEducationsList } from "../../store/actions/educationsActions";
 import { getExtraCurricularsList } from "../../store/actions/extraCurricularsActions";
 import { getProjectsList } from "../../store/actions/projectsActions";
@@ -223,13 +224,36 @@ function getSkillsContent(dataItems) {
     delete groupedData[""];
     return <Box sx={
         {
-            display: 'flex',
             marginTop: "1rem",
+            display: "grid",
             marginBottom: "1.5rem",
             marginLeft: "2.35rem",
             marginRight: "1rem"
         }
     }>
+        {
+            Object.keys(groupedData).map(skillKey => {
+                const skills = groupedData[skillKey];
+                return <Box key={skillKey} sx={
+                    {
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        width: '100%'
+                    }
+                }>
+                    <Typography> <Box fontWeight='fontWeightMedium' display='inline'> {
+                        skillKey
+                    }</Box> : {
+                            skills.map(skill => {
+                                return `${skill.name}${skill.experience ? ` (${skill.experience})` : ""}`
+                            }).join(", ")
+                        }</Typography>
+                </Box>
+            })
+        }
+        {ungroupedItems.map(skill => <Typography key={skill.id} fontWeight='fontWeightMedium' display='inline'>
+            {`${skill.name}${skill.experience ? ` (${skill.experience})` : ""}`}
+        </Typography>)}
     </Box>;
 }
 function getProjectsContent(dataItems) {
@@ -241,8 +265,35 @@ function getTrainingsContent(dataItems) {
 function getResponsibilitiesContent(dataItems) {
     return <></>;
 }
+function urlify(text) {
+    let urlRegex =/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+    return text
+/*
+    "".matchAll
+    return text(urlRegex, function (url) {
+
+        return <Link href="#" color="inherit">
+            {'color="inherit"'}
+        </Link>
+        //return '<a href="' + url + '">' + url + '</a>';
+    });*/
+}
 function getExtraCurriContent(dataItems) {
-    return <></>;
+    return <Box sx={
+        {
+            marginTop: "1rem",
+            display: "grid",
+            marginBottom: "1.5rem",
+            marginLeft: "2.35rem",
+            marginRight: "1rem"
+        }
+    }>
+        {dataItems.map(item => {
+            return <Typography>
+                {urlify(item.activity)}
+            </Typography>
+        })}
+    </Box>;
 }
 
 const AboutMe = () => {

@@ -1955,13 +1955,12 @@ components:
     - $ref: "#/components/schemas/ExtraCurricularDetailBase"
    type: object
    required:
-    - title
-    - description
+    - activity
 
   ExtraCurricularDetailBase:
    type: object
    properties:
-    title:
+    activity:
      type: string
      maxLength: 100
     description:

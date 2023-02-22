@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import mongooseAggregatePaginate from 'mongoose-aggregate-paginate-v2';
 const ExtraCurricularSchema = new mongoose.Schema({
-    title: {
+    activity: {
         type: String,
         required: true,
         maxLength: 100,
@@ -11,7 +11,6 @@ const ExtraCurricularSchema = new mongoose.Schema({
         type: String,
         maxLength: 500,
         trim: true,
-        required: true
     },
     status: {
         type: String,

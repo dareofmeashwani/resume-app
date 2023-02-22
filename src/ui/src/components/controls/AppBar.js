@@ -46,7 +46,7 @@ function stringAvatar(name) {
 }
 
 function ResponsiveAppBar(props) {
-	const title = props.title;
+	const title = `<${props.title}/>`;
 	const pages = (props.pages || []).filter((page) => !!page);
 	const settings = props.settings;
 	const clickHandler = props.click;
@@ -80,7 +80,6 @@ function ResponsiveAppBar(props) {
 		<AppBar color="primary" position="sticky">
 			<Container maxWidth="xxl">
 				<Toolbar disableGutters sx={{ width: "100%" }}>
-					<ManageAccountsIcon sx={{ display: { xs: "none", md: "flex" }, mr: 2 }} />
 					<Typography
 						variant="h6"
 						noWrap
@@ -143,7 +142,6 @@ function ResponsiveAppBar(props) {
 							))}
 						</Menu>
 					</Box>
-					<ManageAccountsIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
 					<Typography
 						variant="h5"
 						noWrap
