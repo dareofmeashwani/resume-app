@@ -12,9 +12,7 @@ export const getWorkExperiencesList = (status) => {
 			dispatch(actions.workExperiencesList(response.data));
 		} catch (error) {
 			dispatch(
-				actions.errorGlobal({
-					...error.response.data
-				})
+				actions.errorGlobal(error.response.data)
 			);
 		}
 		dispatch(actions.resetBusyIndicator());

@@ -8,6 +8,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
 import { getEducationsList } from "../../store/actions/educationsActions";
@@ -241,13 +242,18 @@ function getSkillsContent(dataItems) {
                         width: '100%'
                     }
                 }>
-                    <Typography> <Box fontWeight='fontWeightMedium' display='inline'> {
+                    <Typography fontWeight='fontWeightMedium' display='inline' width={"25%"}> {
                         skillKey
-                    }</Box> : {
-                            skills.map(skill => {
-                                return `${skill.name}${skill.experience ? ` (${skill.experience})` : ""}`
-                            }).join(", ")
-                        }</Typography>
+                    }</Typography><Typography sx={{
+                        marginRight: "1rem",
+                        alignContent: "center",
+                        justifyContent: "center",
+                        textAlign: "center"
+                    }}>: </Typography><Typography>{
+                        skills.map(skill => {
+                            return `${skill.name}${skill.experience ? ` (${skill.experience})` : ""}`
+                        }).join(", ")
+                    }</Typography>
                 </Box>
             })
         }
@@ -266,17 +272,31 @@ function getResponsibilitiesContent(dataItems) {
     return <></>;
 }
 function urlify(text) {
-    let urlRegex =/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-    return text
-/*
-    "".matchAll
-    return text(urlRegex, function (url) {
-
-        return <Link href="#" color="inherit">
-            {'color="inherit"'}
-        </Link>
-        //return '<a href="' + url + '">' + url + '</a>';
-    });*/
+    if (!text) {
+        return "";
+    }
+    let urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+    const matches = Array.from(text.matchAll(urlRegex), (m) => ({ url: m[0], start: m.index, end: m.index + m[0].length - 1 }));
+    let stringParts = [];
+    let pointer = 0;
+    matches.forEach((match) => {
+        stringParts.push({ type: "text", value: text.substring(pointer, match.start) })
+        stringParts.push({ type: "link", value: text.substring(match.start, match.end + 1) })
+        pointer = match.end + 1;
+    });
+    stringParts.push({ type: "text", value: text.substring(pointer, text.length) })
+    return stringParts.filter((part) => !!part).map((part, index) => {
+        if (part.type === "link") {
+            return <Link href={part.value} target="_blank" key={index}>
+                {part.value}
+            </Link>;
+        }
+        return <Typography key={index} sx={{
+            whiteSpace: "break-spaces"
+        }}>
+            {part.value}
+        </Typography>;
+    })
 }
 function getExtraCurriContent(dataItems) {
     return <Box sx={
@@ -288,10 +308,12 @@ function getExtraCurriContent(dataItems) {
             marginRight: "1rem"
         }
     }>
-        {dataItems.map(item => {
-            return <Typography>
-                {urlify(item.activity)}
-            </Typography>
+        {dataItems.map((item, index) => {
+            return <Grid container key={item.id}>
+                <Typography sx={{
+                    whiteSpace: "break-spaces"
+                }}>{(index + 1) + " : "}</Typography>{urlify(item.activity)}
+            </Grid>
         })}
     </Box>;
 }

@@ -16,9 +16,7 @@ export const signInUser = (values) => {
 			dispatch(actions.authUser(user.data));
 		} catch (error) {
 			dispatch(
-				actions.errorGlobal({
-					...error.response.data
-				})
+				actions.errorGlobal(error.response.data)
 			);
 		}
 		dispatch(actions.resetBusyIndicator());
@@ -41,9 +39,7 @@ export const signUpUser = (values) => {
 			dispatch(actions.authUser(user.data));
 		} catch (error) {
 			dispatch(
-				actions.errorGlobal({
-					...error.response.data
-				})
+				actions.errorGlobal(error.response.data)
 			);
 		}
 		dispatch(actions.resetBusyIndicator());
@@ -60,9 +56,7 @@ export const forgetUserPassword = (values) => {
 			dispatch(actions.forgetPassword(response.data));
 		} catch (error) {
 			dispatch(
-				actions.errorGlobal({
-					...error.response.data
-				})
+				actions.errorGlobal(error.response.data)
 			);
 		}
 		dispatch(actions.resetBusyIndicator());
@@ -78,9 +72,7 @@ export const signOut = () => {
 			removeCookieToken();
 		} catch (error) {
 			dispatch(
-				actions.errorGlobal({
-					...error.response.data
-				})
+				actions.errorGlobal(error.response.data)
 			);
 		}
 		dispatch(actions.resetBusyIndicator());
@@ -103,74 +95,10 @@ export const isAuthUser = () => {
 				removeCookieToken();
 			} else {
 				dispatch(
-					actions.errorGlobal({
-						...error.response.data
-					})
+					actions.errorGlobal(error.response.data)
 				);
 			}
 		}
 		dispatch(actions.resetBusyIndicator());
-	};
-};
-
-export const changeEmail = (data) => {
-	return async (dispatch) => {
-		try {
-			await axios.patch(`/api/users/update_email`, {
-				email: data.email,
-				newemail: data.newemail
-			});
-
-			dispatch(actions.changeUserEmail(data.newemail));
-			dispatch(actions.successGlobal("Good job!!"));
-		} catch (error) {
-			dispatch(actions.errorGlobal(error.response.data.message));
-		}
-	};
-};
-
-/// updateUserProfile
-
-export const updateUserProfile = (data) => {
-	return async (dispatch, getState) => {
-		try {
-			const profile = await axios.patch(`/api/users/profile`, data);
-
-			const userData = {
-				...getState().users.data,
-				...profile.data
-			};
-			dispatch(actions.updateUserProfile(userData));
-			dispatch(actions.successGlobal("Profile updated"));
-		} catch (error) {
-			dispatch(actions.errorGlobal(error.response.data.message));
-		}
-	};
-};
-
-export const contactUs = (data) => {
-	return async (dispatch) => {
-		try {
-			await axios.post(`/api/users/contact`, data);
-			dispatch(actions.successGlobal("We will contact you back"));
-		} catch (error) {
-			dispatch(actions.errorGlobal(error.response.data.message));
-		}
-	};
-};
-
-export const accountVerify = (token) => {
-	return async (dispatch, getState) => {
-		try {
-			const user = getState().users.auth;
-			await axios.get(`/api/users/verify?validation=${token}`);
-
-			if (user) {
-				dispatch(actions.emailVerify());
-			}
-			dispatch(actions.successGlobal("Account verified !!"));
-		} catch (error) {
-			dispatch(actions.errorGlobal(error.response.data.message));
-		}
 	};
 };

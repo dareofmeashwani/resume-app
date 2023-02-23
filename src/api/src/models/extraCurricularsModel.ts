@@ -4,7 +4,7 @@ const ExtraCurricularSchema = new mongoose.Schema({
     activity: {
         type: String,
         required: true,
-        maxLength: 100,
+        maxLength: 200,
         trim: true
     },
     description: {

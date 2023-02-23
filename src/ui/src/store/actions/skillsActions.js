@@ -12,9 +12,7 @@ export const getSkillsList = (status) => {
 			dispatch(actions.skillsList(response.data));
 		} catch (error) {
 			dispatch(
-				actions.errorGlobal({
-					...error.response.data
-				})
+				actions.errorGlobal(error.response.data)
 			);
 		}
 		dispatch(actions.resetBusyIndicator());

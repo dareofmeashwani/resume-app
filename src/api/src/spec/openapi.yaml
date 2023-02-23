@@ -1962,7 +1962,7 @@ components:
    properties:
     activity:
      type: string
-     maxLength: 100
+     maxLength: 200
     description:
      type: string
      maxLength: 500

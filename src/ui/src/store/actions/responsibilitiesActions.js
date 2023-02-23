@@ -14,9 +14,7 @@ export const getResponsibilitiesList = (status) => {
 			dispatch(actions.responsibilitiesList(response.data));
 		} catch (error) {
 			dispatch(
-				actions.errorGlobal({
-					...error.response.data
-				})
+				actions.errorGlobal(error.response.data)
 			);
 		}
 		dispatch(actions.resetBusyIndicator());

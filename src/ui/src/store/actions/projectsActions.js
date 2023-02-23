@@ -12,9 +12,7 @@ export const getProjectsList = (status) => {
 			dispatch(actions.projectsList(response.data));
 		} catch (error) {
 			dispatch(
-				actions.errorGlobal({
-					...error.response.data
-				})
+				actions.errorGlobal(error.response.data)
 			);
 		}
 		dispatch(actions.resetBusyIndicator());

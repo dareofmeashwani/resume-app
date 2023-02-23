@@ -36,10 +36,17 @@ import {
 
 /////// notification /////////////
 
-export const errorGlobal = (msg) => ({
-	type: ERROR_GLOBAL,
-	payload: msg
-});
+export const errorGlobal = (msg) => {
+	if (typeof (msg) === "string") {
+		msg = {
+			message: msg
+		}
+	}
+	return {
+		type: ERROR_GLOBAL,
+		payload: msg
+	}
+};
 
 export const successGlobal = (msg) => ({
 	type: SUCCESS_GLOBAL,

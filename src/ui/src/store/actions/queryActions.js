@@ -11,9 +11,7 @@ export const sendQuery = (values) => {
 			dispatch(actions.querySuccess(response.data));
 		} catch (error) {
 			dispatch(
-				actions.errorGlobal({
-					...error.response.data
-				})
+				actions.errorGlobal(error.response.data)
 			);
 		}
 		dispatch(actions.resetBusyIndicator());
