@@ -12,7 +12,7 @@ const ProjectSchema = new mongoose.Schema({
         maxLength: 100,
         trim: true
     },
-    guidedBY: {
+    guidedBy: {
         type: String,
         maxLength: 100,
         trim: true

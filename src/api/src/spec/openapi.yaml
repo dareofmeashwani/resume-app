@@ -2019,7 +2019,7 @@ components:
     area:
      type: string
      maxLength: 100
-    guidedBY:
+    guidedBy:
      type: string
      maxLength: 100
     techStack:
@@ -2086,6 +2086,9 @@ components:
     guidedBy:
      type: string
      maxLength: 100
+    description:
+     type: string
+     maxLength: 500
     area:
      type: string
      maxLength: 100
@@ -2205,7 +2208,7 @@ components:
     area:
      type: string
      maxLength: 100
-    teachStack:
+    techStack:
      type: string
      maxLength: 200
     start:

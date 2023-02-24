@@ -18,6 +18,11 @@ const ResponsibilitySchema = new mongoose.Schema({
         maxLength: 100,
         trim: true
     },
+    description: {
+        type: String,
+        maxLength: 500,
+        trim: true
+    },
     area: {
         type: String,
         maxLength: 100,

@@ -81,51 +81,88 @@ const SAccordionDetails = styled(AccordionDetails)(({ theme }) => {
     return { padding: theme.spacing(2), borderTop: '1px solid rgba(0, 0, 0, .125)' }
 });
 
-function formatYearMonth(diff) {
-    let res = "";
-    if (diff.years === 1) {
-        res += "1 " + getText("year");
-    } else if (diff.years > 1) {
-        res += diff.years + " " + getText("years");
-    }
-    if (res) {
-        res += " ";
-    }
-    if (diff.months === 1) {
-        res += "1 " + getText("month");
-    } else if (diff.months > 1) {
-        res += diff.months + " " + getText("months");
-    }
-    return res
-}
-
-function getInnerPanelHeader(data) {
-    let diff = data.start && dateDif(data.end || "", data.start)
-    return <Box sx={
-        {
-            display: 'flex',
-            justifyContent: 'space-between',
-            width: '100%'
+function dateDiffFormat(diff, desired) {
+    const depths = [{
+        singular: "year",
+        plural: "years",
+        key: "years"
+    }, {
+        singular: "month",
+        plural: "months",
+        key: "months"
+    }, {
+        singular: "day",
+        plural: "days",
+        key: "days"
+    }, {
+        singular: "hour",
+        plural: "hours",
+        key: "hours"
+    }, {
+        singular: "minute",
+        plural: "minutes",
+        key: "minutes"
+    }, {
+        singular: "second",
+        plural: "seconds",
+        key: "seconds"
+    }]
+    const formatter = (keyMeta) => {
+        if (diff[keyMeta.key] === 1) {
+            return "1 " + getText(keyMeta.singular);
+        } else if (diff[keyMeta.key] > 1) {
+            return diff[keyMeta.key] + " " + getText(keyMeta.plural);
         }
-    }>
-        <Box sx={
-            { display: 'flex' }
-        }>
-            <Typography marginRight={".5rem"}>
-                {
-                    data.organization
-                } </Typography>
-            <Typography marginRight={".5rem"}>-</Typography>
-            <Typography> {
-                data.position
-            } </Typography>
-        </Box>
-        <Typography> {
-            ((diff && formatYearMonth(diff)) || "")
-        } </Typography>
-    </Box>
+        return "";
+    }
+    if (!desired) {
+        desired = depths;
+    } else {
+        for (let i = 0; i < desired.length; i++) {
+            desired[i] = depths.find(depth => depth.key == desired[i]);
+        }
+    }
+    return desired.map(formatter).join(" ");
 }
-
+function urlify(text) {
+    if (!text) {
+        return "";
+    }
+    let urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+    const matches = Array.from(text.matchAll(urlRegex), (m) => ({ url: m[0], start: m.index, end: m.index + m[0].length - 1 }));
+    let stringParts = [];
+    let pointer = 0;
+    matches.forEach((match) => {
+        stringParts.push({ type: "text", value: text.substring(pointer, match.start) })
+        stringParts.push({ type: "link", value: text.substring(match.start, match.end + 1) })
+        pointer = match.end + 1;
+    });
+    stringParts.push({ type: "text", value: text.substring(pointer, text.length) })
+    return stringParts.filter((part) => !!part).map((part, index) => {
+        if (part.type === "link") {
+            return <Link href={part.value} target="_blank" key={index} sx={{
+                wordWrap: "break-word",
+                wordBreak: "break-word"
+            }}>
+                {part.value}
+            </Link>;
+        }
+        return <Typography key={index} sx={{
+            whiteSpace: "break-spaces",
+            wordWrap: "break-word",
+            wordBreak: "keep-all"
+        }}>
+            {part.value}
+        </Typography>;
+    })
+}
+function innerPanelContent(item, attibutes) {
+    return attibutes.map((attribute, index) => {
+        return item[attribute.key] ? <Typography key={index} sx={{ whiteSpace: "break-spaces" }}> {getText(attribute.key) + " : "}{
+            item[attribute.key]
+        } </Typography> : null
+    })
+}
 function getEducationsContent(dataItems) {
     return <>
         <TableContainer>
@@ -174,6 +211,32 @@ function getEducationsContent(dataItems) {
     </>;
 }
 
+function getPosOrgHeader(data) {
+    let diff = data.start && dateDif(data.end || "", data.start)
+    return <Box sx={
+        {
+            display: 'flex',
+            justifyContent: 'space-between',
+            width: '100%'
+        }
+    }>
+        <Box sx={
+            { display: 'flex' }
+        }>
+            <Typography marginRight={".5rem"}>
+                {
+                    data.organization
+                } </Typography>
+            <Typography marginRight={".5rem"}>-</Typography>
+            <Typography> {
+                data.position
+            } </Typography>
+        </Box>
+        <Typography> {
+            ((diff && dateDiffFormat(diff, ["years", "months"])) || "")
+        } </Typography>
+    </Box>
+}
 function getWorkExpContent(dataItems) {
     return dataItems.map(item => {
         if (!item.description && !item.techStack && !item.team) {
@@ -190,7 +253,7 @@ function getWorkExpContent(dataItems) {
                     item.id
                 }>
                 {
-                    getInnerPanelHeader(item)
+                    getPosOrgHeader(item)
                 } </Box>
         }
         return <SAccordion key={
@@ -198,23 +261,11 @@ function getWorkExpContent(dataItems) {
         }>
             <SAccordionSummary aria-controls="panel3d-content" id="panel3d-header">
                 {
-                    getInnerPanelHeader(item)
+                    getPosOrgHeader(item)
                 } </SAccordionSummary>
-            <SAccordionDetails> {
-                item.team ? <Typography> {
-                    item.team
-                } </Typography> : null
-            }
-                {
-                    item.description ? <Typography> {
-                        item.description
-                    } </Typography> : null
-                }
-                {
-                    item.techStack ? <Typography> {
-                        item.techStack
-                    } </Typography> : null
-                } </SAccordionDetails>
+            <SAccordionDetails>
+                {innerPanelContent(item, [{ key: "team", text: "team" }, { key: "description", text: "description" }, { key: "techStack", text: "technicalStack" }])}
+            </SAccordionDetails>
         </SAccordion>
     });
 }
@@ -235,26 +286,29 @@ function getSkillsContent(dataItems) {
         {
             Object.keys(groupedData).map(skillKey => {
                 const skills = groupedData[skillKey];
-                return <Box key={skillKey} sx={
+                return <Grid key={skillKey} sx={
                     {
                         display: 'flex',
                         justifyContent: 'space-between',
                         width: '100%'
                     }
                 }>
-                    <Typography fontWeight='fontWeightMedium' display='inline' width={"25%"}> {
-                        skillKey
-                    }</Typography><Typography sx={{
-                        marginRight: "1rem",
-                        alignContent: "center",
-                        justifyContent: "center",
-                        textAlign: "center"
-                    }}>: </Typography><Typography>{
-                        skills.map(skill => {
-                            return `${skill.name}${skill.experience ? ` (${skill.experience})` : ""}`
-                        }).join(", ")
-                    }</Typography>
-                </Box>
+                    <Typography fontWeight='fontWeightMedium' display='inline' sx={{
+                        wordWrap: "break-word",
+                        wordBreak: "keep-all"
+                    }}> {
+                            skillKey
+                        }</Typography><Typography sx={{
+                            marginRight: "1rem",
+                            alignContent: "center",
+                            justifyContent: "center",
+                            textAlign: "center"
+                        }}>: </Typography><Typography>{
+                            skills.map(skill => {
+                                return `${skill.name}${skill.experience ? ` (${skill.experience})` : ""}`
+                            }).join(", ")
+                        }</Typography>
+                </Grid>
             })
         }
         {ungroupedItems.map(skill => <Typography key={skill.id} fontWeight='fontWeightMedium' display='inline'>
@@ -263,40 +317,100 @@ function getSkillsContent(dataItems) {
     </Box>;
 }
 function getProjectsContent(dataItems) {
-    return <></>;
+    return dataItems.map(item => {
+        let diff = item.start && dateDif(item.end || "", item.start)
+        return <SAccordion key={
+            item.id
+        }>
+            <SAccordionSummary aria-controls="panel3d-content" id="panel3d-header">
+                <Box sx={
+                    {
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        width: '100%'
+                    }
+                }>
+                    <Typography> {
+                        item.title
+                    } </Typography>
+                    <Typography> {
+                        ((diff && dateDiffFormat(diff, ["years", "months", "days"])) || "")
+                    } </Typography>
+                </Box></SAccordionSummary>
+            <SAccordionDetails>
+                {innerPanelContent(item, [{ key: "area", text: "area" }, { key: "guidedBy", text: "guidedBy" }, { key: "description", text: "description" }, { key: "techStack", text: "technicalStack" }])}</SAccordionDetails>
+        </SAccordion>
+    });
 }
 function getTrainingsContent(dataItems) {
-    return <></>;
+    return dataItems.map(item => {
+        if (!item.description && !item.techStack && !item.team) {
+            return <Box sx={
+                {
+                    display: 'flex',
+                    marginTop: "1rem",
+                    marginBottom: "1.5rem",
+                    marginLeft: "2.35rem",
+                    marginRight: "1rem"
+                }
+            }
+                key={
+                    item.id
+                }>
+                {
+                    getPosOrgHeader(item)
+                } </Box>
+        }
+        return <SAccordion key={
+            item.id
+        }>
+            <SAccordionSummary aria-controls="panel3d-content" id="panel3d-header">
+                {
+                    getPosOrgHeader(item)
+                } </SAccordionSummary>
+            <SAccordionDetails> {
+                item.team ? <Typography> {
+                    item.team
+                } </Typography> : null
+            }
+                {innerPanelContent(item, [{ key: "area", text: "area" }, { key: "description", text: "description" }, { key: "techStack", text: "technicalStack" }])}</SAccordionDetails>
+        </SAccordion>
+    });
 }
 function getResponsibilitiesContent(dataItems) {
-    return <></>;
-}
-function urlify(text) {
-    if (!text) {
-        return "";
-    }
-    let urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-    const matches = Array.from(text.matchAll(urlRegex), (m) => ({ url: m[0], start: m.index, end: m.index + m[0].length - 1 }));
-    let stringParts = [];
-    let pointer = 0;
-    matches.forEach((match) => {
-        stringParts.push({ type: "text", value: text.substring(pointer, match.start) })
-        stringParts.push({ type: "link", value: text.substring(match.start, match.end + 1) })
-        pointer = match.end + 1;
-    });
-    stringParts.push({ type: "text", value: text.substring(pointer, text.length) })
-    return stringParts.filter((part) => !!part).map((part, index) => {
-        if (part.type === "link") {
-            return <Link href={part.value} target="_blank" key={index}>
-                {part.value}
-            </Link>;
+    return dataItems.map(item => {
+        if (!item.description && !item.area && !item.guidedBy) {
+            return <Box sx={
+                {
+                    display: 'flex',
+                    marginTop: "1rem",
+                    marginBottom: "1.5rem",
+                    marginLeft: "2.35rem",
+                    marginRight: "1rem"
+                }
+            }
+                key={
+                    item.id
+                }>
+                {
+                    getPosOrgHeader(item)
+                } </Box>
         }
-        return <Typography key={index} sx={{
-            whiteSpace: "break-spaces"
-        }}>
-            {part.value}
-        </Typography>;
-    })
+        return <SAccordion key={
+            item.id
+        }>
+            <SAccordionSummary aria-controls="panel3d-content" id="panel3d-header">
+                {
+                    getPosOrgHeader(item)
+                } </SAccordionSummary>
+            <SAccordionDetails> {
+                item.team ? <Typography> {
+                    item.team
+                } </Typography> : null
+            }
+                {innerPanelContent(item, [{ key: "area", text: "area" }, { key: "guidedBy", text: "guidedBy" }, { key: "description", text: "description" }])}</SAccordionDetails>
+        </SAccordion>
+    });
 }
 function getExtraCurriContent(dataItems) {
     return <Box sx={
