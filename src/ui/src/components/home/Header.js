@@ -16,7 +16,7 @@ const Header = (props) => {
   return <>
     <div className="bio-avatar" style={{ padding: "1.6rem" }}>
       <div className="bio-avatar__img-cont">
-        <img srcSet="http://localhost:3000/logo192.jpg, http://localhost:3000/logo192.jpg 2x" alt="Dan Pugsley" style={{ opacity: "0" }} className="fade-in" />
+        <img srcSet="/logo192.jpg, /logo192.jpg 2x" alt="Dan Pugsley" style={{ opacity: "0" }} className="fade-in" />
       </div>
       <div className="bio-avatar__tags">
         <picture ref={spinnerRef} style={{ transform: "rotate(0deg)" }}>
