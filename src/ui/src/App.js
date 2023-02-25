@@ -11,9 +11,9 @@ import Particle from "./components/controls/Particle";
 import BusyIndicator from "./components/BusyIndicator";
 import { useDispatch } from "react-redux";
 import { isAuthUser } from "./store/actions/userActions";
-import Downloads from "./components/downloads";
 import Gallery from "./components/gallery";
 import AboutMe from "./components/aboutMe";
+import './styles/style.css';
 const darkTheme = createTheme({
 	palette: {
 		mode: "dark",
@@ -25,7 +25,9 @@ const darkTheme = createTheme({
 
 const App = () => {
 	const dispatch = useDispatch();
-	dispatch(isAuthUser());
+	React.useEffect(() => {
+		dispatch(isAuthUser());
+	}, [])
 	return (
 		<>
 			<Particle />
@@ -34,13 +36,12 @@ const App = () => {
 				<ThemeProvider theme={darkTheme}>
 					<Header />
 					<MainLayout>
-						<Routes>
+						<Routes >
 							<Route path="" element={<Home />} />
 							<Route path="home" element={<Home />} />
 							<Route path="aboutMe" element={<AboutMe />} />
 							<Route path="meeting" element={<Home />} />
 							<Route path="gallery" element={<Gallery />} />
-							{/* <Route path="downloads" element={<Downloads />} /> */}
 							<Route path="contact" element={<Contact />} />
 						</Routes>
 					</MainLayout>

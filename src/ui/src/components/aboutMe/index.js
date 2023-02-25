@@ -26,7 +26,6 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import getText from "../../messages";
-import Header from "./Header";
 
 const RESOURCE_NAME = {
     EDUCATIONS: "educations",
@@ -560,7 +559,6 @@ const AboutMe = () => {
                 textAlign: "left"
             }
         }>
-            <Header/>
             <Box sx={
                 { textAlign: "end" }
             }>
