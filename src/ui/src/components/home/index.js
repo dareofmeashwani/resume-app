@@ -32,7 +32,7 @@ const AboutMe = () => {
 								alignItems: "center"
 							}}
 						>
-						<span style={{ fontSize: "30px"}}>Hello World!</span>
+						<span style={{ fontSize: "30px", whiteSpace: "break-spaces" }}>Hello World! </span>
 						</Box>
 					</Animator>
 				</ScrollPage>
