@@ -19,13 +19,14 @@ import { getSkillsList } from "../../store/actions/skillsActions";
 import { getTrainingsList } from "../../store/actions/trainingsActions";
 import { getWorkExperiencesList } from "../../store/actions/workExperiencesActions";
 import { useDispatch, useSelector } from "react-redux";
-import { capitalizeString, downloadContent, dateDif, groupDataByKey } from "../../utils";
+import { downloadContent, dateDif, groupDataByKey } from "../../utils";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import getText from "../../messages";
+import Header from "./Header";
 
 const RESOURCE_NAME = {
     EDUCATIONS: "educations",
@@ -119,7 +120,7 @@ function dateDiffFormat(diff, desired) {
         desired = depths;
     } else {
         for (let i = 0; i < desired.length; i++) {
-            desired[i] = depths.find(depth => depth.key == desired[i]);
+            desired[i] = depths.find(depth => depth.key === desired[i]);
         }
     }
     return desired.map(formatter).join(" ");
@@ -311,9 +312,9 @@ function getSkillsContent(dataItems) {
                 </Grid>
             })
         }
-        {ungroupedItems.map(skill => <Typography key={skill.id} fontWeight='fontWeightMedium' display='inline'>
+        {ungroupedItems?ungroupedItems.map(skill => <Typography key={skill.id} fontWeight='fontWeightMedium' display='inline'>
             {`${skill.name}${skill.experience ? ` (${skill.experience})` : ""}`}
-        </Typography>)}
+        </Typography>): null}
     </Box>;
 }
 function getProjectsContent(dataItems) {
@@ -559,6 +560,7 @@ const AboutMe = () => {
                 textAlign: "left"
             }
         }>
+            <Header/>
             <Box sx={
                 { textAlign: "end" }
             }>
