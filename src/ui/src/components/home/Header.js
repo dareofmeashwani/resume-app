@@ -16,13 +16,13 @@ const Header = (props) => {
   return <>
     <div className="bio-avatar" style={{ padding: "1.6rem" }}>
       <div className="bio-avatar__img-cont">
-        <img srcSet="/logo192.jpg, /logo192.jpg 2x" alt="Dan Pugsley" style={{ opacity: "0" }} className="fade-in" />
+        <img srcSet="/images/__profile_pic.jpg, /images/__profile_pic.jpg 2x" alt="Dan Pugsley" style={{ opacity: "0" }} className="fade-in" />
       </div>
       <div className="bio-avatar__tags">
         <picture ref={spinnerRef} style={{ transform: "rotate(0deg)" }}>
-          <source media="(min-width: 885px)" srcSet="https://s3.eu-west-2.amazonaws.com/pugs.ly/img/tags/large.png, https://s3.eu-west-2.amazonaws.com/pugs.ly/img/tags/large-2x.png 2x" />
-          <source media="(min-width: 507px)" srcSet="https://s3.eu-west-2.amazonaws.com/pugs.ly/img/tags/med.png, https://s3.eu-west-2.amazonaws.com/pugs.ly/img/tags/med-2x.png 2x" />
-          <img srcSet="https://s3.eu-west-2.amazonaws.com/pugs.ly/img/tags/small.png, https://s3.eu-west-2.amazonaws.com/pugs.ly/img/tags/small-2x.png 2x" alt="React, Laravel, SQL, JavaScript, CSS, HTML, Node.js, PHP, Swift, C#, C++, Autoscaling, AWS, Load balancing, S3" style={{ opacity: "0" }} className="fade-in" />
+          <source media="(min-width: 885px)" srcSet="/images/__text_large.png, /images/__text_large.png 2x" />
+          <source media="(min-width: 507px)" srcSet="/images/__text_mid.png, /images/__text_mid.png 2x" />
+          <img srcSet="/images/__text_small.png, /images/__text_small.png 2x" alt="React, Laravel, SQL, JavaScript, CSS, HTML, Node.js, PHP, Swift, C#, C++, Autoscaling, AWS, Load balancing, S3" style={{ opacity: "0" }} className="fade-in" />
         </picture>
       </div>
     </div>
