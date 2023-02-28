@@ -58,6 +58,12 @@ const messages = {
 	years: "Years",
 	month: "Month",
 	months: "Months",
+	area: "Area",
+	guidedBy: "Guided By",
+	description: "Description",
+	organization: "Organization",
+	position: "Position",
+	techStack: "Techinal Stack"
 };
 
 export default function getText(key) {

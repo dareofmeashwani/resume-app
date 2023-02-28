@@ -11,7 +11,7 @@ export const imageList = function (
 	const filesPath = path.join(__dirname, "../images");
 	const fileList = fs
 		.readdirSync(filesPath)
-		.filter((file) => fs.lstatSync(path.join(filesPath, file)).isFile() && !file.startsWith("__"))
+		.filter((file) => fs.lstatSync(path.join(filesPath, file)).isFile() && !file.startsWith("__") && !file.startsWith("."))
 		.map((file) => ({
 			thumbnail: encodeURI(`${config.DOMAIN_ADDRESS}/images/thumbnails/${file}`),
 			img: encodeURI(`${config.DOMAIN_ADDRESS}/images/${file}`)

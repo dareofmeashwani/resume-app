@@ -15,7 +15,7 @@ const TrainingSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        maxLength: 100,
+        maxLength: 500,
         trim: true
     },
     area: {

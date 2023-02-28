@@ -2021,7 +2021,7 @@ components:
      maxLength: 100
     guidedBy:
      type: string
-     maxLength: 100
+     maxLength: 200
     techStack:
      type: string
      maxLength: 200
@@ -2085,7 +2085,7 @@ components:
      maxLength: 100
     guidedBy:
      type: string
-     maxLength: 100
+     maxLength: 200
     description:
      type: string
      maxLength: 500

@@ -14,7 +14,7 @@ const ProjectSchema = new mongoose.Schema({
     },
     guidedBy: {
         type: String,
-        maxLength: 100,
+        maxLength: 200,
         trim: true
     },
     description: {

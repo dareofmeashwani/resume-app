@@ -158,7 +158,7 @@ function urlify(text) {
 }
 function innerPanelContent(item, attibutes) {
     return attibutes.map((attribute, index) => {
-        return item[attribute.key] ? <Typography key={index} sx={{ whiteSpace: "break-spaces" }}> {getText(attribute.key) + " : "}{
+        return item[attribute.key] ? <Typography key={index}> {getText(attribute.key) + " : "}{
             item[attribute.key]
         } </Typography> : null
     })
@@ -211,7 +211,7 @@ function getEducationsContent(dataItems) {
     </>;
 }
 
-function getPosOrgHeader(data) {
+function getPosOrgHeader(data, dateFormat) {
     let diff = data.start && dateDif(data.end || "", data.start)
     return <Box sx={
         {
@@ -233,7 +233,7 @@ function getPosOrgHeader(data) {
             } </Typography>
         </Box>
         <Typography> {
-            ((diff && dateDiffFormat(diff, ["years", "months"])) || "")
+            ((diff && dateFormat && dateDiffFormat(diff, dateFormat)) || "")
         } </Typography>
     </Box>
 }
@@ -253,7 +253,7 @@ function getWorkExpContent(dataItems) {
                     item.id
                 }>
                 {
-                    getPosOrgHeader(item)
+                    getPosOrgHeader(item, ["years", "months"])
                 } </Box>
         }
         return <SAccordion key={
@@ -261,7 +261,7 @@ function getWorkExpContent(dataItems) {
         }>
             <SAccordionSummary aria-controls="panel3d-content" id="panel3d-header">
                 {
-                    getPosOrgHeader(item)
+                    getPosOrgHeader(item, ["years", "months"])
                 } </SAccordionSummary>
             <SAccordionDetails>
                 {innerPanelContent(item, [{ key: "team", text: "team" }, { key: "description", text: "description" }, { key: "techStack", text: "technicalStack" }])}
