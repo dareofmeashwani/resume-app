@@ -63,7 +63,7 @@ const messages = {
 	description: "Description",
 	organization: "Organization",
 	position: "Position",
-	techStack: "Techinal Stack"
+	techStack: "Technical Stack"
 };
 
 export default function getText(key) {
