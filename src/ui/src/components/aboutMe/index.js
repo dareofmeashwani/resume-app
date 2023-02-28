@@ -289,7 +289,6 @@ function getSkillsContent(dataItems) {
                 return <Grid key={skillKey} sx={
                     {
                         display: 'flex',
-                        justifyContent: 'space-between',
                         width: '100%'
                     }
                 }>
@@ -311,9 +310,9 @@ function getSkillsContent(dataItems) {
                 </Grid>
             })
         }
-        {ungroupedItems?ungroupedItems.map(skill => <Typography key={skill.id} fontWeight='fontWeightMedium' display='inline'>
+        {ungroupedItems ? ungroupedItems.map(skill => <Typography key={skill.id} fontWeight='fontWeightMedium' display='inline'>
             {`${skill.name}${skill.experience ? ` (${skill.experience})` : ""}`}
-        </Typography>): null}
+        </Typography>) : null}
     </Box>;
 }
 function getProjectsContent(dataItems) {

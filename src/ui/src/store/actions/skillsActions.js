@@ -8,7 +8,7 @@ export const getSkillsList = (status) => {
 	return async (dispatch) => {
 		dispatch(actions.setBusyIndicator());
 		try {
-			const response = await axios.get(`/api/v1/skills?status=${status}`);
+			const response = await axios.get(`/api/v1/skills?status=${status}&sort=asc`);
 			dispatch(actions.skillsList(response.data));
 		} catch (error) {
 			dispatch(
