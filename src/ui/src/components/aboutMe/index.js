@@ -357,7 +357,7 @@ function getTrainingsContent(dataItems) {
                     item.id
                 }>
                 {
-                    getPosOrgHeader(item)
+                    getPosOrgHeader(item, ["years", "months"])
                 } </Box>
         }
         return <SAccordion key={
@@ -365,7 +365,7 @@ function getTrainingsContent(dataItems) {
         }>
             <SAccordionSummary aria-controls="panel3d-content" id="panel3d-header">
                 {
-                    getPosOrgHeader(item)
+                    getPosOrgHeader(item, ["years", "months"])
                 } </SAccordionSummary>
             <SAccordionDetails> {
                 item.team ? <Typography> {
