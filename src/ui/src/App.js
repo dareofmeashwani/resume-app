@@ -14,6 +14,7 @@ import { isAuthUser } from "./store/actions/userActions";
 import Gallery from "./components/gallery";
 import AboutMe from "./components/aboutMe";
 import './styles/style.css';
+import Meeting from "./components/meeting";
 const darkTheme = createTheme({
 	palette: {
 		mode: "dark",
@@ -40,7 +41,7 @@ const App = () => {
 							<Route path="" element={<Home />} />
 							<Route path="home" element={<Home />} />
 							<Route path="aboutMe" element={<AboutMe />} />
-							<Route path="meeting" element={<Home />} />
+							<Route path="meeting" element={<Meeting />} />
 							<Route path="gallery" element={<Gallery />} />
 							<Route path="contact" element={<Contact />} />
 						</Routes>

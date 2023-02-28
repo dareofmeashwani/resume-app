@@ -21,7 +21,7 @@ const Header = (props) => {
 	});
 	const pages = [
 		{ id: "aboutme", text: getText("aboutMe") },
-		userInfo ? { id: "meeting", text: getText("meeting") } : null,
+		{ id: "meeting", text: getText("meeting") },
 		{ id: "gallery", text: getText("gallery") },
 		//{ id: "downloads", text: getText("downloads") },
 		{ id: "contact", text: getText("contact") }
