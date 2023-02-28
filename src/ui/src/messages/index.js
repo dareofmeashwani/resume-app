@@ -1,5 +1,5 @@
 const messages = {
-	title: "Ashwani Kumar Verma",
+	domainName: "Ashwani Kumar Verma",
 	profile: "Profile",
 	dashboard: "Dashboard",
 	logout: "Logout",
@@ -63,7 +63,9 @@ const messages = {
 	description: "Description",
 	organization: "Organization",
 	position: "Position",
-	techStack: "Technical Stack"
+	techStack: "Technical Stack",
+	team: "Team",
+	title: "Title"
 };
 
 export default function getText(key) {

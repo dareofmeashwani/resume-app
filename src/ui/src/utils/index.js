@@ -31,8 +31,8 @@ export function downloadContent(url) {
 }
 
 export function dateDif(start, end) {
-    let date1 = moment(new Date(start))
-    let date2 = moment(new Date(end))
+    let date1 = moment(new Date(end))
+    let date2 = moment(new Date(start))
     let years = date1.diff(date2, 'year');
     date2.add(years, 'years');
 

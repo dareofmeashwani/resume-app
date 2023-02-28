@@ -134,7 +134,7 @@ const Contact = () => {
 				sx={{
 					marginLeft: "15%",
 					marginRight: "15%",
-					marginBottom: "5%"
+					marginBottom: "10%"
 				}}
 			>
 				<Typography variant="h6">{getText("writeToMe")}</Typography>

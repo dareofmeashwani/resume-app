@@ -212,7 +212,7 @@ function getEducationsContent(dataItems) {
 }
 
 function getPosOrgHeader(data, dateFormat) {
-    let diff = data.start && dateDif(data.end || "", data.start)
+    let diff = data.start && dateDif(data.start, data.end || Date.now())
     return <Box sx={
         {
             display: 'flex',

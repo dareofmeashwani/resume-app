@@ -54,7 +54,7 @@ const Header = (props) => {
 	return (
 		<>
 			<AppBar
-				title={getText("title")}
+				title={getText("domainName")}
 				settings={[
 					{ id: "dashboard", text: getText("dashboard") },
 					{ id: "profile", text: getText("profile") },
