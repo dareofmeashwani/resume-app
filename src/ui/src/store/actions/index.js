@@ -6,7 +6,6 @@ import {
 	CHANGE_USER_EMAIL,
 	UPDATE_USER_PROFILE,
 	VERIFY_EMAIL,
-	VERIFY_MOBILE,
 	CLEAR_NOTIFICATION_GLOBAL,
 	FORGET_PASSWORD,
 	SET_BUSY_INDICATOR_GLOBAL,
@@ -212,10 +211,7 @@ export const updateUserProfile = (userdata) => ({
 	payload: userdata
 });
 
-export const emailVerify = () => ({
-	type: VERIFY_EMAIL
-});
-
-export const mobileVerify = () => ({
-	type: VERIFY_MOBILE
+export const emailVerify = (payload) => ({
+	type: VERIFY_EMAIL,
+	payload
 });

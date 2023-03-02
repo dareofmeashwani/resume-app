@@ -17,7 +17,7 @@ export default function ForgetPassword(props) {
 	const setType = props.setType;
 	const handleReset = props.handleReset;
 	const formik = useFormik({
-		initialValues: { email: ""},
+		initialValues: { email: "" },
 		validationSchema: Yup.object({
 			email: Yup.string()
 				.required(getText("inputEmailRequired"))
@@ -30,7 +30,7 @@ export default function ForgetPassword(props) {
 	return (
 		<Box
 			sx={{
-				margin: "4rem",
+				margin: "5rem",
 				display: "flex",
 				flexDirection: "column",
 				alignItems: "center"
@@ -44,8 +44,8 @@ export default function ForgetPassword(props) {
 			</Typography>
 			<Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 1 }}>
 				<TextField
-					margin="normal"
 					required
+					margin="normal"
 					fullWidth
 					id="email"
 					label={getText("emailAddress")}

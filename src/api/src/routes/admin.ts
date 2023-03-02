@@ -13,11 +13,8 @@ const getUserProps = (user: any) => {
 			"email",
 			"emailVerified",
 			"role",
-			"dob",
 			"createdAt",
 			"modifiedAt",
-			"mobile",
-			"mobileVerified"
 		],
 		{ _id: "id" }
 	);

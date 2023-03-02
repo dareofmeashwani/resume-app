@@ -5,7 +5,6 @@ export const FORGET_PASSWORD = "forget_password";
 export const CHANGE_USER_EMAIL = "change_user_email";
 export const UPDATE_USER_PROFILE = "update_user_profile";
 export const VERIFY_EMAIL = "verify_email";
-export const VERIFY_MOBILE = "verify_mobile";
 
 /// notifications
 export const ERROR_GLOBAL = "error_global";

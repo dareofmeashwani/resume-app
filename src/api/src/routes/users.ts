@@ -8,13 +8,14 @@ import {
 } from "../utils/constants";
 import { User } from "../models/userModel";
 import { SESSION_ID } from "../utils/constants";
-import { throwResumeError } from "../utils/errorHelper";
+import { ResumeError, throwResumeError } from "../utils/errorHelper";
 import { filterProps, processQueryParam } from "../utils/helpers";
 import {
 	sendVerificationEmail,
 	sendWelcomeEmail,
 	sendForgetPasswordEmail
 } from "../utils/email";
+import Token from "../models/tokenModel";
 
 export async function getListUser(req: express.Request, res: express.Response) {
 	try {
@@ -67,7 +68,7 @@ export async function postRegisterUser(
 	});
 	try {
 		const doc = await user.save();
-		const emailToken = user.generateEmailActivationToken();
+		const emailToken = user.generateEmailVerificationToken();
 		res.status(HTTP_STATUS.CREATED).send(getUserProps(doc._doc));
 		sendWelcomeEmail(doc._doc);
 		sendVerificationEmail(doc._doc, emailToken);
@@ -132,15 +133,124 @@ export async function postForgetPassword(
 	req: express.Request,
 	res: express.Response
 ) {
-	let user = await User.findOne({ email: req.body.email });
-	if (user) {
-		const token = user.generateForgetPasswordToken();
-		sendForgetPasswordEmail(user, token);
+	try {
+		let user = await User.findOne({ email: req.body.email });
+		if (user) {
+			const token = user.generateForgetPasswordToken();
+			const alreadyTokenExisted = await Token.findOne({ userId: user.id });
+			if (alreadyTokenExisted) {
+				alreadyTokenExisted.token = token;
+				alreadyTokenExisted.modifiedAt = Date.now();
+				await alreadyTokenExisted.save()
+			} else {
+				const dbToken = new Token({
+					userId: user.id,
+					token: token,
+				});
+				await dbToken.save();
+			}
+			sendForgetPasswordEmail(user, token);
+		}
+		res.status(HTTP_STATUS.ACCEPTED).send({
+			message: MESSAGES.FORGET_PASSWORD
+		});
+	} catch (error) {
+		throwResumeError(
+			HTTP_STATUS.SERVICE_UNAVAILABLE,
+			ERROR_MESSAGES.DB_CONNECTIVITY_ERROR,
+			req,
+			error
+		);
 	}
-	res.status(HTTP_STATUS.OK).send({
-		message: MESSAGES.FORGET_PASSWORD
-	});
 }
+
+export async function verifyForgetPassword(req: express.Request, res: express.Response) {
+	let decodedToken;
+	let user;
+	let dbToken;
+	try {
+		decodedToken = (User as any).validateToken(req.body.token);
+		user = await User.findOne({ email: decodedToken.email });
+		dbToken = await Token.findOne({ userId: user.id });
+		if (!user || dbToken.token !== req.body.token) {
+			throwResumeError(HTTP_STATUS.FORBIDDEN, ERROR_MESSAGES.INVALID_TOKEN, req);
+		}
+	} catch (error) {
+		if (error instanceof ResumeError) {
+			throw error;
+		}
+		throwResumeError(HTTP_STATUS.FORBIDDEN, ERROR_MESSAGES.INVALID_TOKEN, req, error);
+	}
+	if (req.body.password) {
+		try {
+			user.password = req.body.password;
+			await Token.deleteOne({ userId: user.id });
+			await user.save();
+			res.status(HTTP_STATUS.ACCEPTED).send({
+				message: MESSAGES.FORGET_PASSWORD_SUCCESS
+			})
+		} catch (error) {
+			throwResumeError(
+				HTTP_STATUS.SERVICE_UNAVAILABLE,
+				ERROR_MESSAGES.DB_CONNECTIVITY_ERROR,
+				req,
+				error
+			);
+		}
+	} else {
+		res.status(HTTP_STATUS.ACCEPTED).send({
+			message: MESSAGES.VALID_TOKEN
+		})
+	}
+}
+
+export async function resendEmailVerification(
+	req: express.Request,
+	res: express.Response
+) {
+	const user = new User(res.locals.userData);
+	if (user.emailVerified) {
+		throwResumeError(HTTP_STATUS.UNAUTHORIZED, ERROR_MESSAGES.INVALID_OPERATION, req);
+	}
+	const emailToken = user.generateEmailVerificationToken();
+	res.status(HTTP_STATUS.ACCEPTED).send({
+		message: MESSAGES.EMAIL_VERIFCATION_MAIL_SEND
+	});
+	sendVerificationEmail(user, emailToken);
+}
+
+export async function emailVerify(req: express.Request, res: express.Response) {
+	let decodedToken;
+	try {
+		decodedToken = (User as any).validateToken(req.body.token);
+	} catch (error) {
+		throwResumeError(HTTP_STATUS.FORBIDDEN, ERROR_MESSAGES.INVALID_TOKEN, req, error);
+	}
+	try {
+		let user = await User.findOne({ email: decodedToken.email });
+		if (!user) {
+			throwResumeError(HTTP_STATUS.FORBIDDEN, ERROR_MESSAGES.INVALID_TOKEN, req);
+		}
+		if (!user.emailVerified) {
+			user.emailVerified = true;
+			await user.save();
+		}
+		res.status(HTTP_STATUS.ACCEPTED).send({
+			message: MESSAGES.EMAIL_VERIFIED
+		});
+	} catch (error) {
+		if (error instanceof ResumeError) {
+			throw error;
+		}
+		throwResumeError(
+			HTTP_STATUS.SERVICE_UNAVAILABLE,
+			ERROR_MESSAGES.DB_CONNECTIVITY_ERROR,
+			req,
+			error
+		);
+	}
+}
+
 const getUserProps = (user: any) => {
 	return filterProps(user, ["__v", "password"], { _id: "id" });
 };

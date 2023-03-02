@@ -279,7 +279,7 @@ function getSkillsContent(dataItems) {
             marginTop: "1rem",
             display: "grid",
             marginBottom: "1.5rem",
-            marginLeft: "2.35rem",
+            marginLeft: "1rem",
             marginRight: "1rem"
         }
     }>
@@ -417,7 +417,7 @@ function getExtraCurriContent(dataItems) {
             marginTop: "1rem",
             display: "grid",
             marginBottom: "1.5rem",
-            marginLeft: "2.35rem",
+            marginLeft: "1rem",
             marginRight: "1rem"
         }
     }>

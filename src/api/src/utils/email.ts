@@ -68,15 +68,16 @@ export const sendVerificationEmail = async (
 				name: userInfo.firstname + " " + userInfo.lastname,
 				action: {
 					instructions: "To get validate your account, please click here:",
-
 					button: {
 						color: "#1a73e8",
 						text: "Validate your account",
-						link: `${config.DOMAIN_ADDRESS}/user/verification?t=${emailToken}`
+						link: `${config.DOMAIN_ADDRESS}/emailVerification?token=${emailToken}`
 					}
 				},
-				outro:
+				outro:[
+					"Email verification link will expire in 24 hours",
 					"Need help, or have questions? Just reply to this email, we'd love to help."
+				]
 			}
 		};
 
@@ -117,7 +118,7 @@ export const sendForgetPasswordEmail = async (
 					button: {
 						color: "#1a73e8",
 						text: "Reset your account",
-						link: `${config.DOMAIN_ADDRESS}/user/forgetPassword?t=${token}`
+						link: `${config.DOMAIN_ADDRESS}/forgetPassword?token=${token}`
 					}
 				},
 				outro:

@@ -83,25 +83,6 @@ paths:
     "500":
      $ref: "#/components/responses/InternalServerError"
 
- /user/login:
-  post:
-   tags:
-    - User
-   summary: login User
-   operationId: postLoginUser
-   requestBody:
-    required: true
-    $ref: "#/components/requestBodies/UserLoginBody"
-   responses:
-    "202":
-     $ref: "#/components/responses/UserDetail"
-    "400":
-     $ref: "#/components/responses/BadRequest"
-    "404":
-     $ref: "#/components/responses/NotFound"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
-
  /user/register:
   post:
    tags:
@@ -121,29 +102,29 @@ paths:
     "500":
      $ref: "#/components/responses/InternalServerError"
 
- /user/forgetPassword:
+ /user/login:
   post:
    tags:
     - User
-   summary: forget user password
-   operationId: postForgetPassword
+   summary: login User
+   operationId: postLoginUser
    requestBody:
     required: true
-    $ref: "#/components/requestBodies/ForgetPasswordBody"
+    $ref: "#/components/requestBodies/UserLoginBody"
    responses:
-    "200":
-     description: "forget password success message"
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/Message"
+    "202":
+     $ref: "#/components/responses/UserDetail"
     "400":
      $ref: "#/components/responses/BadRequest"
+    "404":
+     $ref: "#/components/responses/NotFound"
     "500":
      $ref: "#/components/responses/InternalServerError"
 
  /user/logout:
   post:
+   tags:
+    - User
    x-middleware:
     - loginCheck
    summary: Logout logged-in user
@@ -176,24 +157,47 @@ paths:
     "500":
      $ref: "#/components/responses/InternalServerError"
 
- /user/emailVerifyToken:
-  patch:
+ /user/forgetPassword:
+  post:
    tags:
     - User
-   summary: email verification
-   operationId: emailVerifyToken
+   summary: forget user password
+   operationId: postForgetPassword
    requestBody:
     required: true
-    $ref: "#/components/requestBodies/EmailVerifyBody"
+    $ref: "#/components/requestBodies/ForgetPasswordBody"
    responses:
-    "200":
-     description: "email verification success message"
+    "202":
+     description: "forget password success message"
      content:
       application/json:
        schema:
         $ref: "#/components/schemas/Message"
     "400":
      $ref: "#/components/responses/BadRequest"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
+
+ /user/verifyForgetPassword:
+  patch:
+   tags:
+    - User
+   summary: verify forget password token
+   operationId: verifyForgetPassword
+   requestBody:
+    required: true
+    $ref: "#/components/requestBodies/ForgetPasswordVerifyBody"
+   responses:
+    "202":
+     description: "forget passowrd success message"
+     content:
+      application/json:
+       schema:
+        $ref: "#/components/schemas/Message"
+    "400":
+     $ref: "#/components/responses/BadRequest"
+    "403":
+     $ref: "#/components/responses/Forbidden"
     "500":
      $ref: "#/components/responses/InternalServerError"
 
@@ -204,14 +208,40 @@ paths:
    tags:
     - User
    summary: resend email verification
-   operationId: emailResendVerification
+   operationId: resendEmailVerification
    responses:
-    "200":
-     $ref: "#/components/schemas/Empty"
+    "202":
+     description: "email verification link resend success message"
+     content:
+      application/json:
+       schema:
+        $ref: "#/components/schemas/Message"
     "401":
      $ref: "#/components/responses/Unauthorized"
     "500":
      $ref: "#/components/responses/InternalServerError"
+
+ /user/emailVerify:
+  patch:
+   tags:
+    - User
+   summary: email verification
+   operationId: emailVerify
+   requestBody:
+    required: true
+    $ref: "#/components/requestBodies/EmailVerifyBody"
+   responses:
+    "202":
+     description: "email verification success message"
+     content:
+      application/json:
+       schema:
+        $ref: "#/components/schemas/Message"
+    "403":
+     $ref: "#/components/responses/Forbidden"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
+
  /educations:
   get:
    tags:
@@ -1436,6 +1466,13 @@ components:
      schema:
       allOf:
        - $ref: "#/components/schemas/ForgetPasswordDetail"
+  ForgetPasswordVerifyBody:
+   description: forget user password
+   content:
+    application/json:
+     schema:
+      allOf:
+       - $ref: "#/components/schemas/ForgetPasswordVerifyDetail"
   EmailVerifyBody:
    description: verify user email
    content:
@@ -1733,7 +1770,6 @@ components:
    required:
     - id
     - firstname
-    - gender
    properties:
     id:
      allOf:
@@ -1742,9 +1778,6 @@ components:
     firstname:
      type: string
      maxLength: 100
-    gender:
-     type: string
-     maxLength: 50
     lastname:
      type: string
      maxLength: 100
@@ -1780,14 +1813,11 @@ components:
    required:
     - id
     - emailVerified
-    - mobileVerified
    properties:
     id:
      type: string
      example: "145664568768"
     emailVerified:
-     type: boolean
-    mobileVerified:
      type: boolean
 
   UserDetailBase:
@@ -1795,9 +1825,6 @@ components:
    required:
     - email
     - firstname
-    - gender
-    - mobile
-    - dob
    properties:
     email:
      type: string
@@ -1806,19 +1833,9 @@ components:
     firstname:
      type: string
      maxLength: 100
-    gender:
-     type: string
-     maxLength: 50
     lastname:
      type: string
      maxLength: 100
-    dob:
-     type: string
-     format: date-time
-     maxLength: 25
-    mobile:
-     type: string
-     maxLength: 13
   UserList:
    type: object
    allOf:
@@ -1846,6 +1863,17 @@ components:
      type: string
      maxLength: 256
      format: email
+  ForgetPasswordVerifyDetail:
+   type: object
+   required:
+    - token
+   properties:
+    token:
+     type: string
+     maxLength: 1024
+    password:
+     type: string
+     maxLength: 25
   #######################################
   ########  Education Schemas  ##########
   #######################################

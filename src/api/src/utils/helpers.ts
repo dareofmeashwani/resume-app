@@ -66,7 +66,7 @@ export function generateToken(user: any, type: string) {
 	const userObj = {
 		id: user._id.toHexString(),
 		email: user.email,
-		type: type
+		type: type,
 	};
 	const encryptedData = jwt.sign(userObj, config.PRIVATE_KEY, {
 		expiresIn: config.TOKEN_EXPIRY

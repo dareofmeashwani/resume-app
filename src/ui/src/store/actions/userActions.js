@@ -31,10 +31,7 @@ export const signUpUser = (values) => {
 				email: values.email,
 				password: values.password,
 				firstname: values.firstname,
-				gender: values.gender,
 				lastname: values.lastname,
-				dob: new Date(values.birthday).toISOString(),
-				mobile: values.mobile
 			});
 			dispatch(actions.authUser(user.data));
 		} catch (error) {
@@ -98,6 +95,24 @@ export const isAuthUser = () => {
 					actions.errorGlobal(error.response.data)
 				);
 			}
+		}
+		dispatch(actions.resetBusyIndicator());
+	};
+};
+
+export const initiateEmailVerification = (token) => {
+	return async (dispatch) => {
+		dispatch(actions.setBusyIndicator());
+		try {
+			const response = await axios.patch(`/api/v1/user/emailVerify`, {
+				token,
+			});
+			dispatch(actions.emailVerify({...response.data, verified: true}));
+		} catch (error) {
+			dispatch(actions.emailVerify({...error.response.data, verified: false}));
+			dispatch(
+				actions.errorGlobal(error.response.data)
+			);
 		}
 		dispatch(actions.resetBusyIndicator());
 	};

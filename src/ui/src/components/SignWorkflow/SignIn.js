@@ -33,7 +33,7 @@ export default function SignIn(props) {
 	return (
 		<Box
 			sx={{
-				margin: "4rem",
+				margin: "5rem",
 				display: "flex",
 				flexDirection: "column",
 				alignItems: "center"

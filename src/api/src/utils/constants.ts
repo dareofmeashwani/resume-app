@@ -95,7 +95,10 @@ export const TOKEN_TYPES = {
 export const MESSAGES = {
 	FORGET_PASSWORD:
 		"Password reset link has been sent to your email, Please follow the link & reset your account password.",
-	EMAIL_VERIFIED: "Your email has been successfully verified"
+	EMAIL_VERIFIED: "Your email has been successfully verified",
+	EMAIL_VERIFCATION_MAIL_SEND: "Email verification link has been sent to your email, Please follow the link & verify your email.",
+	FORGET_PASSWORD_SUCCESS: "Your password has been changed successfully",
+	VALID_TOKEN: "Token provided by you is valid, please proceed further",
 };
 
 export const query = {

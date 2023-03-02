@@ -9,24 +9,18 @@ import Typography from "@mui/material/Typography";
 import NoRefLink from "../controls/NoRefLink";
 import * as constants from "../../utils/constants";
 import getText from "../../messages";
-import GenderRadio from "../controls/GenderRadio";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { errorHelper } from "../../utils";
 export default function SignUp(props) {
 	const setType = props.setType;
 	const handleSignUp = props.handleSignUp;
-	const phoneRegExp =
-		/^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 	const formik = useFormik({
 		initialValues: {
 			email: "",
 			password: "",
-			mobile: "",
 			firstname: "",
-			birthday: "",
 			lastname: "",
-			gender: "female"
 		},
 		validationSchema: Yup.object({
 			email: Yup.string()
@@ -35,11 +29,7 @@ export default function SignUp(props) {
 			password: Yup.string()
 				.required(getText("inputPasswordRequired"))
 				.min(8, getText("inputPasswordMinLenWarning")),
-			mobile: Yup.string()
-				.required(getText("inputMobileNumberRequired"))
-				.matches(phoneRegExp, getText("inputInvalidMobileNumber")),
 			firstname: Yup.string().required(getText("inputFirstNameRequired")),
-			birthday: Yup.string().required(getText("inputBirthdayRequired"))
 		}),
 		onSubmit: (values) => {
 			handleSignUp(values);
@@ -48,9 +38,7 @@ export default function SignUp(props) {
 	return (
 		<Box
 			sx={{
-				marginTop: "4rem",
-				marginLeft: "4rem",
-				marginRight: "4rem",
+				margin: "5rem",
 				display: "flex",
 				flexDirection: "column",
 				alignItems: "center"
@@ -62,101 +50,64 @@ export default function SignUp(props) {
 			<Typography component="h1" variant="h5">
 				{getText("signUp")}
 			</Typography>
-			<Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 3 }}>
-				<Grid container spacing={2}>
-					<Grid item xs={12} sm={6}>
-						<TextField
-							autoFocus
-							required
-							fullWidth
-							autoComplete="given-name"
-							name="firstname"
-							id="firstname"
-							label={getText("firstname")}
-							{...formik.getFieldProps("firstname")}
-							{...errorHelper(formik, "firstname")}
+			<Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 1 }}>
+				<TextField
+					margin="normal"
+					autoFocus
+					required
+					fullWidth
+					autoComplete="given-name"
+					name="firstname"
+					id="firstname"
+					label={getText("firstname")}
+					{...formik.getFieldProps("firstname")}
+					{...errorHelper(formik, "firstname")}
+				/>
+				<TextField
+					fullWidth
+					margin="normal"
+					id="lastname"
+					label={getText("lastname")}
+					name="lastname"
+					autoComplete="family-name"
+					{...formik.getFieldProps("lastname")}
+					{...errorHelper(formik, "lastname")}
+				/>
+				<TextField
+					required
+					fullWidth
+					margin="normal"
+					id="email"
+					type="email"
+					label={getText("emailAddress")}
+					name="email"
+					autoComplete="email"
+					{...formik.getFieldProps("email")}
+					{...errorHelper(formik, "email")}
+				/>
+				<TextField
+					required
+					fullWidth
+					margin="normal"
+					name="password"
+					label={getText("password")}
+					type="password"
+					id="password"
+					autoComplete="new-password"
+					{...formik.getFieldProps("password")}
+					{...errorHelper(formik, "password")}
+				/>
+				<Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+					{getText("signUp")}
+				</Button>
+				<Grid container>
+					<Grid item xs>
+						<NoRefLink
+							variant="body2"
+							text={getText("forgetYourPassword")}
+							onClick={() => setType(constants.FORGET_PASSWORD)}
 						/>
 					</Grid>
-					<Grid item xs={12} sm={6}>
-						<TextField
-							fullWidth
-							id="lastname"
-							label={getText("lastname")}
-							name="lastname"
-							autoComplete="family-name"
-							{...formik.getFieldProps("lastname")}
-							{...errorHelper(formik, "lastname")}
-						/>
-					</Grid>
-					<Grid item xs={12}>
-						<TextField
-							required
-							fullWidth
-							id="email"
-							type="email"
-							label={getText("emailAddress")}
-							name="email"
-							autoComplete="email"
-							{...formik.getFieldProps("email")}
-							{...errorHelper(formik, "email")}
-						/>
-					</Grid>
-					<Grid item xs={12}>
-						<TextField
-							required
-							fullWidth
-							id="mobile"
-							type="tel"
-							label={getText("mobile")}
-							name="mobile"
-							autoComplete="mobile"
-							{...formik.getFieldProps("mobile")}
-							{...errorHelper(formik, "mobile")}
-						/>
-					</Grid>
-					<Grid item xs={12}>
-						<TextField
-							required
-							fullWidth
-							name="password"
-							label={getText("password")}
-							type="password"
-							id="password"
-							autoComplete="new-password"
-							{...formik.getFieldProps("password")}
-							{...errorHelper(formik, "password")}
-						/>
-					</Grid>
-					<Grid item xs={12}>
-						<TextField
-							required
-							fullWidth
-							id="birthday"
-							label={getText("birthday")}
-							type="date"
-							InputLabelProps={{
-								shrink: true
-							}}
-							{...formik.getFieldProps("birthday")}
-							{...errorHelper(formik, "birthday")}
-						/>
-					</Grid>
-					<Grid item xs={12}>
-						<GenderRadio
-							required
-							fullWidth
-							id="gender"
-							name="gender"
-							autoComplete="gender"
-							{...formik.getFieldProps("gender")}
-							{...errorHelper(formik, "gender")}
-						/>
-					</Grid>
-				</Grid>
-				<Grid container justifyContent="space-between" sx={{ mt: 3, mb: 2 }}>
-					<Button type="submit" variant="contained">
-						{getText("signUp")}
-					</Button>
 					<Grid item>
 						<NoRefLink
 							variant="body2"
@@ -166,6 +117,6 @@ export default function SignUp(props) {
 					</Grid>
 				</Grid>
 			</Box>
-		</Box>
+		</Box >
 	);
 }

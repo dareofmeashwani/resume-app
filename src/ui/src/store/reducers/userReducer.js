@@ -1,8 +1,6 @@
 import {
 	AUTH_USER,
 	SIGN_OUT,
-	CHANGE_USER_EMAIL,
-	UPDATE_USER_PROFILE,
 	VERIFY_EMAIL,
 	FORGET_PASSWORD
 } from "../types";
@@ -25,12 +23,8 @@ export default function usersReducer(state = DEFAULT_USER_STATE, action) {
 			return { ...state, forgetPasswordMessage: action.payload };
 		case SIGN_OUT:
 			return { user: null };
-		case CHANGE_USER_EMAIL:
-			return { ...state, data: { ...state.data, email: action.payload } };
-		case UPDATE_USER_PROFILE:
-			return { ...state, data: { ...action.payload } };
 		case VERIFY_EMAIL:
-			return { ...state, data: { ...state.data, verified: true } };
+			return { ...state, emailVerify: { ...action.payload} };
 		default:
 			return state;
 	}

@@ -19,21 +19,15 @@ const messages = {
 	sendResetLink: "Send Reset Link",
 	password: "Password",
 	emailAddress: "Email Address",
-	gender: "Gender",
 	passwordResetconfirmation:
 		"An email with a confirmation link has been sent your email address.",
 	inputEmailRequired: "Sorry the email is required",
 	invalidEmailInputWarning: "This is not a valid email",
 	inputPasswordRequired: "Sorry the password is required",
 	inputPasswordMinLenWarning: "minimum 8 length of password needed",
-	inputMobileNumberRequired: "Sorry the mobile number is required",
-	inputInvalidMobileNumber: "Invalid Mobile Number",
 	inputFirstNameRequired: "Sorry the firstname is required",
-	inputBirthdayRequired: "Sorry the birthday is required",
 	firstname: "First Name",
 	lastname: "Last Name",
-	mobile: "Mobile",
-	birthday: "Birthday",
 	subject: "Subject",
 	details: "Details",
 	writeToMe: "Write To Me",
@@ -65,7 +59,8 @@ const messages = {
 	position: "Position",
 	techStack: "Technical Stack",
 	team: "Team",
-	title: "Title"
+	title: "Title",
+	emailVerifySuccessMsg: "Your Email has been verified successfully, Please proceed with sign in."
 };
 
 export default function getText(key) {

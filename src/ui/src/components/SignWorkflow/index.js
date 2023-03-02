@@ -39,40 +39,16 @@ export default function SignWorkflow(props) {
 	React.useEffect(() => {
 		setType(props.type);
 	}, [props.type]);
-	if (type === constants.CONFIRMATION) {
-		return (
-			<>
-				<Confirmation message={message} />
+	return (<>
+		<Box sx={{ margin: "4rem" }}>
+				{type === constants.CONFIRMATION ?
+					<Confirmation message={message} /> : type === constants.FORGET_PASSWORD ?
+						<ForgetPassword setType={setType} handleReset={handleReset} />
+						: type === constants.SIGNUP ?
+							<SignUp setType={setType} handleSignUp={handleSignUp} /> : type === constants.SIGNIN ?
+								<SignIn setType={setType} handleSignIn={handleSignIn} /> : null}
 				<Copyright sx={{ mt: 8, mb: 4 }} />
-			</>
-		);
-	}
-	if (type === constants.FORGET_PASSWORD) {
-		return (
-			<>
-				<ForgetPassword setType={setType} handleReset={handleReset} />
-				<Copyright sx={{ mt: 8, mb: 4 }} />
-			</>
-		);
-	}
-	if (type === constants.SIGNUP) {
-		return (
-			<>
-				<SignUp setType={setType} handleSignUp={handleSignUp} />
-				<Copyright sx={{ mt: 0 }} />
-			</>
-		);
-	}
-	if (type === constants.SIGNIN) {
-		return (
-			<>
-				<Box sx={{ margin: "4rem" }}>
-					<SignIn setType={setType} handleSignIn={handleSignIn} />
-					<Copyright sx={{ mt: 8, mb: 4 }} />
-				</Box>
-			</>
-		);
-	} else {
-		return null;
-	}
+			</Box>
+	</>
+	);
 }

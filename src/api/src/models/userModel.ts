@@ -48,15 +48,6 @@ const userSchema = new mongoose.Schema({
 		trim: true,
 		default: ""
 	},
-	gender: {
-		type: String,
-		maxLength: 50,
-		required: true
-	},
-	dob: {
-		type: Date,
-		required: true
-	},
 	createdAt: {
 		type: Date,
 		default: Date.now
@@ -64,20 +55,6 @@ const userSchema = new mongoose.Schema({
 	modifiedAt: {
 		type: Date,
 		default: Date.now
-	},
-	mobile: {
-		type: String,
-		maxLength: 13,
-		required: true,
-		validate(value: string) {
-			if (!validator.isMobilePhone(value)) {
-				throwResumeError(HTTP_STATUS.BAD_REQUEST, ERROR_MESSAGES.INVALID_MOBILE);
-			}
-		}
-	},
-	mobileVerified: {
-		type: Boolean,
-		default: false
 	}
 });
 
