@@ -65,7 +65,7 @@ const messages = {
 	passwordNotMatching: "Passwords are not matching",
 	forgetPasswordScreenTitle: "Please enter your new password, then tap on Save password.",
 	passwordChangedSucessfully: "Your password has been changed successfully",
-	meetingNotLoggedInMsg: "Please login to setup the meeting with me.",
+	meetingNotLoggedInMsg: "A quick chat to get to know each other and check if I can help you with your project. Please login & feel free to setup a meeting with me.",
 	save: "Save"
 };
 

@@ -12,6 +12,7 @@ const Meeting = (props) => {
   const user = useSelector((state) => {
     return state.userData.user;
   });
+
   return (
     <Box sx={{
       marginLeft: "15%",
@@ -42,7 +43,7 @@ const Meeting = (props) => {
             </Box>
           </Grid>
         </Grid> :
-          <Box></Box>}
+          <Box>Coming Soon</Box>}
       </Grid>
     </Box>
   );
