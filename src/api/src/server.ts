@@ -64,7 +64,7 @@ async function main() {
 			}
 		})
 	})
-	await prepareContent();
+	//await prepareContent();
 	app.listen(port, () => {
 		console.log(`Server running on port ${port}`);
 	});

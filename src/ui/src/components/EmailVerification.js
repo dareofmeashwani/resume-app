@@ -18,17 +18,17 @@ const EmailVerification = (props) => {
     if (!token) {
       navigate("/");
     }
-  }, [navigate, token]);
+  }, [token]);
   React.useEffect(() => {
     if (emailVerifyStatus && !emailVerifyStatus.verified) {
       navigate("/");
     }
-  }, [navigate, emailVerifyStatus, emailVerifyStatus && emailVerifyStatus.verified]);
+  }, [emailVerifyStatus, emailVerifyStatus && emailVerifyStatus.verified]);
   React.useEffect(() => {
     if (!emailVerifyStatus && token) {
       dispatch(verifyEmailVerification(token));
     }
-  }, [dispatch, token, emailVerifyStatus]);
+  }, [token, emailVerifyStatus]);
   return (
     <Box sx={{
       marginLeft: "15%",

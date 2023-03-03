@@ -433,7 +433,7 @@ function getExtraCurriContent(dataItems) {
 
 const AboutMe = () => {
     const dispatch = useDispatch();
-    let data = useSelector((state) => {
+    const data = useSelector((state) => {
         const data = {};
         if (state.educationsData.data) {
             data[RESOURCE_NAME.EDUCATIONS] = state.educationsData.data;
@@ -480,7 +480,7 @@ const AboutMe = () => {
         if (!data[RESOURCE_NAME.WORK_EXP]) {
             dispatch(getWorkExperiencesList());
         }
-    }, [data,dispatch]);
+    }, []);
     const [expanded, setExpanded] = React.useState(false);
     const handlePanelChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
@@ -536,7 +536,7 @@ const AboutMe = () => {
                 return getOuterPanel(key, title, getExtraCurriContent(dataItems));
         }
     }
-    data = [
+    const panels = [
         RESOURCE_NAME.EDUCATIONS,
         RESOURCE_NAME.WORK_EXP,
         RESOURCE_NAME.SKILLS,
@@ -571,7 +571,7 @@ const AboutMe = () => {
                         getText("export")
                     } </Button>
             </Box>
-            {data} </Box>
+            {panels} </Box>
     );
 };
 
