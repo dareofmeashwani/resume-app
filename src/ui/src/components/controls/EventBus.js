@@ -4,18 +4,19 @@ class _EventBus {
     this.bus = {};
   }
 
-  $off(id) {
+  off(id) {
     delete this.bus[id];
   }
 
-  $on(id, callback) {
+  on(id, callback) {
     this.bus[id] = callback;
   }
 
-  $emit(id, ...params) {
+  emit(id, ...params) {
     if (this.bus[id])
       this.bus[id](...params);
   }
 }
 
-export const EventBus = new _EventBus();
+const EventBus = new _EventBus();
+export default EventBus;

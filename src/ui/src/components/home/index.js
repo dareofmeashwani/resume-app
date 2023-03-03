@@ -8,7 +8,6 @@ import {
 	Fade,
 	FadeIn,
 	Move,
-	MoveIn,
 	MoveOut,
 	Sticky,
 	StickyIn,

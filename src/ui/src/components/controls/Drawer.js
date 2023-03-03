@@ -60,15 +60,7 @@ function SwipeableEdgeDrawer(props) {
 	return (
 		<Root>
 			<CssBaseline />
-			<Global
-				styles={{
-					".MuiDrawer-root > .MuiPaper-root": {
-						width: `calc(50% - ${drawerBleeding}px)`,
-						height: "100%",
-						overflow: "visible"
-					}
-				}}
-			/>
+			<Global/>
 			<SwipeableDrawer
 				container={container}
 				anchor="right"
@@ -77,6 +69,9 @@ function SwipeableEdgeDrawer(props) {
 				onOpen={toggleDrawer(true)}
 				swipeAreaWidth={drawerBleeding}
 				disableSwipeToOpen={true}
+				PaperProps={{
+					sx: { width: "90%" },
+				}}
 			>
 				<DrawerHeader>
 					<IconButton onClick={toggleDrawer(false)}>

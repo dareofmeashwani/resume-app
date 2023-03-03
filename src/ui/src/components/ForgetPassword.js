@@ -12,6 +12,7 @@ import getText from "../messages";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { errorHelper } from "../utils";
+import EventBus from "./controls/EventBus";
 const ForgetPassword = (props) => {
   const token = getQueryVariable("d");
   const navigate = useNavigate();
@@ -76,7 +77,6 @@ const ForgetPassword = (props) => {
     }
   }, [token, status]);
 
-
   return (
     <Box sx={{
       marginLeft: "15%",
@@ -89,9 +89,14 @@ const ForgetPassword = (props) => {
         justify='center'
         style={{ minHeight: "50vh" }}>
         <Grid>
-          {status && status.isPasswordSend && status.verified ? <Typography>
-            {getText("passwordChangedSucessfully")}
-          </Typography> :
+          {status && status.isPasswordSend && status.verified || true ? <Grid>
+            <Typography>
+              {getText("passwordChangedSucessfully")}
+            </Typography>
+            <Button variant="contained" color="success" sx={{ mt: 3, mb: 2 }} onClick={() => EventBus.emit("launchSignIn")}>
+              {getText("signIn")}
+            </Button>
+          </Grid> :
             showInput ?
               <Box>
                 <Typography>{getText("forgetPasswordScreenTitle")}</Typography>

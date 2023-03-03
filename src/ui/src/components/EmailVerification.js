@@ -1,5 +1,6 @@
 import React from "react";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getQueryVariable } from "../utils";
 import { verifyEmailVerification } from "../store/actions/userActions";
 import getText from "../messages";
+import EventBus from "./controls/EventBus";
 const EmailVerification = (props) => {
   const token = getQueryVariable("d");
   const navigate = useNavigate();
@@ -43,6 +45,9 @@ const EmailVerification = (props) => {
 
         <Grid>
           <Typography>{getText("emailVerifySuccessMsg")}</Typography>
+          <Button variant="contained" color="success" sx={{ mt: 3, mb: 2 }} onClick={() => EventBus.emit("launchSignIn")}>
+            {getText("signIn")}
+          </Button>
         </Grid>
       </Grid>
     </Box>

@@ -7,6 +7,7 @@ import SwipeableEdgeDrawer from "./controls/Drawer";
 import * as constants from "../utils/constants";
 import { signOut } from "../store/actions/userActions";
 import { useDispatch, useSelector } from "react-redux";
+import EventBus from "./controls/EventBus";
 
 const Header = (props) => {
 	const navigate = useNavigate();
@@ -32,6 +33,24 @@ const Header = (props) => {
 			open: false
 		});
 	}, [user]);
+	EventBus.on("launchSignUp",()=>{
+		setDrawerState({
+			...drawerState,
+			open: true,
+			contentProps: {
+				type: constants.SIGNUP
+			}
+		});
+	})
+	EventBus.on("launchSignIn",()=>{
+		setDrawerState({
+			...drawerState,
+			open: true,
+			contentProps: {
+				type: constants.SIGNIN
+			}
+		});
+	})
 	const routeHandler = (oEvent) => {
 		oEvent.preventDefault();
 		const key = oEvent.target.getAttribute("data-key");

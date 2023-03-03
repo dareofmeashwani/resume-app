@@ -63,8 +63,9 @@ const messages = {
 	emailVerifySuccessMsg: "Your Email has been verified successfully, Please proceed with sign in.",
 	confirmPassword: "Confirm Password",
 	passwordNotMatching: "Passwords are not matching",
-	forgetPasswordScreenTitle: "Please enter your new password, then tap Save password. Please proceed with sign in.",
+	forgetPasswordScreenTitle: "Please enter your new password, then tap on Save password.",
 	passwordChangedSucessfully: "Your password has been changed successfully",
+	meetingNotLoggedInMsg: "Please login to setup the meeting with me.",
 	save: "Save"
 };
 

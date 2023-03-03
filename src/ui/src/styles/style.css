@@ -166,3 +166,13 @@
       width: var(--inner-diameter)
   }
 }
+
+.MuiDrawer-paper {
+  width: 50% !important;
+  }
+  
+  @media (max-width: 1200px) {
+      .MuiDrawer-paper {
+   width: 100% !important;
+   }
+  }
