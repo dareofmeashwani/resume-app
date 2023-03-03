@@ -100,16 +100,32 @@ export const isAuthUser = () => {
 	};
 };
 
-export const initiateEmailVerification = (token) => {
+export const verifyEmailVerification = (token) => {
 	return async (dispatch) => {
 		dispatch(actions.setBusyIndicator());
 		try {
 			const response = await axios.patch(`/api/v1/user/emailVerify`, {
 				token,
 			});
-			dispatch(actions.emailVerify({...response.data, verified: true}));
+			dispatch(actions.emailVerify({ ...response.data, verified: true }));
 		} catch (error) {
-			dispatch(actions.emailVerify({...error.response.data, verified: false}));
+			dispatch(actions.emailVerify({ ...error.response.data, verified: false }));
+			dispatch(
+				actions.errorGlobal(error.response.data)
+			);
+		}
+		dispatch(actions.resetBusyIndicator());
+	};
+};
+
+export const verifyForgetPassword = (payload) => {
+	return async (dispatch) => {
+		dispatch(actions.setBusyIndicator());
+		try {
+			const response = await axios.patch(`/api/v1/user/verifyForgetPassword`, payload);
+			dispatch(actions.verifyForgetPassword({ ...response.data, verified: true, isPasswordSend: !!payload.password }));
+		} catch (error) {
+			dispatch(actions.verifyForgetPassword({ ...error.response.data, verified: false, isPasswordSend: !!payload.password }));
 			dispatch(
 				actions.errorGlobal(error.response.data)
 			);

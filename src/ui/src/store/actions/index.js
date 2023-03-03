@@ -6,6 +6,7 @@ import {
 	CHANGE_USER_EMAIL,
 	UPDATE_USER_PROFILE,
 	VERIFY_EMAIL,
+	VERIFY_FORGET_PASSWORD,
 	CLEAR_NOTIFICATION_GLOBAL,
 	FORGET_PASSWORD,
 	SET_BUSY_INDICATOR_GLOBAL,
@@ -198,6 +199,11 @@ export const signOut = () => ({
 
 export const forgetPassword = (data) => ({
 	type: FORGET_PASSWORD,
+	payload: data
+});
+
+export const verifyForgetPassword = (data) => ({
+	type: VERIFY_FORGET_PASSWORD,
 	payload: data
 });
 

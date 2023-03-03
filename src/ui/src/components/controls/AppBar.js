@@ -37,6 +37,7 @@ function stringToColor(string) {
 }
 
 function stringAvatar(name) {
+	name = name.toUpperCase();
 	return {
 		sx: {
 			bgcolor: stringToColor(name)

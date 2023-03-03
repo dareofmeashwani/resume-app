@@ -71,7 +71,7 @@ export const sendVerificationEmail = async (
 					button: {
 						color: "#1a73e8",
 						text: "Validate your account",
-						link: `${config.DOMAIN_ADDRESS}/emailVerification?token=${emailToken}`
+						link: `${config.DOMAIN_ADDRESS}/emailVerification?d=${emailToken}`
 					}
 				},
 				outro:[
@@ -118,7 +118,7 @@ export const sendForgetPasswordEmail = async (
 					button: {
 						color: "#1a73e8",
 						text: "Reset your account",
-						link: `${config.DOMAIN_ADDRESS}/forgetPassword?token=${token}`
+						link: `${config.DOMAIN_ADDRESS}/forgetPassword?d=${token}`
 					}
 				},
 				outro:
@@ -130,7 +130,7 @@ export const sendForgetPasswordEmail = async (
 		let message = {
 			from: config.EMAIL,
 			to: userInfo.email,
-			subject: `Activate your ${config.DOMAIN_NAME} account`,
+			subject: `Reset your ${config.DOMAIN_NAME} account`,
 			html: emailBody
 		};
 

@@ -2,7 +2,8 @@ import {
 	AUTH_USER,
 	SIGN_OUT,
 	VERIFY_EMAIL,
-	FORGET_PASSWORD
+	FORGET_PASSWORD,
+	VERIFY_FORGET_PASSWORD
 } from "../types";
 
 let DEFAULT_USER_STATE = {
@@ -24,7 +25,9 @@ export default function usersReducer(state = DEFAULT_USER_STATE, action) {
 		case SIGN_OUT:
 			return { user: null };
 		case VERIFY_EMAIL:
-			return { ...state, emailVerify: { ...action.payload} };
+			return { ...state, emailVerify: { ...action.payload } };
+		case VERIFY_FORGET_PASSWORD:
+			return { ...state, verifyForgetPassword: { ...action.payload } };
 		default:
 			return state;
 	}
