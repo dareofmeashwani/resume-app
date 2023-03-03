@@ -18,17 +18,17 @@ const EmailVerification = (props) => {
     if (!token) {
       navigate("/");
     }
-  }, [token]);
+  }, [navigate, token]);
   React.useEffect(() => {
     if (emailVerifyStatus && !emailVerifyStatus.verified) {
       navigate("/");
     }
-  }, [emailVerifyStatus,emailVerifyStatus && emailVerifyStatus.verified]);
+  }, [navigate, emailVerifyStatus, emailVerifyStatus && emailVerifyStatus.verified]);
   React.useEffect(() => {
     if (!emailVerifyStatus && token) {
       dispatch(verifyEmailVerification(token));
     }
-  }, [token, emailVerifyStatus]);
+  }, [dispatch, token, emailVerifyStatus]);
   return (
     <Box sx={{
       marginLeft: "15%",
@@ -39,7 +39,7 @@ const EmailVerification = (props) => {
       <Grid container
         alignItems='center'
         justify='center'
-        style={{ minHeight: "50vh"}}>
+        style={{ minHeight: "50vh" }}>
 
         <Grid>
           <Typography>{getText("emailVerifySuccessMsg")}</Typography>

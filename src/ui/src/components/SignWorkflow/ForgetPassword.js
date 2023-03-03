@@ -56,7 +56,7 @@ export default function ForgetPassword(props) {
 					{...formik.getFieldProps("email")}
 					{...errorHelper(formik, "email")}
 				/>
-				<Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+				<Button type="submit" fullWidth variant="contained"  sx={{ mt: 3, mb: 2 }}>
 					{getText("sendResetLink")}
 				</Button>
 				<Grid container>

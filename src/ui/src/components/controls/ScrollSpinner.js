@@ -12,7 +12,7 @@ const useAnimate = (callback) => {
   const requestRef = useRef(0);
   const previousTimeRef = useRef(0);
   const animate = (time) => {
-    if (previousTimeRef.current != undefined) {
+    if (previousTimeRef.current !== undefined) {
       const deltaTime = time - previousTimeRef.current;
       callback(deltaTime);
     }

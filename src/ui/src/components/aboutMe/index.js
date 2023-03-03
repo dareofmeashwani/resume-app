@@ -480,7 +480,7 @@ const AboutMe = () => {
         if (!data[RESOURCE_NAME.WORK_EXP]) {
             dispatch(getWorkExperiencesList());
         }
-    }, []);
+    }, [data,dispatch]);
     const [expanded, setExpanded] = React.useState(false);
     const handlePanelChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);

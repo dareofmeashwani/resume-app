@@ -60,7 +60,12 @@ const messages = {
 	techStack: "Technical Stack",
 	team: "Team",
 	title: "Title",
-	emailVerifySuccessMsg: "Your Email has been verified successfully, Please proceed with sign in."
+	emailVerifySuccessMsg: "Your Email has been verified successfully, Please proceed with sign in.",
+	confirmPassword: "Confirm Password",
+	passwordNotMatching: "Passwords are not matching",
+	forgetPasswordScreenTitle: "Please enter your new password, then tap Save password. Please proceed with sign in.",
+	passwordChangedSucessfully: "Your password has been changed successfully",
+	save: "Save"
 };
 
 export default function getText(key) {

@@ -11,7 +11,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import getText from "../../messages";
 import NoRefLink from "./NoRefLink";
 import HLine from "./HLine";

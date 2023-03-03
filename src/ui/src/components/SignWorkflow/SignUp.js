@@ -97,7 +97,7 @@ export default function SignUp(props) {
 					{...formik.getFieldProps("password")}
 					{...errorHelper(formik, "password")}
 				/>
-				<Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+				<Button type="submit" fullWidth variant="contained"  sx={{ mt: 3, mb: 2 }}>
 					{getText("signUp")}
 				</Button>
 				<Grid container>
