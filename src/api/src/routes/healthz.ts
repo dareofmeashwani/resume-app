@@ -14,6 +14,7 @@ export async function getHealthz(req: express.Request, res: express.Response): P
     const isDbOk = await connectionIsUp(mongoose.connection);
     if (!isDbOk) {
         res.status(HTTP_STATUS.SERVICE_UNAVAILABLE).send({ status: "NOT OK" })
+        return;
     }
     res.send({ status: "OK" });
 }
