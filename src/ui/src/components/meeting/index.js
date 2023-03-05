@@ -36,7 +36,7 @@ const Meeting = (props) => {
               <Button variant="contained" color="success" sx={{ mt: 3, mb: 2 }} onClick={() => EventBus.emit("launchSignIn")}>
                 {getText("signIn")}
               </Button>
-              <Typography margin={"1rem"}>{getText("or")}</Typography>
+              <Typography margin={"1rem"} sx={{alignSelf: "center"}}>{getText("or")}</Typography>
               <Button variant="contained" color="success" sx={{ mt: 3, mb: 2 }} onClick={() => EventBus.emit("launchSignUp")}>
                 {getText("signUp")}
               </Button>

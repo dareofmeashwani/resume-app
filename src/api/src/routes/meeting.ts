@@ -59,7 +59,7 @@ export const getMeeting = async function (
 			_id: req.params.meetingId,
 			createdBy: res.locals.userData.id
 		});
-		if(!response){
+		if (!response) {
 			throwResumeError(
 				HTTP_STATUS.NOT_FOUND,
 				ERROR_MESSAGES.NOT_FOUND_ERROR,
@@ -116,7 +116,7 @@ export const createMeeting = async (
 					start_time: new Date(req.body.start).toISOString(),
 					duration: Math.floor(
 						(new Date(req.body.end).getTime() - new Date(req.body.start).getTime()) /
-							60000
+						60000
 					)
 				},
 				attendees
@@ -173,7 +173,7 @@ export const patchMeeting = async (
 			},
 			{ new: true }
 		);
-		if(!response){
+		if (!response) {
 			throwResumeError(
 				HTTP_STATUS.NOT_FOUND,
 				ERROR_MESSAGES.NOT_FOUND_ERROR,
@@ -211,7 +211,7 @@ export const patchMeeting = async (
 				start_time: new Date(response.start).toISOString(),
 				duration: Math.floor(
 					(new Date(response.end).getTime() - new Date(response.start).getTime()) /
-						60000
+					60000
 				)
 			},
 			attendees
@@ -295,10 +295,12 @@ export async function getMeetingStatus(
 	if (req.query.timestamp) {
 		timestamp = new Date((req.query.timestamp || "") as string);
 	}
-	const weekRange = getWeekStartEnd(timestamp);
+	timestamp.setHours(0, 0, 0, 0);
+	const start = new Date(timestamp);
+	timestamp.setDate(timestamp.getDate() + 1);
 	try {
 		const response = await meetingModel.find({
-			start: { $gte: weekRange.start, $lte: weekRange.end }
+			start: { $gte: start, $lte: timestamp }
 		});
 		const meetingStatus: any[] = response.map((event) => {
 			return {

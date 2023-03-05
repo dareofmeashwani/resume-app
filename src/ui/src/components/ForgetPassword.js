@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getQueryVariable } from "../utils";
-import { verifyForgetPassword } from "../store/actions/userActions";
+import { verifyForgetPassword , clearVerifyForgetPassword} from "../store/actions/userActions";
 import getText from "../messages";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -57,6 +57,11 @@ const ForgetPassword = (props) => {
     return state.userData.verifyForgetPassword;
   });
   const [showInput, setShowInput] = React.useState(false);
+  React.useEffect(() => {
+    return () => {
+      dispatch(clearVerifyForgetPassword());
+    };
+  }, []);
   React.useEffect(() => {
     if (!token) {
       navigate("/");

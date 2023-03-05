@@ -118,6 +118,12 @@ export const verifyEmailVerification = (token) => {
 	};
 };
 
+export const clearVerifyEmailVerification = () => {
+	return async (dispatch) => {
+		dispatch(actions.emailVerify({}));
+	};
+};
+
 export const verifyForgetPassword = (payload) => {
 	return async (dispatch) => {
 		dispatch(actions.setBusyIndicator());
@@ -131,5 +137,11 @@ export const verifyForgetPassword = (payload) => {
 			);
 		}
 		dispatch(actions.resetBusyIndicator());
+	};
+};
+
+export const clearVerifyForgetPassword = () => {
+	return async (dispatch) => {
+		dispatch(actions.verifyForgetPassword({}));
 	};
 };

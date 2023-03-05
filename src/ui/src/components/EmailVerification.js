@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getQueryVariable } from "../utils";
-import { verifyEmailVerification } from "../store/actions/userActions";
+import { verifyEmailVerification, clearVerifyEmailVerification } from "../store/actions/userActions";
 import getText from "../messages";
 import EventBus from "./controls/EventBus";
 const EmailVerification = (props) => {
@@ -16,6 +16,11 @@ const EmailVerification = (props) => {
   const emailVerifyStatus = useSelector((state) => {
     return state.userData.emailVerify;
   });
+  React.useEffect(() => {
+    return () => {
+      dispatch(clearVerifyEmailVerification());
+    };
+  }, []);
   React.useEffect(() => {
     if (!token) {
       navigate("/");
