@@ -1180,7 +1180,7 @@ paths:
     "500":
      $ref: "#/components/responses/InternalServerError"
 
- /meetings/status:
+ /meetingsStatus:
   get:
    parameters:
     - $ref: "#/components/parameters/MeetingTimestamp"
@@ -2586,6 +2586,7 @@ components:
    description: timestamp
    in: query
    required: true
+   allowReserved: true
    schema:
     type: string
     maxLength: 25

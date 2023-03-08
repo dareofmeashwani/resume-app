@@ -66,7 +66,8 @@ const messages = {
 	forgetPasswordScreenTitle: "Please enter your new password, then tap on Save password.",
 	passwordChangedSucessfully: "Your password has been changed successfully",
 	meetingNotLoggedInMsg: "A quick chat to get to know each other and check if I can help you with your project. Please login & feel free to setup a meeting with me.",
-	save: "Save"
+	save: "Save",
+	meetingDetails: "Meeting Details"
 };
 
 export default function getText(key) {
