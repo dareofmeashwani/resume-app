@@ -12,8 +12,8 @@ export const signInUser = (values) => {
 			const user = await axios.post(`/api/v1/user/login`, {
 				email: values.email,
 				password: values.password
-			});
-			dispatch(actions.authUser(user.data));
+			}).data;
+			dispatch(actions.authUser(user));
 		} catch (error) {
 			dispatch(
 				actions.errorGlobal(error.response.data)

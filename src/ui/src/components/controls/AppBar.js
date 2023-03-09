@@ -36,7 +36,7 @@ function stringToColor(string) {
 }
 
 function stringAvatar(name) {
-	name = name.toUpperCase();
+	name = (name||"").toUpperCase();
 	return {
 		sx: {
 			bgcolor: stringToColor(name)
@@ -156,7 +156,8 @@ function ResponsiveAppBar(props) {
 							fontWeight: 700,
 							letterSpacing: ".3rem",
 							color: "inherit",
-							textDecoration: "none"
+							textDecoration: "none",
+							fontSize: "2.5vw",
 						}}
 					>
 						{title}

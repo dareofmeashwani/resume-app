@@ -32,6 +32,12 @@ import {
 	TRAININGS_CLEAR,
 	WORK_EXPERIENCES_CLEAR,
 	WORK_EXPERIENCES_LIST,
+	MEETINGS_STATUS_LIST,
+	MEETINGS_STATUS_LIST_CLEAR,
+	MEETINGS_LIST,
+	MEETINGS_LIST_CLEAR,
+	MEETING_DETAIl,
+	MEETING_DETAIL_CLEAR,
 } from "../types";
 
 /////// notification /////////////
@@ -220,4 +226,36 @@ export const updateUserProfile = (userdata) => ({
 export const emailVerify = (payload) => ({
 	type: VERIFY_EMAIL,
 	payload
+});
+
+/////// meetings /////////////
+
+export const meetingsStatus = (payload) => ({
+	type: MEETINGS_STATUS_LIST,
+	payload,
+});
+
+export const clearMeetingsStatus = () => ({
+	type: MEETINGS_STATUS_LIST_CLEAR,
+	payload: null
+});
+
+export const meetingsList = (payload) => ({
+	type: MEETINGS_LIST,
+	payload,
+});
+
+export const clearMeetingList = () => ({
+	type: MEETINGS_LIST_CLEAR,
+	payload: null
+});
+
+export const meetingsDetail = (payload) => ({
+	type: MEETING_DETAIl,
+	payload,
+});
+
+export const clearMeetingsDetail = () => ({
+	type: MEETING_DETAIL_CLEAR,
+	payload: null
 });
