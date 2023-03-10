@@ -61,5 +61,3 @@ export const MEETINGS_STATUS_LIST = "meetings_status_list";
 export const MEETINGS_STATUS_LIST_CLEAR = "meetings_status_list_clear";
 export const MEETINGS_LIST = "meetings_list";
 export const MEETINGS_LIST_CLEAR = "meetings_list_clear";
-export const MEETING_DETAIl = "meeting_detail";
-export const MEETING_DETAIL_CLEAR = "meeting_status_list_clear";

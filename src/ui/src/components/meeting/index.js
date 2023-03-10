@@ -1,5 +1,6 @@
 import React from "react";
 import Box from "@mui/material/Box";
+import Sheet from '@mui/joy/Sheet';
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
@@ -10,11 +11,24 @@ import getText from "../../messages";
 import EventBus from "../controls/EventBus";
 import ItemsList from "../controls/ItemsList";
 import MainCard from "../controls/MainCard";
+import { getMeetingList, clearMeetingsList } from "../../store/actions/meetingsActions";
 
 const Meeting = (props) => {
+  const dispatch = useDispatch();
   const user = useSelector((state) => {
     return state.userData.user;
   });
+  const meetingsList = useSelector((state) => {
+    return state.meetingsData.meetingsList;
+  });
+  React.useEffect(() => {
+    if (!meetingsList) {
+      dispatch(getMeetingList());
+    }
+    return () => {
+      dispatch(clearMeetingsList());
+    };
+  }, []);
 
   return (
     <Box sx={{
@@ -47,9 +61,10 @@ const Meeting = (props) => {
           </Grid>
         </Grid> :
           <Grid container>
-            <Grid item sx={{paddingRight:"1rem"}}>
-              <MainCard title={getText("Meetings")}>
-                <ItemsList />
+
+            <Grid item sx={{ paddingRight: "1rem" }}>
+              <MainCard title={getText("Meetings")} >
+                <ItemsList items={meetingsList} />
               </MainCard>
             </Grid>
             <Grid item xs={7}>

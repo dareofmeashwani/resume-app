@@ -156,8 +156,7 @@ function ResponsiveAppBar(props) {
 							fontWeight: 700,
 							letterSpacing: ".3rem",
 							color: "inherit",
-							textDecoration: "none",
-							fontSize: "2.5vw",
+							textDecoration: "none"
 						}}
 					>
 						{title}

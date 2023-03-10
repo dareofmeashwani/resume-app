@@ -220,13 +220,13 @@ const sendZoomMeeting = async (
 							button: {
 								color: "#33DAFF",
 								text: "Join Meeting",
-								link: meeting.start_url
+								link: meeting.join_url
 							}
 						},
 						outro: [
 							"Incase button doesn't work, follow the link to join the meeting" +
 								" " +
-								meeting.start_url,
+								meeting.join_url,
 							"Need help, or have questions? Just reply to this email, we'd love to help."
 						]
 					}

@@ -33,7 +33,7 @@ export async function create(payload: any, attendees: string[]) {
 			settings: {
 				host_video: true,
 				participant_video: true,
-				cn_meeting: false,
+				cn_meeting: true,
 				in_meeting: true,
 				join_before_host: true,
 				mute_upon_entry: true,
@@ -41,10 +41,10 @@ export async function create(payload: any, attendees: string[]) {
 				use_pmi: false,
 				focus_mode: true,
 				audio: "both",
-				auto_recording: "local",
+				auto_recording: "none",
 				enforce_login: false,
 				registrants_email_notification: true,
-				waiting_room: true,
+				waiting_room: false,
 				allow_multiple_devices: true,
 				meeting_invitees: attendees
 			}

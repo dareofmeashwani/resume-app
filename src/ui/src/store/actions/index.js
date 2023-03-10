@@ -36,8 +36,6 @@ import {
 	MEETINGS_STATUS_LIST_CLEAR,
 	MEETINGS_LIST,
 	MEETINGS_LIST_CLEAR,
-	MEETING_DETAIl,
-	MEETING_DETAIL_CLEAR,
 } from "../types";
 
 /////// notification /////////////
@@ -247,15 +245,5 @@ export const meetingsList = (payload) => ({
 
 export const clearMeetingList = () => ({
 	type: MEETINGS_LIST_CLEAR,
-	payload: null
-});
-
-export const meetingsDetail = (payload) => ({
-	type: MEETING_DETAIl,
-	payload,
-});
-
-export const clearMeetingsDetail = () => ({
-	type: MEETING_DETAIL_CLEAR,
 	payload: null
 });

@@ -7,8 +7,8 @@ export const getMeetingStatus = (timestamp) => {
 	return async (dispatch) => {
 		dispatch(actions.setBusyIndicator());
 		try {
-			const meetingsStatus = await axios.post(`/api/v1/meetingsStatus?timestamp=${timestamp}`).data;
-			dispatch(actions.authUser(meetingsStatus));
+			const response = await axios.get(`/api/v1/meetingsStatus?timestamp=${timestamp}`);
+			dispatch(actions.meetingsStatus(response.data));
 		} catch (error) {
 			dispatch(
 				actions.errorGlobal(error.response.data)
@@ -28,8 +28,8 @@ export const getMeetingList = (timestamp) => {
 	return async (dispatch) => {
 		dispatch(actions.setBusyIndicator());
 		try {
-			const meetings = await axios.post(`/api/v1/meetings?limit=100`).data;
-			dispatch(actions.authUser(meetings));
+			const response = await axios.get(`/api/v1/meetings?limit=100`);
+			dispatch(actions.meetingsList(response.data));
 		} catch (error) {
 			dispatch(
 				actions.errorGlobal(error.response.data)
@@ -42,6 +42,6 @@ export const getMeetingList = (timestamp) => {
 
 export const clearMeetingsList = () => {
 	return async (dispatch) => {
-		dispatch(actions.clearMeetingsList());
+		dispatch(actions.clearMeetingList());
 	};
 };

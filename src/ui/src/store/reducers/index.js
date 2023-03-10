@@ -12,6 +12,7 @@ import responsibilitiesData from "./responsibilitiesReducer";
 import skillsData from "./skillsReducer";
 import trainingsData from "./trainingsReducer";
 import workExperiencesData from "./workExperiencesReducer";
+import meetingsData from "./meetingReducer";
 
 const appReducers = combineReducers({
 	userData,
@@ -26,7 +27,8 @@ const appReducers = combineReducers({
 	responsibilitiesData,
 	skillsData,
 	trainingsData,
-	workExperiencesData
+	workExperiencesData,
+	meetingsData
 });
 
 export default appReducers;
