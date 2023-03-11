@@ -9,11 +9,11 @@ export const signInUser = (values) => {
 	return async (dispatch) => {
 		dispatch(actions.setBusyIndicator());
 		try {
-			const user = await axios.post(`/api/v1/user/login`, {
+			const response = await axios.post(`/api/v1/user/login`, {
 				email: values.email,
 				password: values.password
-			}).data;
-			dispatch(actions.authUser(user));
+			});
+			dispatch(actions.authUser(response.data));
 		} catch (error) {
 			dispatch(
 				actions.errorGlobal(error.response.data)
@@ -66,6 +66,8 @@ export const signOut = () => {
 		try {
 			await axios.post(`/api/v1/user/logout`);
 			dispatch(actions.signOut(null));
+			dispatch(actions.clearMeetingList);
+			dispatch(actions.clearMeetingsStatus);
 			removeCookieToken();
 		} catch (error) {
 			dispatch(

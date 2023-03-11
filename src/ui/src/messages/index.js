@@ -67,7 +67,8 @@ const messages = {
 	passwordChangedSucessfully: "Your password has been changed successfully",
 	meetingNotLoggedInMsg: "A quick chat to get to know each other and check if I can help you with your project. Please login & feel free to setup a meeting with me.",
 	save: "Save",
-	meetingDetails: "Meeting Details"
+	meetingDetails: "Meeting Details",
+	noMeetingCreated: "You have not scheduled any meeting yet."
 };
 
 export default function getText(key) {

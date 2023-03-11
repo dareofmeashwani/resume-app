@@ -18,17 +18,17 @@ const Meeting = (props) => {
   const user = useSelector((state) => {
     return state.userData.user;
   });
-  const meetingsList = useSelector((state) => {
+  let meetingsList = useSelector((state) => {
     return state.meetingsData.meetingsList;
   });
   React.useEffect(() => {
-    if (!meetingsList) {
+    if (!meetingsList && user) {
       dispatch(getMeetingList());
     }
     return () => {
       dispatch(clearMeetingsList());
     };
-  }, []);
+  }, [user]);
 
   return (
     <Box sx={{
@@ -60,23 +60,16 @@ const Meeting = (props) => {
             </Box>
           </Grid>
         </Grid> :
-          <Grid container>
-
-            <Grid item sx={{ paddingRight: "1rem" }}>
-              <MainCard title={getText("Meetings")} >
-                <ItemsList items={meetingsList} />
-              </MainCard>
-            </Grid>
-            <Grid item xs={7}>
-              <MainCard title={getText("meetingDetails")}>
-                <Typography variant="body2">
-                  Lorem ipsum dolor sit amen, consenter nipissing eli, sed do elusion tempos incident ut laborers et doolie magna alissa. Ut enif
-                  ad minim venice, quin nostrum exercitation illampu laborings nisi ut liquid ex ea commons construal. Duos aube grue dolor in
-                  reprehended in voltage veil esse colum doolie eu fujian bulla parian. Exceptive sin ocean cuspidate non president, sunk in culpa
-                  qui officiate descent molls anim id est labours.
-                </Typography>
-              </MainCard>
-            </Grid>
+          <Grid >
+            <MainCard title={getText("Meetings")}>
+              {Array.isArray(meetingsList) && meetingsList.length ? <ItemsList items={meetingsList} /> :
+                <Box>
+                  <Typography margin={"1rem"} sx={{
+                    alignSelf: "center", alignContent: "center",
+                    textAlign: "center",
+                  }}>{getText("noMeetingCreated")}</Typography>
+                </Box>}
+            </MainCard>
           </Grid>}
       </Grid>
     </Box>

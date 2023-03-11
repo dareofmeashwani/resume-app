@@ -17,6 +17,11 @@ const MeetingSchema = new mongoose.Schema({
 	start: {
 		type: Date,
 		required: true
+	}, 
+	joiningLink:{
+		type: String,
+		maxLength: 200,
+		trim: true
 	},
 	externalEventId: {
 		type: String

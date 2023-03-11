@@ -27,7 +27,7 @@ export const getMeetingList = async function (
 			req.query
 		);
 		if (options.sort) {
-			options.sort = { createdAt: options.sort };
+			options.sort = { start: options.sort };
 		}
 		const docList = await meetingModel.aggregatePaginate(
 			meetingModel.aggregate([
@@ -109,18 +109,21 @@ export const createMeeting = async (
 	let response: any = {};
 	if (!req.query.noLink) {
 		try {
+			const duration = Math.ceil(
+				(new Date(req.body.end).getTime() - new Date(req.body.start).getTime()) /
+				60000
+			)
 			response = await zoom.create(
 				{
 					topic: req.body.title || "Meeting with " + config.DOMAIN_NAME,
 					agenda: req.body.description || "",
 					start_time: new Date(req.body.start).toISOString(),
-					duration: Math.floor(
-						(new Date(req.body.end).getTime() - new Date(req.body.start).getTime()) /
-						60000
-					)
+					duration: duration
 				},
 				attendees
 			);
+			req.body.start = response.start_time;
+			req.body.end = new Date(new Date(response.start_time).getTime() + duration * 60 * 1000).toISOString();
 			sendZoomInvite(
 				res.locals.userData,
 				attendees.map((attendee: any) => attendee.email),
@@ -139,7 +142,8 @@ export const createMeeting = async (
 	const doc = new meetingModel({
 		...req.body,
 		createdBy: res.locals.userData.id,
-		externalEventId: response.id
+		externalEventId: response.id,
+		joiningLink: response.join_url
 	});
 	try {
 		const response = await doc.save();

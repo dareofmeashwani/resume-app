@@ -2391,10 +2391,14 @@ components:
    type: object
    required:
     - id
+    - joiningLink
    properties:
     id:
      type: string
      example: "145664568768"
+    joiningLink:
+     type: string
+     maxLength: 200
 
   MeetingDetailRequired:
    allOf:
