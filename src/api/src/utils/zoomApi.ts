@@ -28,13 +28,13 @@ export async function create(payload: any, attendees: string[]) {
 	payload = Object.assign(
 		{
 			type: 2,
-			timezone: "Asia/Kolkata",
+			timezone: "Europe/London",
 			password: generateRandom(8),
 			settings: {
 				host_video: true,
 				participant_video: true,
-				cn_meeting: true,
-				in_meeting: true,
+				cn_meeting: false,
+				in_meeting: false,
 				join_before_host: true,
 				mute_upon_entry: true,
 				watermark: false,

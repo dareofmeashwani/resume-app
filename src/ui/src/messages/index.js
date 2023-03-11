@@ -68,7 +68,13 @@ const messages = {
 	meetingNotLoggedInMsg: "A quick chat to get to know each other and check if I can help you with your project. Please login & feel free to setup a meeting with me.",
 	save: "Save",
 	meetingDetails: "Meeting Details",
-	noMeetingCreated: "You have not scheduled any meeting yet."
+	noMeetingCreated: "You have not scheduled any meeting yet.",
+	join: "Join",
+	additionalParticipants: "Additional Participants",
+	modifiedAt: "Last Modified At",
+	createdAt: "Created At",
+	startAt: "Start At",
+	endAt: "End At"
 };
 
 export default function getText(key) {
