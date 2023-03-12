@@ -7,6 +7,7 @@ import { Grid } from "@mui/material";
 import getText from "../../messages";
 import EventBus from "../controls/EventBus";
 import AddIcon from '@mui/icons-material/Add';
+import IconButton from '@mui/material/IconButton';
 import ItemsList from "./ItemsList";
 import MainCard from "../controls/MainCard";
 import { getMeetingList } from "../../store/actions/meetingsActions";
@@ -68,7 +69,11 @@ const Meeting = (props) => {
             </Grid>
           </Grid> :
             <Grid >
-              <MainCard title={getText("Meetings")}>
+              <MainCard title={getText("Meetings")} actions={
+                <IconButton aria-label="comment" onClick={() => setDialogState(true)} sx={{ marginLeft: ".5rem", marginRight: ".5rem" }}>
+                  <AddIcon />
+                </IconButton>
+              }>
                 {Array.isArray(meetingsList) && meetingsList.length ? <ItemsList items={meetingsList} /> :
                   <Box>
                     <Typography margin={"1rem"} sx={{

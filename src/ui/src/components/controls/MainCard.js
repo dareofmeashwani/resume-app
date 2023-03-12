@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { forwardRef } from 'react';
+import Box from "@mui/material/Box";
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -10,7 +11,6 @@ import { Card, CardContent, CardHeader, Divider, Typography } from '@mui/materia
 
 // header style
 const headerSX = {
-    p: 2.5,
     '& .MuiCardHeader-action': { m: '0px auto', alignSelf: 'center' }
 };
 
@@ -31,6 +31,7 @@ const MainCard = forwardRef(
             shadow,
             sx = {},
             title,
+            actions,
             codeHighlight,
             ...others
         },
@@ -62,12 +63,24 @@ const MainCard = forwardRef(
                 }}
             >
                 {/* card header and action */}
-                {!darkTitle && title && (
-                    <CardHeader sx={headerSX} titleTypographyProps={{ variant: 'subtitle1' }} title={title} action={secondary} />
-                )}
-                {darkTitle && title && (
-                    <CardHeader sx={headerSX} title={<Typography variant="h3">{title}</Typography>} action={secondary} />
-                )}
+                <Box sx={{
+                    marginLeft: "2rem",
+                    marginRight: "3rem",
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                }}>
+                    {!darkTitle && title && (
+                        <CardHeader sx={headerSX} titleTypographyProps={{ variant: 'h6' }} title={title} action={secondary} />
+                    )}
+                    {darkTitle && title && (
+                        <CardHeader sx={headerSX} title={<Typography variant="h3">{title}</Typography>} action={secondary} />
+                    )}
+                    {actions ? <Box sx={{
+                        alignContent: "center",
+                        textAlign: "center",
+                        alignSelf: "center"
+                    }}>{actions}</Box> : null}
+                </Box>
 
                 {/* content & header divider */}
                 {title && divider && <Divider />}
@@ -80,9 +93,9 @@ const MainCard = forwardRef(
                 {codeHighlight && (
                     <>
                         <Divider sx={{ borderStyle: 'dashed' }} />
-                  
-                            {children}
-                    
+
+                        {children}
+
                     </>
                 )}
             </Card>
@@ -103,7 +116,8 @@ MainCard.propTypes = {
     title: PropTypes.string,
     codeHighlight: PropTypes.bool,
     content: PropTypes.bool,
-    children: PropTypes.node
+    children: PropTypes.node,
+    actions: PropTypes.node,
 };
 
 export default MainCard;
