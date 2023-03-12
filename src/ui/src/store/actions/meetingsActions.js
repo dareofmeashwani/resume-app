@@ -24,7 +24,7 @@ export const clearMeetingsStatus = () => {
 		dispatch(actions.clearMeetingsStatus());
 	};
 };
-export const getMeetingList = (timestamp) => {
+export const getMeetingList = () => {
 	return async (dispatch) => {
 		dispatch(actions.setBusyIndicator());
 		try {
@@ -43,5 +43,65 @@ export const getMeetingList = (timestamp) => {
 export const clearMeetingsList = () => {
 	return async (dispatch) => {
 		dispatch(actions.clearMeetingList());
+	};
+};
+
+export const deleteMeeting = (meetingId) => {
+	return async (dispatch) => {
+		dispatch(actions.setBusyIndicator());
+		try {
+			const response = await axios.delete(`/api/v1/meetings/${meetingId}`);
+			dispatch(actions.clearMeetingList());
+		} catch (error) {
+			dispatch(
+				actions.errorGlobal(error.response.data)
+			);
+		}
+		dispatch(actions.resetBusyIndicator());
+	};
+};
+
+export const resendMeetingInvite = (meetingId) => {
+	return async (dispatch) => {
+		dispatch(actions.setBusyIndicator());
+		try {
+			const response = await axios.post(`/api/v1/meetings/${meetingId}/resendInvite`);
+			dispatch(actions.successGlobal(response.data))
+		} catch (error) {
+			dispatch(
+				actions.errorGlobal(error.response.data)
+			);
+		}
+		dispatch(actions.resetBusyIndicator());
+	};
+};
+
+export const patchMeeting = (meetingId, payload) => {
+	return async (dispatch) => {
+		dispatch(actions.setBusyIndicator());
+		try {
+			await axios.patch(`/api/v1/meetings/${meetingId}`, payload);
+			dispatch(actions.clearMeetingList());
+		} catch (error) {
+			dispatch(
+				actions.errorGlobal(error.response.data)
+			);
+		}
+		dispatch(actions.resetBusyIndicator());
+	};
+};
+
+export const createMeeting = (payload) => {
+	return async (dispatch) => {
+		dispatch(actions.setBusyIndicator());
+		try {
+			await axios.post(`/api/v1/meetings`, payload);
+			dispatch(actions.clearMeetingList());
+		} catch (error) {
+			dispatch(
+				actions.errorGlobal(error.response.data)
+			);
+		}
+		dispatch(actions.resetBusyIndicator());
 	};
 };

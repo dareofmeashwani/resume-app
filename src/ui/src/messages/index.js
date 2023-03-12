@@ -74,7 +74,11 @@ const messages = {
 	modifiedAt: "Last Modified At",
 	createdAt: "Created At",
 	startAt: "Start At",
-	endAt: "End At"
+	endAt: "End At",
+	view: "View",
+	edit: "Edit",
+	delete: "Delete",
+	sendNotification: "Send Notification"
 };
 
 export default function getText(key) {

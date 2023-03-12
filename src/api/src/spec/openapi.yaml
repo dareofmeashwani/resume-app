@@ -1342,14 +1342,18 @@ paths:
   post:
    x-middleware:
     - loginCheck
-    - permissionsCheck
+    - emailVerifyCheck
    tags:
     - Meeting
    summary: resend zoom invitation link
    operationId: zoomResendInvite
    responses:
-    "200":
-     $ref: "#/components/schemas/Empty"
+    "202":
+     description: "notfication successfully send"
+     content:
+      application/json:
+       schema:
+        $ref: "#/components/schemas/Message"
     "401":
      $ref: "#/components/responses/Unauthorized"
     "403":

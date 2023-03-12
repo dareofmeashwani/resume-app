@@ -1,5 +1,5 @@
 import * as express from "express";
-import { HTTP_STATUS, ERROR_MESSAGES, ROLES, query } from "../utils/constants";
+import { HTTP_STATUS, ERROR_MESSAGES, ROLES, query, MESSAGES } from "../utils/constants";
 import { throwResumeError } from "../utils/errorHelper";
 import { getWeekStartEnd, filterProps, unique, processQueryParam } from "../utils/helpers";
 import config from "../config";
@@ -361,5 +361,7 @@ export async function zoomResendInvite(
 			await zoom.get(response._doc.externalEventId)
 		).data
 	);
-	res.status(HTTP_STATUS.ACCEPTED).send();
+	res.status(HTTP_STATUS.ACCEPTED).send({
+		message: MESSAGES.MEETING_NOTI_SEND
+	});
 }
