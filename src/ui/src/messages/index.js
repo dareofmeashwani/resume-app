@@ -78,7 +78,17 @@ const messages = {
 	view: "View",
 	edit: "Edit",
 	delete: "Delete",
-	sendNotification: "Send Notification"
+	sendNotification: "Send Notification",
+	scheduleMeeting: "Schedule Meeting",
+	meetingTitle: "Meeting Title",
+	meetingDescPlaceHolder: "Mention some details about the meeting.",
+	fifteenMinutes: "15 Minutes",
+	thirtyMinutes: "30 minutes",
+	fortyMinutes: "40 minutes",
+	duration: "Duration",
+	selectDate: "Select Date",
+	availableSlots: "Available Time Slots"
+
 };
 
 export default function getText(key) {

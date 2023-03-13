@@ -50,7 +50,7 @@ export const deleteMeeting = (meetingId) => {
 	return async (dispatch) => {
 		dispatch(actions.setBusyIndicator());
 		try {
-			const response = await axios.delete(`/api/v1/meetings/${meetingId}`);
+			await axios.delete(`/api/v1/meetings/${meetingId}`);
 			dispatch(actions.clearMeetingList());
 		} catch (error) {
 			dispatch(

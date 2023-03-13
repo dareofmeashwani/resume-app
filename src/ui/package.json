@@ -33,7 +33,9 @@
     "yup": "^0.32.11",
     "react-tsparticles": "^2.7.1",
     "tsparticles": "^2.0.6",
-    "react-scroll-motion": "^0.3.2"
+    "react-scroll-motion": "^0.3.2",
+    "@mui/x-date-pickers": "^6.0.1",
+    "dayjs": "^1.11.7"
   },
   "scripts": {
     "dev": "react-scripts start",
