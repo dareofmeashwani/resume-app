@@ -87,7 +87,8 @@ const messages = {
 	fortyMinutes: "40 minutes",
 	duration: "Duration",
 	selectDate: "Select Date",
-	availableSlots: "Available Time Slots"
+	availableSlots: "Available Time Slots",
+	additionalParticipantsPlaceHolder: "Invite other people to join this meeting. Provide Comma or space seperated emails"
 
 };
 
