@@ -17,34 +17,117 @@ import { Grid } from "@mui/material";
 import dayjs from 'dayjs';
 import { useDispatch, useSelector } from "react-redux";
 import { getMeetingStatus } from "../../store/actions/meetingsActions";
+import momentTz from "moment-timezone";
+import moment from "moment";
+import * as Yup from "yup";
+import { USER } from "../../utils/constants";
+import { getDomainName, formatAMPM } from "../../utils";
 
 export default function CreateEditMeetingDialog(props) {
 	const dispatch = useDispatch();
 	const open = props.open;
+	const initial = props.initial;
 	const closeHandler = props.closeHandler;
 	const successHandler = props.successHandler;
-	let [title, setTitle] = React.useState("");
-	let [description, setDescription] = React.useState("");
-	let [members, setMembers] = React.useState([]);
-	let [duration, setDuration] = React.useState(15);
-	let [selectedDate, setSelectedDate] = React.useState(dayjs())
+	const initialDate = initial ? dayjs(initial.start) > dayjs() ? dayjs(initial.start) : dayjs() : dayjs();
+	let [title, setTitle] = React.useState(initial && initial.title || "");
+	let [description, setDescription] = React.useState(initial && initial.description || "");
+	let [members, setMembers] = React.useState(initial && initial.members.join(",") || "");
+	let [memberError, setMemberError] = React.useState("");
+	let [timeZone, setTimeZone] = React.useState(momentTz.tz.guess());
+	let [duration, setDuration] = React.useState(initial ? Math.floor((new Date(initial.end) - new Date(initial.start)) / 60000) : 15);
+	let [selectedDate, setSelectedDate] = React.useState(initialDate);
 	let [slots, setSlots] = React.useState([]);
+	let [selectedSlot, setSelectedSlot] = React.useState();
+	let [createEnabled, setCreateEnabled] = React.useState(false);
 	let meetingsStatusList = useSelector((state) => {
 		return state.meetingsData.meetingsStatusList;
 	});
 	React.useEffect(() => {
 		dispatch(getMeetingStatus(selectedDate.$d.toISOString()));
 	}, [selectedDate]);
-	if (meetingsStatusList && Array.isArray(meetingsStatusList.docs)) {
-		const busySlots = meetingsStatusList.docs;
-	}
-	const onSlotChange = (oEvent) => { setDuration(oEvent.target.value) }
-	const onMemberChange = (oEvent) => { setMembers(oEvent.target.value) };
-	const onMeetingCreate = () => {
-		const payload = {
-			title,
-			description,
 
+	React.useEffect(() => {
+		let memberError = "";
+		const membersArray = members.trim().split(/[;, ]/).filter(email => !!email);
+		const emailSchema = Yup.string().email()
+		if (!membersArray.reduce((prev, current) => {
+			return prev && emailSchema.isValidSync(current);
+		}, true)) {
+			memberError = getText("invalidMembersInput")
+		}
+		setMemberError(memberError);
+		setCreateEnabled(!!selectedSlot && !memberError);
+	}, [members, selectedSlot]);
+
+	function computeSlots() {
+		if (meetingsStatusList && Array.isArray(meetingsStatusList)) {
+			const busySlots = meetingsStatusList.map((status) => {
+				return { start: moment(status.start), end: moment(status.end) };
+			});
+			const useSelectedDate = new moment(selectedDate.$d);
+			const currentDate = new moment();
+			const start = moment.tz(`${useSelectedDate.year()}-${useSelectedDate.month() + 1}-${useSelectedDate.date()} ${USER.START}:00`, USER.TIMEZONE);
+			const end = moment.tz(`${useSelectedDate.year()}-${useSelectedDate.month() + 1}-${useSelectedDate.date()} ${USER.END}:00`, USER.TIMEZONE);
+			let possibleSlots = [];
+			let pointer = start.clone();
+			let slotEnd = moment.tz(pointer.valueOf() + duration * 60 * 1000, USER.TIMEZONE);
+
+			while (pointer < end && slotEnd <= end) {
+				if (pointer > currentDate) {
+					possibleSlots.push({
+						start: pointer,
+						end: slotEnd
+					});
+				}
+				pointer = slotEnd;
+				slotEnd = moment.tz(pointer.valueOf() + duration * 60 * 1000, USER.TIMEZONE);
+			}
+			possibleSlots = possibleSlots.filter((slot) => {
+				return !busySlots.reduce((prev, current) => prev
+					|| (slot.start >= current.start && slot.end <= current.end)
+					|| (slot.start < current.start && slot.end > current.start)
+					|| (slot.start < current.end && slot.end > current.end)
+					, false);
+			}).map((slot) => {
+				return {
+					...slot,
+					text: `${formatAMPM(slot.start.clone().tz(timeZone))} - ${formatAMPM(slot.end.clone().tz(timeZone))}`
+				}
+			});
+			if (initial
+				&& selectedDate.$d.toDateString() === (new Date(initial.start)).toDateString()
+				&& Math.floor((new Date(initial.end) - new Date(initial.start)) / 60000) === Number(duration)) {
+				const initialStart = moment.tz(initial.start, USER.TIMEZONE);
+				const initialEnd = moment.tz(initial.end, USER.TIMEZONE);
+				const initialSlot = {
+					start: initialStart,
+					end: initialEnd,
+					text: `${formatAMPM(initialStart.clone().tz(timeZone))} - ${formatAMPM(initialEnd.clone().tz(timeZone))}`
+				};
+				let index = 0;
+				while (possibleSlots[index].start < initialSlot.start) {
+					index++;
+				}
+				possibleSlots.splice(index, 0, initialSlot);
+				setSlots(possibleSlots);
+				setSelectedSlot(possibleSlots[index].text);
+			} else if (possibleSlots.length) {
+				setSlots(possibleSlots);
+				setSelectedSlot(possibleSlots[0].text);
+			}
+		}
+	}
+	React.useEffect(computeSlots, [meetingsStatusList, duration, timeZone]);
+
+	const onMeetingCreate = () => {
+		const selectedSlotObject = slots.find(slot => slot.text === selectedSlot);
+		const payload = {
+			title: title || `${getText("meetingWith")} ${getDomainName()}`,
+			description,
+			members: members.trim().split(/[;, ]/).filter(email => !!email),
+			start: selectedSlotObject.start.toISOString(),
+			end: selectedSlotObject.end.toISOString(),
 		}
 		successHandler && successHandler(payload);
 	};
@@ -54,7 +137,7 @@ export default function CreateEditMeetingDialog(props) {
 			<DialogContent>
 				<Box>
 					<TextField
-						autoFocus
+						margin="normal"
 						id="title"
 						value={title}
 						label={getText("meetingTitle")}
@@ -64,7 +147,6 @@ export default function CreateEditMeetingDialog(props) {
 					/>
 					<TextField
 						id="description"
-						margin="normal"
 						height="8rem"
 						value={description}
 						label={getText("description")}
@@ -76,12 +158,15 @@ export default function CreateEditMeetingDialog(props) {
 					/>
 					<TextField
 						id="members"
+						margin="normal"
 						height="8rem"
 						value={members}
 						label={getText("additionalParticipants")}
 						placeholder={getText("additionalParticipantsPlaceHolder")}
-						onChange={onMemberChange}
+						onChange={(oEvent) => setMembers(oEvent.target.value)}
 						rows={2}
+						error={!!memberError}
+						helperText={memberError}
 						fullWidth
 						multiline
 					/>
@@ -93,46 +178,46 @@ export default function CreateEditMeetingDialog(props) {
 									showDaysOutsideCurrentMonth={true} displayWeekNumber={false}
 									maxDate={dayjs(Date.now() + 365 * 24 * 60 * 60 * 1000)}
 									shouldDisableDate={(date) => date.$d.getDay() === 0 || date.$d.getDay() === 7 ? true : false}
-									defaultValue={selectedDate} value={selectedDate} onChange={(newValue) => {
-										setSelectedDate(newValue);
-									}} />
+									value={selectedDate} onChange={(newValue) => setSelectedDate(newValue)} />
 							</LocalizationProvider>
-							<FormControl sx={{ minWidth: "12rem", marginBottom: ".5rem", marginRight: "2rem" }}>
-									<InputLabel variant="standard" htmlFor="uncontrolled-native">
-										{getText("timezone")}
-									</InputLabel>
-									<NativeSelect
-										defaultValue={duration}
-										onChange={(oEvent) => { setDuration(oEvent.target.value) }}
-									>
-										<option value={15}>{getText("fifteenMinutes")}</option>
-										<option value={30}>{getText("thirtyMinutes")}</option>
-										<option value={40}>{getText("fortyMinutes")}</option>
-									</NativeSelect>
-								</FormControl>
+							<FormControl sx={{ width: "12rem", marginBottom: ".5rem", marginRight: "2rem" }}>
+								<InputLabel variant="standard" htmlFor="uncontrolled-native">
+									{getText("timezone")}
+								</InputLabel>
+								<NativeSelect
+									value={timeZone}
+									onChange={(oEvent) => setTimeZone(oEvent.target.value)}
+								>
+									{momentTz.tz.names().sort().map((tz, index) => {
+										return <option key={index} value={tz}>{tz}</option>
+									})}
+								</NativeSelect>
+							</FormControl>
 							<Grid sx={{
 								justifyContent: "space-evenly",
 								alignContent: "flex-start"
 							}}>
-								<FormControl sx={{ minWidth: "12rem", marginBottom: ".5rem", marginRight: "2rem" }}>
+								<FormControl sx={{ width: "12rem", marginBottom: ".5rem", marginRight: "2rem" }}>
 									<InputLabel variant="standard" htmlFor="uncontrolled-native">
 										{getText("duration")}
 									</InputLabel>
 									<NativeSelect
-										defaultValue={duration}
-										onChange={(oEvent) => { setDuration(oEvent.target.value) }}
+										value={duration}
+										onChange={(oEvent) => setDuration(oEvent.target.value)}
 									>
 										<option value={15}>{getText("fifteenMinutes")}</option>
 										<option value={30}>{getText("thirtyMinutes")}</option>
 										<option value={40}>{getText("fortyMinutes")}</option>
 									</NativeSelect>
 								</FormControl>
-								<FormControl sx={{ minWidth: "12rem", marginBottom: ".5rem" }}>
+								<FormControl sx={{ width: "12rem", marginBottom: ".5rem" }}>
 									<InputLabel variant="standard" htmlFor="uncontrolled-native">
 										{getText("availableSlots")}
 									</InputLabel>
-									<NativeSelect onChange={onSlotChange}>
-										{slots ? slots.map((slot) => <option value={slot}>{slot}</option>) : null}
+									<NativeSelect autoFocus defaultValue={selectedSlot} value={selectedSlot} onChange={(oEvent) => setSelectedSlot(oEvent.target.value)}>
+										{slots ? slots.map((slot, index) => {
+											return <option key={index} value={slot.text}>{slot.text}</option>
+										}) : null}
 									</NativeSelect>
 								</FormControl>
 							</Grid>
@@ -142,7 +227,7 @@ export default function CreateEditMeetingDialog(props) {
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={closeHandler}>{getText("cancel")}</Button>
-				<Button onClick={onMeetingCreate}>{getText("create")}</Button>
+				<Button onClick={onMeetingCreate} disabled={!createEnabled}>{getText(initial ? "edit" : "create")}</Button>
 			</DialogActions>
 		</Dialog>
 	);

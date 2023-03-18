@@ -13,7 +13,7 @@ export default function usersReducer(state = {}, action) {
     case MEETINGS_LIST_CLEAR:
       return {...state, meetingsList: null};
     case MEETINGS_STATUS_LIST:
-      return { ...state, meetingsStatusList: action.payload.docs };
+      return { ...state, meetingsStatusList: [...action.payload.docs] };
     case MEETINGS_STATUS_LIST_CLEAR:
       return { ...state, meetingsStatusList: null };
     default:

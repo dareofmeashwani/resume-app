@@ -82,6 +82,7 @@ export const patchMeeting = (meetingId, payload) => {
 		try {
 			await axios.patch(`/api/v1/meetings/${meetingId}`, payload);
 			dispatch(actions.clearMeetingList());
+			dispatch(actions.clearMeetingsStatus());
 		} catch (error) {
 			dispatch(
 				actions.errorGlobal(error.response.data)
@@ -97,6 +98,7 @@ export const createMeeting = (payload) => {
 		try {
 			await axios.post(`/api/v1/meetings`, payload);
 			dispatch(actions.clearMeetingList());
+			dispatch(actions.clearMeetingsStatus());
 		} catch (error) {
 			dispatch(
 				actions.errorGlobal(error.response.data)

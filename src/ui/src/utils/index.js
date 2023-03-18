@@ -78,9 +78,23 @@ export function getQueryVariable(variable) {
     let vars = query.split("&");
     for (const element of vars) {
         let pair = element.split("=");
-        if (pair[0] === variable) { 
+        if (pair[0] === variable) {
             return pair[1];
         }
     }
     return undefined;
 }
+
+export function formatAMPM(date) {
+    function formatDigit(digit) {
+		return ("0" + digit).slice(-2);
+	}
+    var hours = date.hours();
+    var minutes = date.minutes();
+    var ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    var strTime = formatDigit(hours) + ':' + formatDigit(minutes) + ' ' + ampm;
+    return strTime;
+  }

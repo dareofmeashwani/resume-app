@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Card, CardContent, CardHeader, Divider, Typography } from '@mui/material';
+import { Card, CardContent, CardHeader, Divider, Grid, Typography } from '@mui/material';
 
 // project import
 //import Highlighter from './third-party/Highlighter';
@@ -63,24 +63,24 @@ const MainCard = forwardRef(
                 }}
             >
                 {/* card header and action */}
-                <Box sx={{
+                <Grid sx={{
                     marginLeft: "2rem",
                     marginRight: "3rem",
-                    display: 'flex',
+                    display: "flex",
                     justifyContent: 'space-between',
                 }}>
                     {!darkTitle && title && (
-                        <CardHeader sx={headerSX} titleTypographyProps={{ variant: 'h6' }} title={title} action={secondary} />
+                        <Grid><CardHeader sx={headerSX} titleTypographyProps={{ variant: 'h6' }} title={title} action={secondary} /></Grid>
                     )}
                     {darkTitle && title && (
-                        <CardHeader sx={headerSX} title={<Typography variant="h3">{title}</Typography>} action={secondary} />
+                        <Grid><CardHeader sx={headerSX} title={<Typography variant="h3">{title}</Typography>} action={secondary} /></Grid>
                     )}
-                    {actions ? <Box sx={{
+                    {actions ? <Grid sx={{
                         alignContent: "center",
                         textAlign: "center",
                         alignSelf: "center"
-                    }}>{actions}</Box> : null}
-                </Box>
+                    }}>{actions} </Grid> : null}
+                </Grid>
 
                 {/* content & header divider */}
                 {title && divider && <Divider />}

@@ -1,6 +1,7 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import ButtonGroup from "@mui/material/ButtonGroup";
 import Typography from "@mui/material/Typography";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "@mui/material";
@@ -10,35 +11,47 @@ import AddIcon from '@mui/icons-material/Add';
 import IconButton from '@mui/material/IconButton';
 import ItemsList from "./ItemsList";
 import MainCard from "../controls/MainCard";
-import { getMeetingList } from "../../store/actions/meetingsActions";
+import { getMeetingList, createMeeting, clearMeetingsList } from "../../store/actions/meetingsActions";
 import CreateEditMeetingDialog from './createEditMeetingDialog';
 
 const Meeting = (props) => {
   const dispatch = useDispatch();
+  const [dialogState, setDialogState] = React.useState(false);
+  const [listType, setListType] = React.useState('all');
   const user = useSelector((state) => {
     return state.userData.user;
   });
   let meetingsList = useSelector((state) => {
     return state.meetingsData.meetingsList;
   });
+  React.useEffect(() => () => {
+    clearMeetingsList();
+  }, [])
   React.useEffect(() => {
     if (!meetingsList && user) {
-      dispatch(getMeetingList());
+      if (listType == "upcoming") {
+        dispatch(getMeetingList());
+      }
+      else if (listType == "previous") {
+        dispatch(getMeetingList());
+      }
+      else {
+        dispatch(getMeetingList());
+      }
     }
   }, [user, meetingsList]);
-
-  const [dialogState, setDialogState] = React.useState(false);
 
   const dialogCloseHandler = () => {
     setDialogState(false);
   }
-  const onDialogSuccess = () => {
-    setDialogState(false);
+  const onDialogSuccess = async (values) => {
+    await dispatch(createMeeting(values));
+    dialogCloseHandler();
   }
 
   return (
     <>
-      <CreateEditMeetingDialog open={dialogState} closeHandler={dialogCloseHandler} successHandler={onDialogSuccess} />
+      {dialogState && <CreateEditMeetingDialog open={dialogState} closeHandler={dialogCloseHandler} successHandler={onDialogSuccess} />}
       <Box sx={{
         marginLeft: "15%",
         marginRight: "15%",
@@ -70,9 +83,31 @@ const Meeting = (props) => {
           </Grid> :
             <Grid >
               <MainCard title={getText("Meetings")} actions={
-                <IconButton aria-label="comment" onClick={() => setDialogState(true)} sx={{ marginLeft: ".5rem", marginRight: ".5rem" }}>
-                  <AddIcon />
-                </IconButton>
+                <>
+                  <ButtonGroup>
+                    <Button color="success" variant={listType === "all" ? "contained" : "outlined"} onClick={() => {
+                      if (listType !== "all") {
+                        setListType("all");
+                        dispatch(clearMeetingsList());
+                      }
+                    }}>{getText("all")}</Button>
+                    <Button color="success" variant={listType === "upcoming" ? "contained" : "outlined"} onClick={() => {
+                      if (listType !== "upcoming") {
+                        setListType("upcoming");
+                        dispatch(clearMeetingsList());
+                      }
+                    }}>{getText("upcoming")}</Button>
+                    <Button color="success" variant={listType === "previous" ? "contained" : "outlined"} onClick={() => {
+                      if (listType !== "previous") {
+                        setListType("previous");
+                        dispatch(clearMeetingsList());
+                      }
+                    }}>{getText("previous")}</Button>
+                  </ButtonGroup>
+                  <IconButton aria-label="comment" onClick={() => setDialogState(true)} sx={{ marginLeft: ".5rem", marginRight: ".5rem" }}>
+                    <AddIcon />
+                  </IconButton>
+                </>
               }>
                 {Array.isArray(meetingsList) && meetingsList.length ? <ItemsList items={meetingsList} /> :
                   <Box>

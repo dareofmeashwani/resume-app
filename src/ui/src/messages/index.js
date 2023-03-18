@@ -88,8 +88,11 @@ const messages = {
 	duration: "Duration",
 	selectDate: "Select Date",
 	availableSlots: "Available Time Slots",
-	additionalParticipantsPlaceHolder: "Invite other people to join this meeting. Provide Comma or space seperated emails"
-
+	additionalParticipantsPlaceHolder: "Invite other people to join this meeting. Provide Comma or space seperated emails",
+	timezone: "Time Zone",
+	invalidMembersInput: "Emails should be seperated by comma or space.",
+	meetingWith: "Meeting With" ,
+	timing: "Timing"
 };
 
 export default function getText(key) {
