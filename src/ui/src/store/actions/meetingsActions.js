@@ -1,5 +1,6 @@
 import * as actions from "./index";
 import axios from "axios";
+import getText from "../../messages";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
@@ -52,6 +53,7 @@ export const deleteMeeting = (meetingId) => {
 		try {
 			await axios.delete(`/api/v1/meetings/${meetingId}`);
 			dispatch(actions.clearMeetingList());
+			dispatch(actions.successGlobal({message: getText("meetingDeletedNoti")}));
 		} catch (error) {
 			dispatch(
 				actions.errorGlobal(error.response.data)
@@ -80,9 +82,10 @@ export const patchMeeting = (meetingId, payload) => {
 	return async (dispatch) => {
 		dispatch(actions.setBusyIndicator());
 		try {
-			await axios.patch(`/api/v1/meetings/${meetingId}`, payload);
+			const response = await axios.patch(`/api/v1/meetings/${meetingId}`, payload);
 			dispatch(actions.clearMeetingList());
 			dispatch(actions.clearMeetingsStatus());
+			dispatch(actions.successGlobal({message: getText("meetingUpdatedNoti")}));
 		} catch (error) {
 			dispatch(
 				actions.errorGlobal(error.response.data)
@@ -96,9 +99,10 @@ export const createMeeting = (payload) => {
 	return async (dispatch) => {
 		dispatch(actions.setBusyIndicator());
 		try {
-			await axios.post(`/api/v1/meetings`, payload);
+			const response = await axios.post(`/api/v1/meetings`, payload);
 			dispatch(actions.clearMeetingList());
 			dispatch(actions.clearMeetingsStatus());
+			dispatch(actions.successGlobal({message: getText("meetingCreatedNoti")}));
 		} catch (error) {
 			dispatch(
 				actions.errorGlobal(error.response.data)

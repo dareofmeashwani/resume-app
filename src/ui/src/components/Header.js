@@ -26,6 +26,14 @@ const Header = (props) => {
 		{ id: "gallery", text: getText("gallery") },
 		{ id: "contact", text: getText("contact") }
 	];
+	const userHeaderActions = [
+		{ id: "Home", text: getText("Home") },
+		{ id: "profile", text: getText("profile") },
+		{ id: "logout", text: getText("logout") }
+	];
+	if(user && user.role === "ADMIN"){
+		userHeaderActions.splice(1, 0, { id: "admin", text: getText("adminPanel") });
+	}
 	useEffect(() => {
 		setUserInfo(user);
 		setDrawerState({
@@ -72,11 +80,7 @@ const Header = (props) => {
 		<>
 			<AppBar
 				title={getText("domainName")}
-				settings={[
-					{ id: "dashboard", text: getText("dashboard") },
-					{ id: "profile", text: getText("profile") },
-					{ id: "logout", text: getText("logout") }
-				]}
+				settings={userHeaderActions}
 				click={routeHandler}
 				userInfo={userInfo}
 				register={(e) => {

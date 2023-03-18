@@ -47,7 +47,7 @@ const messages = {
 	year: "Year",
 	institute: "Institute",
 	cgpaMarks: "CGPA / Marks",
-	degreeProgramme :"Degree / Programme",
+	degreeProgramme: "Degree / Programme",
 	export: "Export",
 	years: "Years",
 	month: "Month",
@@ -91,8 +91,15 @@ const messages = {
 	additionalParticipantsPlaceHolder: "Invite other people to join this meeting. Provide Comma or space seperated emails",
 	timezone: "Time Zone",
 	invalidMembersInput: "Emails should be seperated by comma or space.",
-	meetingWith: "Meeting With" ,
-	timing: "Timing"
+	meetingWith: "Meeting With",
+	timing: "Timing",
+	adminPanel: "Admin Panel",
+	upcoming: "Upcoming",
+	previous: "Previous",
+	meetingUpdatedNoti: "Meeting Updated",
+	meetingCreatedNoti: "New Meeting Created",
+	meetingDeletedNoti: "Meeting Deleted"
+
 };
 
 export default function getText(key) {
