@@ -69,7 +69,7 @@ const AboutMe = () => {
 						</Box>
 						<Box>
 							<div style={{ fontSize: "30px", textAlign: "center" }}>
-								Since 2018, I am working with SAP
+								Since 2018, I am working with SAP Labs Bangalore
 							</div>
 						</Box>
 					</Animator>
