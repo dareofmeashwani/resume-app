@@ -274,46 +274,20 @@ function getSkillsContent(dataItems) {
     const groupedData = groupDataByKey(dataItems, "group");
     const ungroupedItems = groupedData[""];
     delete groupedData[""];
-    return <Box sx={
-        {
-            marginTop: "1rem",
-            display: "grid",
-            marginBottom: "1.5rem",
-            marginLeft: "1rem",
-            marginRight: "1rem"
-        }
-    }>
-        {
-            Object.keys(groupedData).map(skillKey => {
-                const skills = groupedData[skillKey];
-                return <Grid key={skillKey} sx={
-                    {
-                        display: 'flex',
-                        width: '100%'
-                    }
-                }>
-                    <Typography fontWeight='fontWeightMedium' display='inline' sx={{
-                        wordWrap: "break-word",
-                        wordBreak: "keep-all"
-                    }}> {
-                            skillKey
-                        }</Typography><Typography sx={{
-                            marginRight: "1rem",
-                            alignContent: "center",
-                            justifyContent: "center",
-                            textAlign: "center"
-                        }}>: </Typography><Typography>{
-                            skills.map(skill => {
-                                return `${skill.name}${skill.experience ? ` (${skill.experience})` : ""}`
-                            }).join(", ")
-                        }</Typography>
-                </Grid>
-            })
-        }
-        {ungroupedItems ? ungroupedItems.map(skill => <Typography key={skill.id} fontWeight='fontWeightMedium' display='inline'>
-            {`${skill.name}${skill.experience ? ` (${skill.experience})` : ""}`}
-        </Typography>) : null}
-    </Box>;
+    return <TableContainer>
+        <Table>
+            {
+                Object.keys(groupedData).map(skillKey => {
+                    const skills = groupedData[skillKey];
+                    return <TableRow>
+                        <TableCell>{skillKey}</TableCell>
+                        <TableCell>{skills.map(skill => {
+                            return `${skill.name}${skill.experience ? ` (${skill.experience})` : ""}`
+                        }).join(", ")}</TableCell></TableRow>;
+                })
+            }
+        </Table>
+    </TableContainer>;
 }
 function getProjectsContent(dataItems) {
     return dataItems.map(item => {

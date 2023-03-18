@@ -108,6 +108,16 @@ export const query = {
 		key: "sort",
 		type: String
 	},
+	sortBy: {
+		default: "createdAt",
+		key: "sortBy",
+		type: String
+	},
+	listType: {
+		default: "all",
+		key: "listType",
+		type: String
+	},
 	limit: {
 		key: "limit",
 		type: Number,

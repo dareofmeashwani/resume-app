@@ -17,7 +17,7 @@ import CreateEditMeetingDialog from './createEditMeetingDialog';
 const Meeting = (props) => {
   const dispatch = useDispatch();
   const [dialogState, setDialogState] = React.useState(false);
-  const [listType, setListType] = React.useState('all');
+  const [listType, setListType] = React.useState('upcoming');
   const user = useSelector((state) => {
     return state.userData.user;
   });
@@ -25,19 +25,11 @@ const Meeting = (props) => {
     return state.meetingsData.meetingsList;
   });
   React.useEffect(() => () => {
-    clearMeetingsList();
+    dispatch(clearMeetingsList());
   }, [])
   React.useEffect(() => {
     if (!meetingsList && user) {
-      if (listType == "upcoming") {
-        dispatch(getMeetingList());
-      }
-      else if (listType == "previous") {
-        dispatch(getMeetingList());
-      }
-      else {
-        dispatch(getMeetingList());
-      }
+      dispatch(getMeetingList(listType));
     }
   }, [user, meetingsList]);
 

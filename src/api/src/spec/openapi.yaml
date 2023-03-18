@@ -1218,6 +1218,8 @@ paths:
     - $ref: "#/components/parameters/Sort"
     - $ref: "#/components/parameters/Page"
     - $ref: "#/components/parameters/Limit"
+    - $ref: "#/components/parameters/SortBy"
+    - $ref: "#/components/parameters/ListType"
    responses:
     "200":
      description: returns list of meetings
@@ -2513,6 +2515,20 @@ components:
    enum:
     - asc
     - desc
+  SortBy:
+   type: string
+   default: createdAt
+   enum:
+    - createdAt
+    - start
+    - end
+  ListType:
+   type: string
+   default: all
+   enum:
+    - all
+    - upcoming
+    - previous
   Status:
    type: string
    default: public
@@ -2616,6 +2632,22 @@ components:
    schema:
     allOf:
      - $ref: "#/components/schemas/Sort"
+  SortBy:
+   name: sortBy
+   description: sortBy query parameter
+   in: query
+   required: false
+   schema:
+    allOf:
+     - $ref: "#/components/schemas/SortBy"
+  ListType:
+   name: listType
+   description: sortBy query parameter
+   in: query
+   required: false
+   schema:
+    allOf:
+     - $ref: "#/components/schemas/ListType"
   Limit:
    name: limit
    description: limit query parameter

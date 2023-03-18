@@ -1,7 +1,7 @@
 import * as express from "express";
 import { HTTP_STATUS, ERROR_MESSAGES, ROLES, query, MESSAGES } from "../utils/constants";
 import { throwResumeError } from "../utils/errorHelper";
-import { getWeekStartEnd, filterProps, unique, processQueryParam } from "../utils/helpers";
+import { filterProps, unique, processQueryParam } from "../utils/helpers";
 import config from "../config";
 import meetingModel from "../models/meetingModel";
 import * as zoom from "../utils/zoomApi";
@@ -23,18 +23,24 @@ export const getMeetingList = async function (
 ) {
 	try {
 		const options = processQueryParam(
-			[query.limit, query.page, query.sort],
+			[query.limit, query.page, query.sort, query.sortBy, query.listType],
 			req.query
 		);
 		if (options.sort) {
-			options.sort = { start: options.sort };
+			options.sort = { [options.sortBy]: options.sort };
+		}
+		const filterParams: any = {
+			createdBy: res.locals.userData.id,
+		};
+		if (options.listType === "previous") {
+			filterParams.end = { $lte: new Date() };
+		} else if (options.listType === "upcoming") {
+			filterParams.end = { $gte: new Date() };
 		}
 		const docList = await meetingModel.aggregatePaginate(
 			meetingModel.aggregate([
 				{
-					$match: {
-						createdBy: res.locals.userData.id
-					}
+					$match: filterParams
 				}
 			]),
 			options
@@ -206,35 +212,39 @@ export const patchMeeting = async (
 		});
 	}
 	attendees = unique(attendees, "email");
-	try {
-		const zoomResponse = await zoom.update(
-			response.externalEventId,
-			{
-				topic: response.title,
-				agenda: response.description,
-				start_time: new Date(response.start).toISOString(),
-				duration: Math.floor(
-					(new Date(response.end).getTime() - new Date(response.start).getTime()) /
-					60000
-				)
-			},
-			attendees
-		);
+	if (response.externalEventId) {
+		try {
+			const zoomResponse = await zoom.update(
+				response.externalEventId,
+				{
+					topic: response.title,
+					agenda: response.description,
+					start_time: new Date(response.start).toISOString(),
+					duration: Math.floor(
+						(new Date(response.end).getTime() - new Date(response.start).getTime()) /
+						60000
+					)
+				},
+				attendees
+			);
+			res.status(HTTP_STATUS.ACCEPTED).send(getProps(response._doc));
+			sendZoomUpdate(
+				res.locals.userData,
+				attendees.map((attendee: any) => attendee.email),
+				await (
+					await zoom.get(response._doc.externalEventId)
+				).data
+			);
+		} catch (error) {
+			throwResumeError(
+				HTTP_STATUS.INTERNAL_SERVER_ERROR,
+				ERROR_MESSAGES.ZOOM_CONNECTIVITY_ERROR,
+				req,
+				error
+			);
+		}
+	} else {
 		res.status(HTTP_STATUS.ACCEPTED).send(getProps(response._doc));
-		sendZoomUpdate(
-			res.locals.userData,
-			attendees.map((attendee: any) => attendee.email),
-			await (
-				await zoom.get(response._doc.externalEventId)
-			).data
-		);
-	} catch (error) {
-		throwResumeError(
-			HTTP_STATUS.INTERNAL_SERVER_ERROR,
-			ERROR_MESSAGES.ZOOM_CONNECTIVITY_ERROR,
-			req,
-			error
-		);
 	}
 };
 export const deleteMeeting = async (
@@ -266,16 +276,18 @@ export const deleteMeeting = async (
 		admins.map((admin) => admin.email)
 	]);
 	let zoomData;
-	try {
-		zoomData = await zoom.get(response._doc.externalEventId);
-		await zoom.del(response._doc.externalEventId);
-	} catch (error) {
-		throwResumeError(
-			HTTP_STATUS.INTERNAL_SERVER_ERROR,
-			ERROR_MESSAGES.ZOOM_CONNECTIVITY_ERROR,
-			req,
-			error
-		);
+	if (response._doc.externalEventId) {
+		try {
+			zoomData = await zoom.get(response._doc.externalEventId);
+			await zoom.del(response._doc.externalEventId);
+		} catch (error) {
+			throwResumeError(
+				HTTP_STATUS.INTERNAL_SERVER_ERROR,
+				ERROR_MESSAGES.ZOOM_CONNECTIVITY_ERROR,
+				req,
+				error
+			);
+		}
 	}
 	try {
 		await meetingModel.deleteOne({ _id: req.params.meetingId });
