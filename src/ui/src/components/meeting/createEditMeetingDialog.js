@@ -106,7 +106,7 @@ export default function CreateEditMeetingDialog(props) {
 					text: `${formatAMPM(initialStart.clone().tz(timeZone))} - ${formatAMPM(initialEnd.clone().tz(timeZone))}`
 				};
 				let index = 0;
-				while (possibleSlots[index].start < initialSlot.start) {
+				while (possibleSlots.length && possibleSlots[index].start < initialSlot.start) {
 					index++;
 				}
 				possibleSlots.splice(index, 0, initialSlot);
@@ -115,6 +115,9 @@ export default function CreateEditMeetingDialog(props) {
 			} else if (possibleSlots.length) {
 				setSlots(possibleSlots);
 				setSelectedSlot(possibleSlots[0].text);
+			}
+			if(!possibleSlots.length){
+				setSelectedDate(dayjs(selectedDate.add(1,"day")));
 			}
 		}
 	}
