@@ -98,7 +98,9 @@ const messages = {
 	previous: "Previous",
 	meetingUpdatedNoti: "Meeting Updated",
 	meetingCreatedNoti: "New Meeting Created",
-	meetingDeletedNoti: "Meeting Deleted"
+	meetingDeletedNoti: "Meeting Deleted",
+	yourAccountDetails: "Your Account Details",
+	changePassword: "Change Password"
 
 };
 

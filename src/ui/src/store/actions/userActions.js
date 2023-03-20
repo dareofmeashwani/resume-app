@@ -147,3 +147,8 @@ export const clearVerifyForgetPassword = () => {
 		dispatch(actions.verifyForgetPassword({}));
 	};
 };
+
+export const changeUserPassword = (password) => {
+	return async (dispatch) => {
+	};
+};

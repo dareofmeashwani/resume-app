@@ -70,6 +70,7 @@ const Header = (props) => {
 			case "gallery":
 			case "meeting":
 			case "contact":
+			case "profile":
 				navigate(key);
 				break;
 			default:

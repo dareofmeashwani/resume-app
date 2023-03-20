@@ -116,8 +116,8 @@ export default function CreateEditMeetingDialog(props) {
 				setSlots(possibleSlots);
 				setSelectedSlot(possibleSlots[0].text);
 			}
-			if(!possibleSlots.length){
-				setSelectedDate(dayjs(selectedDate.add(1,"day")));
+			if (!possibleSlots.length) {
+				setSelectedDate(dayjs(selectedDate.add(1, "day")));
 			}
 		}
 	}
@@ -229,8 +229,10 @@ export default function CreateEditMeetingDialog(props) {
 				</Box>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={closeHandler}>{getText("cancel")}</Button>
-				<Button onClick={onMeetingCreate} disabled={!createEnabled}>{getText(initial ? "edit" : "create")}</Button>
+				<Button onClick={closeHandler} color="success" >{getText("cancel")} </Button>
+				<Button onClick={onMeetingCreate} disabled={!createEnabled} color="success" >
+					{getText(initial ? "edit" : "create")}
+				</Button>
 			</DialogActions>
 		</Dialog>
 	);
