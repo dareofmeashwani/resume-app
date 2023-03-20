@@ -2,6 +2,7 @@ import * as actions from "./index";
 import axios from "axios";
 import { removeCookieToken, getCookieToken } from "../../utils/cookie";
 import { HTTP_STATUS } from "../../utils/constants";
+import getText from "../../messages";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
@@ -150,5 +151,15 @@ export const clearVerifyForgetPassword = () => {
 
 export const changeUserPassword = (password) => {
 	return async (dispatch) => {
+		dispatch(actions.setBusyIndicator());
+		try {
+			await axios.patch(`/api/v1/user/changePassword`, { password });
+			dispatch(actions.successGlobal({ message: getText("passwordSuccessChangeMsg") }));
+		} catch (error) {
+			dispatch(
+				actions.errorGlobal(error.response.data)
+			);
+		}
+		dispatch(actions.resetBusyIndicator());
 	};
 };

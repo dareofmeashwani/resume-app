@@ -100,7 +100,8 @@ const messages = {
 	meetingCreatedNoti: "New Meeting Created",
 	meetingDeletedNoti: "Meeting Deleted",
 	yourAccountDetails: "Your Account Details",
-	changePassword: "Change Password"
+	changePassword: "Change Password",
+	passwordSuccessChangeMsg: "Your password has been changed successfully"
 
 };
 
