@@ -1,7 +1,6 @@
 import React from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import GoogleFontLoader from "react-google-font-loader";
-import MainLayout from "./hoc/mainLayout";
 import Home from "./components/home";
 import Contact from "./components/contact";
 import Header from "./components/Header";
