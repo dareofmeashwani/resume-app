@@ -58,23 +58,23 @@ export async function update(id: string, payload: any, attendees: string[]) {
 	payload = Object.assign(
 		{
 			type: 2,
-			timezone: "Asia/Kolkata",
+			timezone: "Europe/London",
 			password: generateRandom(8),
 			settings: {
 				host_video: true,
 				participant_video: true,
 				cn_meeting: false,
-				in_meeting: true,
+				in_meeting: false,
 				join_before_host: true,
 				mute_upon_entry: true,
 				watermark: false,
 				use_pmi: false,
 				focus_mode: true,
 				audio: "both",
-				auto_recording: "local",
+				auto_recording: "none",
 				enforce_login: false,
 				registrants_email_notification: true,
-				waiting_room: true,
+				waiting_room: false,
 				allow_multiple_devices: true,
 				meeting_invitees: attendees
 			}

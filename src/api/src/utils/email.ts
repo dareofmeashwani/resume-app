@@ -4,6 +4,7 @@ import config from "../config";
 import moment from "moment";
 import { User } from "../models/userModel";
 import { ROLES } from "./constants";
+import { createEvent, convertTimestampToArray } from "ics";
 
 let transporter = nodemailer.createTransport({
 	service: "Gmail",
@@ -15,6 +16,19 @@ let transporter = nodemailer.createTransport({
 });
 
 const THEME = "salted";
+
+
+async function createIcs(event: any): Promise<string> {
+	return new Promise((resolve, reject) => {
+		createEvent(event, (error, value) => {
+			if (error) {
+				reject(error);
+				return
+			}
+			resolve(value);
+		})
+	});
+}
 
 export const sendWelcomeEmail = async (userInfo: any) => {
 	try {
@@ -74,7 +88,7 @@ export const sendVerificationEmail = async (
 						link: `${config.DOMAIN_ADDRESS}/emailVerification?d=${emailToken}`
 					}
 				},
-				outro:[
+				outro: [
 					"Email verification link will expire in 24 hours",
 					"Need help, or have questions? Just reply to this email, we'd love to help."
 				]
@@ -190,7 +204,8 @@ const sendZoomMeeting = async (
 	userInfo: any,
 	emails: string[],
 	meeting: any,
-	subject: string
+	subject: string,
+	meetingDbMeta: any,
 ) => {
 	try {
 		let mailGenerator = new Mailgen({
@@ -202,13 +217,30 @@ const sendZoomMeeting = async (
 		});
 		const intro = [
 			"Meeting Topic : " + meeting.topic,
-			"Meeting Agenda : " + meeting.agenda,
+			"Meeting Agenda : " + meeting.agenda || "Not Available",
 			"Meeting Organiser : " + userInfo.firstname + " " + userInfo.lastname,
 			"Meeting Timing : " +
-				moment(meeting.start_time).format("MM/DD/YYYY h:mm a ") +
-				" IST",
+			moment(meeting.start_time).format("MM/DD/YYYY h:mm a ") +
+			" IST",
 			"Meeting With : " + config.DOMAIN_NAME
 		];
+		const meetingdate = new Date(meeting.start_time);
+		const icsContent = await createIcs({
+			uid: meetingDbMeta.id,
+			start: convertTimestampToArray(meetingdate.getTime(), "utc"),
+			startInputType: "utc",
+			startOutputType: "utc",
+			duration: { minutes: meeting.duration },
+			title: meeting.topic,
+			description: meetingDbMeta.description,
+			location: meeting.join_url,
+			url: meeting.join_url,
+			categories: ['Meet Up', 'Short Sync', 'Short Call'],
+			organizer: { name: config.DOMAIN_NAME, email: config.EMAIL },
+			attendees: emails.map((email: string) => ({ email, name: email })),
+			status: "CONFIRMED",
+			busyStatus: "BUSY"
+		});
 		await Promise.all(
 			emails.map(async (userEmail: string) => {
 				const email = {
@@ -225,8 +257,8 @@ const sendZoomMeeting = async (
 						},
 						outro: [
 							"Incase button doesn't work, follow the link to join the meeting" +
-								" " +
-								meeting.join_url,
+							" " +
+							meeting.join_url,
 							"Need help, or have questions? Just reply to this email, we'd love to help."
 						]
 					}
@@ -236,7 +268,12 @@ const sendZoomMeeting = async (
 					from: config.EMAIL,
 					to: userEmail,
 					subject,
-					html: emailBody
+					html: emailBody,
+					icalEvent: {
+						filename: "invitation.ics",
+						method: 'request',
+						content: icsContent,
+					}
 				};
 				return await transporter.sendMail(message);
 			})
@@ -250,31 +287,36 @@ const sendZoomMeeting = async (
 export const sendZoomInvite = async (
 	userInfo: any,
 	emails: string[],
-	meeting: any
+	meeting: any,
+	meetingDbMeta: any
 ) => {
 	sendZoomMeeting(
 		userInfo,
 		emails,
 		meeting,
-		`Zoom Meeting with ${config.DOMAIN_NAME}`
+		`Zoom Meeting with ${config.DOMAIN_NAME}`,
+		meetingDbMeta
 	);
 };
 export const sendZoomUpdate = async (
 	userInfo: any,
 	emails: string[],
-	meeting: any
+	meeting: any,
+	meetingDbMeta: any
 ) => {
 	sendZoomMeeting(
 		userInfo,
 		emails,
 		meeting,
-		`Your Zoom Meeting with ${config.DOMAIN_NAME} has been updated`
+		`Your Zoom Meeting with ${config.DOMAIN_NAME} has been updated`,
+		meetingDbMeta,
 	);
 };
 export const sendZoomCancellation = async (
 	userInfo: any,
 	emails: string[],
-	meeting: any
+	meeting: any,
+	meetingDbMeta: any
 ) => {
 	try {
 		let mailGenerator = new Mailgen({
@@ -291,11 +333,11 @@ export const sendZoomCancellation = async (
 						name: userEmail,
 						intro: [
 							"Meeting Topic : " + meeting.topic,
-							"Meeting Agenda : " + meeting.agenda,
+							"Meeting Agenda : " + meeting.agenda || "Not Available",
 							"Meeting Organiser : " + userInfo.firstname + " " + userInfo.lastname,
 							"Meeting Timing : " +
-								moment(meeting.start_time).format("MM/DD/YYYY h:mm a ") +
-								" IST",
+							moment(meeting.start_time).format("MM/DD/YYYY h:mm a ") +
+							" IST",
 							"Meeting With : " + config.DOMAIN_NAME
 						],
 						outro:

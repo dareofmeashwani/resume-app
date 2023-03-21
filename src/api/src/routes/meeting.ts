@@ -133,7 +133,8 @@ export const createMeeting = async (
 			sendZoomInvite(
 				res.locals.userData,
 				attendees.map((attendee: any) => attendee.email),
-				response
+				response,
+				req.body,
 			);
 		} catch (error) {
 			throwResumeError(
@@ -233,7 +234,8 @@ export const patchMeeting = async (
 				attendees.map((attendee: any) => attendee.email),
 				await (
 					await zoom.get(response._doc.externalEventId)
-				).data
+				).data,
+				response
 			);
 		} catch (error) {
 			throwResumeError(
@@ -300,7 +302,7 @@ export const deleteMeeting = async (
 			error
 		);
 	}
-	sendZoomCancellation(res.locals.userData, attendees, zoomData?.data);
+	sendZoomCancellation(res.locals.userData, attendees, zoomData?.data, response);
 };
 
 export async function getMeetingStatus(
@@ -364,14 +366,15 @@ export async function zoomResendInvite(
 	let attendees: any = unique([
 		...response._doc.members,
 		res.locals.userData.email,
-		admins.map((admin) => admin.email)
+		...admins.map((admin) => admin.email)
 	]);
 	sendZoomInvite(
 		res.locals.userData,
 		attendees,
 		await (
 			await zoom.get(response._doc.externalEventId)
-		).data
+		).data,
+		response
 	);
 	res.status(HTTP_STATUS.ACCEPTED).send({
 		message: MESSAGES.MEETING_NOTI_SEND

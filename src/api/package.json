@@ -36,7 +36,8 @@
     "axios": "^1.2.1",
     "moment": "^2.29.4",
     "cp-cli": "^2.0.0",
-    "adm-zip": "^0.5.10"
+    "adm-zip": "^0.5.10",
+    "ics": "^3.1.0"
   },
   "devDependencies": {
     "@eslint/create-config": "^0.4.1",
