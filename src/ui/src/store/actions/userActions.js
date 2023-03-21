@@ -153,7 +153,7 @@ export const changeUserPassword = (password) => {
 	return async (dispatch) => {
 		dispatch(actions.setBusyIndicator());
 		try {
-			await axios.patch(`/api/v1/user/changePassword`, { password });
+			await axios.post(`/api/v1/user/changePassword`, { password });
 			dispatch(actions.successGlobal({ message: getText("passwordSuccessChangeMsg") }));
 		} catch (error) {
 			dispatch(

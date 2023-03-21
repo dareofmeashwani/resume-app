@@ -99,7 +99,8 @@ export const MESSAGES = {
 	EMAIL_VERIFCATION_MAIL_SEND: "Email verification link has been sent to your email, Please follow the link & verify your email.",
 	FORGET_PASSWORD_SUCCESS: "Your password has been changed successfully",
 	VALID_TOKEN: "Token provided by you is valid, please proceed further",
-	MEETING_NOTI_SEND: "Meeting Invites Send."
+	MEETING_NOTI_SEND: "Meeting Invites Send.",
+	CHANGE_PASSWORD_SUCCESS: "Your password has successfully updated."
 };
 
 export const query = {

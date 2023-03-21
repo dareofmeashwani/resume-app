@@ -164,6 +164,24 @@ export async function postForgetPassword(
 	}
 }
 
+export async function postChangePassword(req: express.Request, res: express.Response) {
+	try {
+		const user = await User.findOne({ email: res.locals.userData.email });
+		user.password = req.body.password;
+		await user.save();
+		res.status(HTTP_STATUS.ACCEPTED).send({
+			message: MESSAGES.CHANGE_PASSWORD_SUCCESS
+		});
+	} catch (error) {
+		throwResumeError(
+			HTTP_STATUS.SERVICE_UNAVAILABLE,
+			ERROR_MESSAGES.DB_CONNECTIVITY_ERROR,
+			req,
+			error
+		);
+	}
+}
+
 export async function verifyForgetPassword(req: express.Request, res: express.Response) {
 	let decodedToken;
 	let user;

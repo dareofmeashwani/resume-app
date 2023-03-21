@@ -156,6 +156,30 @@ paths:
      $ref: "#/components/responses/Unauthorized"
     "500":
      $ref: "#/components/responses/InternalServerError"
+ /user/changePassword:
+  post:
+   tags:
+    - User
+   summary: change user password
+   operationId: postChangePassword
+   x-middleware:
+    - loginCheck
+   requestBody:
+    required: true
+    $ref: "#/components/requestBodies/ChangePasswordBody"
+   responses:
+    "202":
+     description: "change password success message"
+     content:
+      application/json:
+       schema:
+        $ref: "#/components/schemas/Message"
+    "401":
+     $ref: "#/components/responses/Unauthorized"
+    "400":
+     $ref: "#/components/responses/BadRequest"
+    "500":
+     $ref: "#/components/responses/InternalServerError"
 
  /user/forgetPassword:
   post:
@@ -189,7 +213,7 @@ paths:
     $ref: "#/components/requestBodies/ForgetPasswordVerifyBody"
    responses:
     "202":
-     description: "forget passowrd success message"
+     description: "forget password success message"
      content:
       application/json:
        schema:
@@ -1472,6 +1496,13 @@ components:
      schema:
       allOf:
        - $ref: "#/components/schemas/ForgetPasswordDetail"
+  ChangePasswordBody:
+   description: forget user password
+   content:
+    application/json:
+     schema:
+      allOf:
+       - $ref: "#/components/schemas/ChangePasswordDetail"
   ForgetPasswordVerifyBody:
    description: forget user password
    content:
@@ -1869,6 +1900,14 @@ components:
      type: string
      maxLength: 256
      format: email
+  ChangePasswordDetail:
+   type: object
+   required:
+    - password
+   properties:
+    password:
+     type: string
+     maxLength: 25
   ForgetPasswordVerifyDetail:
    type: object
    required:

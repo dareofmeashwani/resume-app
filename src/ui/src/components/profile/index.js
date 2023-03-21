@@ -34,7 +34,9 @@ const Profile = () => {
       {dialogState && <ChangePassword open={dialogState} closeHandler={() => {
         setDialogState(false);
       }} successHandler={(values) => {
-        dispatch(changeUserPassword(values.password));
+        dispatch(changeUserPassword(values.password)).then(()=>{
+          setDialogState(false);
+        });
       }} />}
       <Typography variant="h6">{getText("yourAccountDetails")}</Typography>
       <Box component="form" sx={{ mt: 3 }} >

@@ -9,7 +9,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Footer from "./components/Footer";
 import Particle from "./components/controls/Particle";
 import BusyIndicator from "./components/BusyIndicator";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { isAuthUser } from "./store/actions/userActions";
 import Gallery from "./components/gallery";
 import AboutMe from "./components/aboutMe";
@@ -18,6 +18,9 @@ import Meeting from "./components/meeting";
 import ForgetPassword from "./components/ForgetPassword";
 import EmailVerification from "./components/EmailVerification";
 import Profile from "./components/profile";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 const darkTheme = createTheme({
 	palette: {
 		mode: "dark",
@@ -32,26 +35,40 @@ const App = () => {
 	React.useEffect(() => {
 		dispatch(isAuthUser());
 	}, [])
+	const notifications = useSelector((state) => {
+		return state.notificationData;
+	});
+	React.useEffect(() => {
+		if (Object.keys(notifications).length === 0) {
+			toast.dismiss();
+			return;
+		}
+		const type = notifications.type;
+		const title = notifications.title || notifications.message;
+		const position = notifications.position || toast.POSITION.BOTTOM_LEFT;
+		toast[type](title, {
+			position
+		});
+	}, [notifications]);
 	return (
 		<>
 			<Particle />
 			<BusyIndicator />
+			<ToastContainer />
 			<BrowserRouter>
 				<ThemeProvider theme={darkTheme}>
 					<Header />
-					<MainLayout>
-						<Routes >
-							<Route path="" element={<Home />} />
-							<Route path="home" element={<Home />} />
-							<Route path="aboutMe" element={<AboutMe />} />
-							<Route path="meeting" element={<Meeting />} />
-							<Route path="gallery" element={<Gallery />} />
-							<Route path="contact" element={<Contact />} />
-							<Route path="profile" element={<Profile />} />
-							<Route path="forgetPassword" element={<ForgetPassword />} />
-							<Route path="emailVerification" element={<EmailVerification />} />
-						</Routes>
-					</MainLayout>
+					<Routes >
+						<Route path="" element={<Home />} />
+						<Route path="home" element={<Home />} />
+						<Route path="aboutMe" element={<AboutMe />} />
+						<Route path="meeting" element={<Meeting />} />
+						<Route path="gallery" element={<Gallery />} />
+						<Route path="contact" element={<Contact />} />
+						<Route path="profile" element={<Profile />} />
+						<Route path="forgetPassword" element={<ForgetPassword />} />
+						<Route path="emailVerification" element={<EmailVerification />} />
+					</Routes>
 					<Footer />
 					<GoogleFontLoader
 						fonts={[

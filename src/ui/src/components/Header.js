@@ -64,7 +64,9 @@ const Header = (props) => {
 		const key = oEvent.target.getAttribute("data-key");
 		switch (key) {
 			case "logout":
-				dispatch(signOut());
+				dispatch(signOut()).then(()=>{
+					navigate("/");
+				});
 				break;
 			case "aboutme":
 			case "gallery":
