@@ -1,4 +1,4 @@
-# [ashwanikumarverma.co.in](http://ashwanikumarverma.co.in/)
+# [ashwanikumarverma.co.in](https://ashwanikumarverma.co.in/)
 
 ## MERN Tech Stack
 
@@ -9,15 +9,11 @@ Front-end - ReactJs, Material UI
 ## Features
 
 Zoom SDK integration
-
+Gmail Integration Using NodeMailer
 User SignIn/SignUp/SignOut workflow
-
-User Info Update
-
-WebSock based Chatting with admin
-
-Content Management by admin
-
+User password update
+Content Management by admin(currently using api only)
+Schedule meeting
 ## Prerequisites
 
 NodeJs, Yarn
@@ -26,6 +22,26 @@ NodeJs, Yarn
 
     yarn setup
 
+## Environment Variables
+
+    DB_HOSTNAME=
+    DB_PASSWORD=
+    DB_NAME=
+    DB_USERNAME=
+    PRIVATE_KEY=
+    PRIVATE_KEY2=
+    SESSION_EXPIRY=
+    TOKEN_EXPIRY=
+    PORT=
+    HASH_SALT=
+    DOMAIN_NAME=
+    DOMAIN_ADDRESS=
+    ENV=
+    EMAIL=
+    EMAIL_PASSWORD=
+    ZOOM_SDK_KEY=
+    ZOOM_SDK_SECRET=
+    CONTENT_URL=
 ## Development
 
     yarn dev
@@ -46,9 +62,6 @@ NodeJs, Yarn
     Zoom APi/SDK integration
     Gmail email service integration
 
-[Demo](http://ashwanikumarverma.co.in/)
+[Demo](https://ashwanikumarverma.co.in/)
 
 Open for contribution,sharing the knowledge, feedbacks & suggestions.
-
-<https://github.com/ericellb/React-Discord-API>
-docker run -d -p 127.0.0.1:80:3001 4687563c09757b67c82147de
