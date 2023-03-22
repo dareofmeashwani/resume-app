@@ -6,6 +6,7 @@ import { sessionMw, sessionCleaner } from "./sessionMw";
 import corsMw from "./cors";
 import errorResponder from "./errorResponder";
 import { v4 as uuid } from "uuid";
+import { pupolateUserInfo } from "./auth";
 
 // openapi spec validation error handler
 const initializeRequestState = (
@@ -35,7 +36,8 @@ export default {
 		corsMw,
 		openApiValidatorMw,
 		sessionMw,
-		sessionCleaner
+		sessionCleaner,
+		pupolateUserInfo,
 	],
 	post: [errorResponder]
 };

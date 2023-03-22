@@ -29,7 +29,16 @@ const Meeting = (props) => {
   }, [])
   React.useEffect(() => {
     if (!meetingsList && user) {
-      dispatch(getMeetingList(listType));
+      let sort = "desc";
+      let sortBy = "createdAt";
+      if (listType === "upcoming") {
+        sortBy = "start";
+        sort = "asc";
+      } else if (listType === "previous") {
+        sortBy = "end";
+        sort = "desc";
+      }
+      dispatch(getMeetingList(listType,sort,sortBy));
     }
   }, [user, meetingsList]);
 
@@ -63,12 +72,8 @@ const Meeting = (props) => {
                 textAlign: "center",
                 alignSelf: "center"
               }}>
-                <Button variant="contained" color="success" sx={{ mt: 3, mb: 2 }} onClick={() => EventBus.emit("launchSignIn")}>
-                  {getText("signIn")}
-                </Button>
-                <Typography margin={"1rem"} sx={{ alignSelf: "center" }}>{getText("or")}</Typography>
-                <Button variant="contained" color="success" sx={{ mt: 3, mb: 2 }} onClick={() => EventBus.emit("launchSignUp")}>
-                  {getText("signUp")}
+                <Button variant="contained" color="success" sx={{ mt: 3, mb: 2 }} onClick={() => setDialogState(true)}>
+                  {getText("createMeeting")}
                 </Button>
               </Box>
             </Grid>

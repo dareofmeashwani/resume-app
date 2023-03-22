@@ -30,7 +30,7 @@ export const getMeetingList = async function (
 			options.sort = { [options.sortBy]: options.sort };
 		}
 		const filterParams: any = {
-			createdBy: res.locals.userData.id,
+			createdBy: res.locals.userData.email,
 		};
 		if (options.listType === "previous") {
 			filterParams.end = { $lte: new Date() };
@@ -63,7 +63,7 @@ export const getMeeting = async function (
 	try {
 		const response = await meetingModel.findOne({
 			_id: req.params.meetingId,
-			createdBy: res.locals.userData.id
+			createdBy: res.locals.userData.email
 		});
 		if (!response) {
 			throwResumeError(
@@ -88,6 +88,14 @@ export const createMeeting = async (
 	res: express.Response
 ) => {
 	let admins = [];
+	const userEmail = req.body.email || res?.locals?.userData?.email;
+	if (!userEmail) {
+		throwResumeError(
+			HTTP_STATUS.BAD_REQUEST,
+			ERROR_MESSAGES.EMAIL_REQUIRED_MEETING,
+			req,
+		);
+	}
 	try {
 		admins = await User.find({ role: ROLES.ADMIN });
 	} catch (error) {
@@ -99,7 +107,7 @@ export const createMeeting = async (
 		);
 	}
 	let attendees: any = [
-		{ email: res.locals.userData.email },
+		{ email: userEmail },
 		...admins.map((admin: any) => {
 			return {
 				email: admin.email
@@ -131,7 +139,7 @@ export const createMeeting = async (
 			req.body.start = response.start_time;
 			req.body.end = new Date(new Date(response.start_time).getTime() + duration * 60 * 1000).toISOString();
 			sendZoomInvite(
-				res.locals.userData,
+				res.locals.userData || { firstname: userEmail, lastname: "" },
 				attendees.map((attendee: any) => attendee.email),
 				response,
 				req.body,
@@ -148,7 +156,7 @@ export const createMeeting = async (
 	req.body.members = req.body.members && unique(req.body.members);
 	const doc = new meetingModel({
 		...req.body,
-		createdBy: res.locals.userData.id,
+		createdBy: userEmail,
 		externalEventId: response.id,
 		joiningLink: response.join_url
 	});
@@ -177,7 +185,7 @@ export const patchMeeting = async (
 		response = await meetingModel.findOneAndUpdate(
 			{
 				_id: req.params.meetingId,
-				createdBy: res.locals.userData.id
+				createdBy: res.locals.userData.email
 			},
 			{
 				$set: req.body
@@ -259,7 +267,7 @@ export const deleteMeeting = async (
 		admins = await User.find({ role: ROLES.ADMIN });
 		response = await meetingModel.findOne({
 			_id: req.params.meetingId,
-			createdBy: res.locals.userData.id
+			createdBy: res.locals.userData.email
 		});
 	} catch (error) {
 		throwResumeError(
@@ -350,7 +358,7 @@ export async function zoomResendInvite(
 		admins = await User.find({ role: ROLES.ADMIN });
 		response = await meetingModel.findOne({
 			_id: req.params.meetingId,
-			createdBy: res.locals.userData.id
+			createdBy: res.locals.userData.email
 		});
 	} catch (error) {
 		throwResumeError(

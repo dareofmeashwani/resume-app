@@ -25,11 +25,11 @@ export const clearMeetingsStatus = () => {
 		dispatch(actions.clearMeetingsStatus());
 	};
 };
-export const getMeetingList = (listType) => {
+export const getMeetingList = (listType, sort, sortBy) => {
 	return async (dispatch) => {
 		dispatch(actions.setBusyIndicator());
 		try {
-			const response = await axios.get(`/api/v1/meetings?listType=${listType}`);
+			const response = await axios.get(`/api/v1/meetings?listType=${listType}&sort=${sort||"asc"}&sortBy=${sortBy}`);
 			dispatch(actions.meetingsList(response.data));
 		} catch (error) {
 			dispatch(

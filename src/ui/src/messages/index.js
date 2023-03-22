@@ -65,7 +65,7 @@ const messages = {
 	passwordNotMatching: "Passwords are not matching",
 	forgetPasswordScreenTitle: "Please enter your new password, then tap on Save password.",
 	passwordChangedSucessfully: "Your password has been changed successfully",
-	meetingNotLoggedInMsg: "A quick chat to get to know each other and check if I can help you with your project. Please login & feel free to setup a meeting with me.",
+	meetingNotLoggedInMsg: "A quick chat to get to know each other and check if I can help you with your project. Please feel free to setup a meeting with me.",
 	save: "Save",
 	meetingDetails: "Meeting Details",
 	noMeetingCreated: "You have not scheduled any meeting yet.",
@@ -101,7 +101,10 @@ const messages = {
 	meetingDeletedNoti: "Meeting Deleted",
 	yourAccountDetails: "Your Account Details",
 	changePassword: "Change Password",
-	passwordSuccessChangeMsg: "Your password has been changed successfully"
+	passwordSuccessChangeMsg: "Your password has been changed successfully",
+	emailMeetingPlaceHolder: "Enter your email here",
+	email: "Email",
+	createMeeting: "Schedule Meeting"
 
 };
 

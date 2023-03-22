@@ -7,12 +7,21 @@ export async function loginCheck(
 	res: express.Response,
 	next: Function
 ) {
-	if (!(req.session as any).user) {
+	if (!res.locals.userData) {
 		throwResumeError(HTTP_STATUS.UNAUTHORIZED, ERROR_MESSAGES.UNAUTHORIZED, req);
 	}
-	const user = req.session && (req.session as any).user;
-	const userdata = await User.findOne({ email: user.email });
-	res.locals.userData = userdata;
+	next();
+}
+export async function pupolateUserInfo(
+	req: express.Request,
+	res: express.Response,
+	next: Function
+) {
+	if ((req.session as any).user) {
+		const user = req.session && (req.session as any).user;
+		const userdata = await User.findOne({ email: user.email });
+		res.locals.userData = userdata;
+	}
 	next();
 }
 export async function emailVerifyCheck(

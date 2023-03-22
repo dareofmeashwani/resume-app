@@ -60,6 +60,10 @@ export const ERROR_MESSAGES = {
 	INVALID_CREDENTIALS: {
 		code: "1000015",
 		message: "The email or password that you've entered is incorrect"
+	},
+	EMAIL_REQUIRED_MEETING: {
+		code: "1000015",
+		message: "The email is required to schedule a meeting"
 	}
 };
 

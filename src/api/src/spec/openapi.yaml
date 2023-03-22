@@ -1210,9 +1210,6 @@ paths:
     - $ref: "#/components/parameters/MeetingTimestamp"
    tags:
     - Meeting
-   x-middleware:
-    - loginCheck
-    - emailVerifyCheck
    summary: list system meetings status
    operationId: getMeetingStatus
    responses:
@@ -1222,10 +1219,6 @@ paths:
       application/json:
        schema:
         $ref: "#/components/schemas/MeetingStatusList"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "403":
-     $ref: "#/components/responses/Forbidden"
     "500":
      $ref: "#/components/responses/InternalServerError"
 
@@ -1260,9 +1253,6 @@ paths:
   post:
    tags:
     - Meeting
-   x-middleware:
-    - loginCheck
-    - emailVerifyCheck
    summary: create Meeting
    operationId: createMeeting
    requestBody:
@@ -1277,10 +1267,6 @@ paths:
         $ref: "#/components/schemas/MeetingDetail"
     "400":
      $ref: "#/components/responses/BadRequest"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "403":
-     $ref: "#/components/responses/Forbidden"
     "500":
      $ref: "#/components/responses/InternalServerError"
 
@@ -2470,6 +2456,10 @@ components:
      type: string
      format: date-time
      maxLength: 25
+    email:
+     type: string
+     maxLength: 256
+     format: email
     members:
      type: array
      minItems: 0
@@ -2550,7 +2540,7 @@ components:
    minLength: 1
   Sort:
    type: string
-   default: asc
+   default: desc
    enum:
     - asc
     - desc

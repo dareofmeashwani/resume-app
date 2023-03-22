@@ -31,6 +31,9 @@ export default function CreateEditMeetingDialog(props) {
 	const successHandler = props.successHandler;
 	const initialDate = initial ? dayjs(initial.start) > dayjs() ? dayjs(initial.start) : dayjs() : dayjs();
 	let [title, setTitle] = React.useState(initial && initial.title || "");
+	let [email, setEmail] = React.useState("");
+	let [emailIteraction, setEmailIteraction] = React.useState("");
+	let [emailError, setEmailError] = React.useState("");
 	let [description, setDescription] = React.useState(initial && initial.description || "");
 	let [members, setMembers] = React.useState(initial && initial.members.join(",") || "");
 	let [memberError, setMemberError] = React.useState("");
@@ -43,22 +46,41 @@ export default function CreateEditMeetingDialog(props) {
 	let meetingsStatusList = useSelector((state) => {
 		return state.meetingsData.meetingsStatusList;
 	});
+	const user = useSelector((state) => {
+		return state.userData.user;
+	});
 	React.useEffect(() => {
 		dispatch(getMeetingStatus(selectedDate.$d.toISOString()));
 	}, [selectedDate]);
 
 	React.useEffect(() => {
+		setCreateEnabled(!!selectedSlot && !memberError && (user ? true : !emailError && !!email));
+	}, [memberError, selectedSlot, emailError]);
+
+	React.useEffect(() => {
 		let memberError = "";
 		const membersArray = members.trim().split(/[;, ]/).filter(email => !!email);
-		const emailSchema = Yup.string().email()
+		const emailSchema = Yup.string().email();
 		if (!membersArray.reduce((prev, current) => {
 			return prev && emailSchema.isValidSync(current);
 		}, true)) {
 			memberError = getText("invalidMembersInput")
 		}
 		setMemberError(memberError);
-		setCreateEnabled(!!selectedSlot && !memberError);
-	}, [members, selectedSlot]);
+	}, [members]);
+
+	React.useEffect(() => {
+		let emailError = "";
+		const emailSchema = Yup.string().email();
+		if (emailIteraction == 0) {
+			setEmailIteraction(emailIteraction + 1);
+			return;
+		}
+		if (!user) {
+			emailError = !email ? getText("inputEmailRequired") : !emailSchema.isValidSync(email) ? getText("invalidEmailInputWarning") : "";
+		}
+		setEmailError(emailError);
+	}, [email]);
 
 	function computeSlots() {
 		if (meetingsStatusList && Array.isArray(meetingsStatusList)) {
@@ -132,25 +154,41 @@ export default function CreateEditMeetingDialog(props) {
 			start: selectedSlotObject.start.toISOString(),
 			end: selectedSlotObject.end.toISOString(),
 		}
+		if (!user) {
+			payload.email = email;
+		}
 		successHandler && successHandler(payload);
 	};
 	return (
-		<Dialog open={open} onClose={closeHandler}>
+		<Dialog open={open} onClose={closeHandler} width="auto">
 			<DialogTitle>{getText("scheduleMeeting")}</DialogTitle>
 			<DialogContent>
 				<Box>
 					<TextField
-						margin="normal"
+						autoFocus
 						id="title"
+						sx={{ marginTop: ".25rem", marginBottom: ".25rem" }}
 						value={title}
 						label={getText("meetingTitle")}
 						placeholder={getText("meetingTitle")}
 						onChange={(oEvent) => { setTitle(oEvent.target.value) }}
 						fullWidth
 					/>
+					{!user && <TextField
+						sx={{ marginTop: ".5rem", marginBottom: ".25rem" }}
+						id="email"
+						value={email}
+						label={getText("email")}
+						placeholder={getText("emailMeetingPlaceHolder")}
+						onChange={(oEvent) => setEmail(oEvent.target.value)}
+						error={!!emailError}
+						helperText={emailError}
+						required
+						fullWidth
+					/>}
 					<TextField
 						id="description"
-						height="8rem"
+						sx={{ marginTop: ".25rem", marginBottom: ".25rem" }}
 						value={description}
 						label={getText("description")}
 						placeholder={getText("meetingDescPlaceHolder")}
@@ -161,20 +199,21 @@ export default function CreateEditMeetingDialog(props) {
 					/>
 					<TextField
 						id="members"
-						margin="normal"
-						height="8rem"
+						sx={{ marginTop: ".25rem", marginBottom: ".25rem" }}
 						value={members}
 						label={getText("additionalParticipants")}
 						placeholder={getText("additionalParticipantsPlaceHolder")}
 						onChange={(oEvent) => setMembers(oEvent.target.value)}
-						rows={2}
+						rows={1}
 						error={!!memberError}
 						helperText={memberError}
 						fullWidth
 						multiline
 					/>
 					<Grid >
-						<Grid item sx={{ marginTop: ".5rem", marginBottom: ".5rem", textAlign: "start" }} xs={6}>
+						<Grid item sx={{
+							marginTop: ".5rem"
+						}} xs={6}>
 							<InputLabel>{getText("selectDate")}</InputLabel>
 							<LocalizationProvider dateAdapter={AdapterDayjs}>
 								<DateCalendar sx={{ color: "inherit", backgroundColor: "inherit", margin: "0", padding: "0" }} minDate={dayjs()}
@@ -183,23 +222,23 @@ export default function CreateEditMeetingDialog(props) {
 									shouldDisableDate={(date) => date.$d.getDay() === 0 || date.$d.getDay() === 7 ? true : false}
 									value={selectedDate} onChange={(newValue) => setSelectedDate(newValue)} />
 							</LocalizationProvider>
-							<FormControl sx={{ width: "12rem", marginBottom: ".5rem", marginRight: "2rem" }}>
-								<InputLabel variant="standard" htmlFor="uncontrolled-native">
-									{getText("timezone")}
-								</InputLabel>
-								<NativeSelect
-									value={timeZone}
-									onChange={(oEvent) => setTimeZone(oEvent.target.value)}
-								>
-									{momentTz.tz.names().sort().map((tz, index) => {
-										return <option key={index} value={tz}>{tz}</option>
-									})}
-								</NativeSelect>
-							</FormControl>
 							<Grid sx={{
 								justifyContent: "space-evenly",
 								alignContent: "flex-start"
 							}}>
+								<FormControl sx={{ width: "12rem", marginBottom: ".5rem", marginRight: "2rem" }}>
+									<InputLabel variant="standard" htmlFor="uncontrolled-native">
+										{getText("timezone")}
+									</InputLabel>
+									<NativeSelect
+										value={timeZone}
+										onChange={(oEvent) => setTimeZone(oEvent.target.value)}
+									>
+										{momentTz.tz.names().sort().map((tz, index) => {
+											return <option key={index} value={tz}>{tz}</option>
+										})}
+									</NativeSelect>
+								</FormControl>
 								<FormControl sx={{ width: "12rem", marginBottom: ".5rem", marginRight: "2rem" }}>
 									<InputLabel variant="standard" htmlFor="uncontrolled-native">
 										{getText("duration")}
@@ -217,7 +256,7 @@ export default function CreateEditMeetingDialog(props) {
 									<InputLabel variant="standard" htmlFor="uncontrolled-native">
 										{getText("availableSlots")}
 									</InputLabel>
-									<NativeSelect autoFocus defaultValue={selectedSlot} value={selectedSlot} onChange={(oEvent) => setSelectedSlot(oEvent.target.value)}>
+									<NativeSelect defaultValue={selectedSlot} value={selectedSlot} onChange={(oEvent) => setSelectedSlot(oEvent.target.value)}>
 										{slots ? slots.map((slot, index) => {
 											return <option key={index} value={slot.text}>{slot.text}</option>
 										}) : null}
