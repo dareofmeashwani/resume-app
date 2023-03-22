@@ -65,3 +65,7 @@ NodeJs, Yarn
 [Demo](https://ashwanikumarverma.co.in/)
 
 Open for contribution,sharing the knowledge, feedbacks & suggestions.
+
+## Docker
+docker build .
+docker run -d -p 127.0.0.1:80:3001 <Image-Id>
