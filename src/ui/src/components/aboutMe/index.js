@@ -279,12 +279,22 @@ function getSkillsContent(dataItems) {
             {
                 Object.keys(groupedData).map(skillKey => {
                     const skills = groupedData[skillKey];
-                    return <TableRow>
+                    return <TableRow key={skillKey}>
                         <TableCell>{skillKey}</TableCell>
                         <TableCell>{skills.map(skill => {
                             return `${skill.name}${skill.experience ? ` (${skill.experience})` : ""}`
                         }).join(", ")}</TableCell></TableRow>;
                 })
+            }
+            {
+                ungroupedItems ? ungroupedItems.map(skill => <TableRow key={skill.id}>
+                    <TableCell>
+                        <Typography key={skill.id} fontWeight='fontWeightMedium' display='inline'>
+                            {`${skill.name}${skill.experience ? ` (${skill.experience})` : ""}`}
+                        </Typography>
+                    </TableCell>
+                </TableRow>
+                ) : null
             }
         </Table>
     </TableContainer>;

@@ -17,7 +17,7 @@ export const downloadsList = function (
 	}
 	const fileList = fs
 		.readdirSync(filesPath)
-		.map((file) => encodeURI(`${config.DOMAIN_ADDRESS}/api/v1/downloads/${file}`));
+		.map((file) => encodeURI(`/api/v1/downloads/${file}`));
 	res.status(HTTP_STATUS.OK).send(fileList);
 };
 

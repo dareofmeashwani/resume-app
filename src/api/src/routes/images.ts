@@ -13,8 +13,8 @@ export const imageList = function (
 		.readdirSync(filesPath)
 		.filter((file) => fs.lstatSync(path.join(filesPath, file)).isFile() && !file.startsWith("__") && !file.startsWith("."))
 		.map((file) => ({
-			thumbnail: encodeURI(`${config.DOMAIN_ADDRESS}/images/thumbnails/${file}`),
-			img: encodeURI(`${config.DOMAIN_ADDRESS}/images/${file}`)
+			thumbnail: encodeURI(`/images/thumbnails/${file}`),
+			img: encodeURI(`/images/${file}`)
 		}));
 	res.status(HTTP_STATUS.OK).send(fileList);
 };
