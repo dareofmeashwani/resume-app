@@ -217,7 +217,7 @@ const sendZoomMeeting = async (
 		});
 		const intro = [
 			"Meeting Topic : " + meeting.topic,
-			"Meeting Agenda : " + meeting.agenda || "Not Available",
+			"Meeting Agenda : " + (meeting.agenda || "Not Available"),
 			"Meeting Organiser : " + userInfo.firstname + " " + userInfo.lastname,
 			"Meeting Timing : " +
 			moment(meeting.start_time).format("MM/DD/YYYY h:mm a ") +
@@ -333,7 +333,7 @@ export const sendZoomCancellation = async (
 						name: userEmail,
 						intro: [
 							"Meeting Topic : " + meeting.topic,
-							"Meeting Agenda : " + meeting.agenda || "Not Available",
+							"Meeting Agenda : " + (meeting.agenda || "Not Available"),
 							"Meeting Organiser : " + userInfo.firstname + " " + userInfo.lastname,
 							"Meeting Timing : " +
 							moment(meeting.start_time).format("MM/DD/YYYY h:mm a ") +
