@@ -40,15 +40,15 @@ export default function SignWorkflow(props) {
 		setType(props.type);
 	}, [props.type]);
 	return (<>
-		<Box sx={{ margin: "4rem" }}>
-				{type === constants.CONFIRMATION ?
-					<Confirmation message={message} /> : type === constants.FORGET_PASSWORD ?
-						<ForgetPassword setType={setType} handleReset={handleReset} />
-						: type === constants.SIGNUP ?
-							<SignUp setType={setType} handleSignUp={handleSignUp} /> : type === constants.SIGNIN ?
-								<SignIn setType={setType} handleSignIn={handleSignIn} /> : null}
-				<Copyright sx={{ mt: 8, mb: 4 }} />
-			</Box>
+		<Box marginLeft={"20%"} marginRight={"20%"} marginTop={"5rem"}>
+			{type === constants.CONFIRMATION ?
+				<Confirmation message={message} /> : type === constants.FORGET_PASSWORD ?
+					<ForgetPassword setType={setType} handleReset={handleReset} />
+					: type === constants.SIGNUP ?
+						<SignUp setType={setType} handleSignUp={handleSignUp} /> : type === constants.SIGNIN ?
+							<SignIn setType={setType} handleSignIn={handleSignIn} /> : null}
+			<Copyright sx={{ mt: 8, mb: 4 }} />
+		</Box>
 	</>
 	);
 }

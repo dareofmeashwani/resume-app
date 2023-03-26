@@ -12,6 +12,7 @@ import NoRefLink from "../controls/NoRefLink";
 import * as constants from "../../utils/constants";
 import getText from "../../messages";
 import { errorHelper } from "../../utils";
+import { padding } from "@mui/system";
 
 export default function SignIn(props) {
 	const setType = props.setType;
@@ -33,10 +34,9 @@ export default function SignIn(props) {
 	return (
 		<Box
 			sx={{
-				margin: "5rem",
 				display: "flex",
 				flexDirection: "column",
-				alignItems: "center"
+				alignItems: "center",
 			}}
 		>
 			<Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
