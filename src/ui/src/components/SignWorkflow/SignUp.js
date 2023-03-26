@@ -38,10 +38,9 @@ export default function SignUp(props) {
 	return (
 		<Box
 			sx={{
-				margin: "5rem",
 				display: "flex",
 				flexDirection: "column",
-				alignItems: "center"
+				alignItems: "center",
 			}}
 		>
 			<Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
