@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import getText from "../../messages";
 import NoRefLink from "../controls/NoRefLink";
-import { changeUserPassword } from "../../store/actions/userActions";
+import { changeUserPassword, resendEmailVerification } from "../../store/actions/userActions";
 import { useDispatch, useSelector } from "react-redux";
 import ChangePassword from "./ChangePassword";
 const Profile = () => {
@@ -34,7 +34,7 @@ const Profile = () => {
       {dialogState && <ChangePassword open={dialogState} closeHandler={() => {
         setDialogState(false);
       }} successHandler={(values) => {
-        dispatch(changeUserPassword(values.password)).then(()=>{
+        dispatch(changeUserPassword(values.password)).then(() => {
           setDialogState(false);
         });
       }} />}
@@ -92,7 +92,17 @@ const Profile = () => {
               />
             </Box>
           </Grid>
-
+          {user && !user.emailVerified && <Grid item xs={8}>
+            <NoRefLink
+              variant="body2"
+              text={getText("resendEmailVerification")}
+              onClick={(oEvent) => {
+                oEvent.preventDefault();
+                dispatch(resendEmailVerification());
+              }
+            }
+            />
+          </Grid>}
         </Grid>
       </Box>
     </Box>

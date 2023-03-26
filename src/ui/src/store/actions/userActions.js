@@ -67,8 +67,8 @@ export const signOut = () => {
 		try {
 			await axios.post(`/api/v1/user/logout`);
 			dispatch(actions.signOut(null));
-			dispatch(actions.clearMeetingList);
-			dispatch(actions.clearMeetingsStatus);
+			dispatch(actions.clearMeetingList());
+			dispatch(actions.clearMeetingsStatus());
 			removeCookieToken();
 		} catch (error) {
 			dispatch(
@@ -103,6 +103,21 @@ export const isAuthUser = () => {
 	};
 };
 
+export const resendEmailVerification = () => {
+	return async (dispatch) => {
+		dispatch(actions.setBusyIndicator());
+		try {
+			const response = await axios.post(`/api/v1/user/resendEmailVerification`);
+			dispatch(actions.successGlobal(response.data));
+		} catch (error) {
+			dispatch(
+				actions.errorGlobal(error.response.data)
+			);
+		}
+		dispatch(actions.resetBusyIndicator());
+	};
+};
+
 export const verifyEmailVerification = (token) => {
 	return async (dispatch) => {
 		dispatch(actions.setBusyIndicator());
@@ -110,6 +125,7 @@ export const verifyEmailVerification = (token) => {
 			const response = await axios.patch(`/api/v1/user/emailVerify`, {
 				token,
 			});
+			dispatch(actions.signOut(null));
 			dispatch(actions.emailVerify({ ...response.data, verified: true }));
 		} catch (error) {
 			dispatch(actions.emailVerify({ ...error.response.data, verified: false }));

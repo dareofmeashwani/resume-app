@@ -104,7 +104,8 @@ const messages = {
 	passwordSuccessChangeMsg: "Your password has been changed successfully",
 	emailMeetingPlaceHolder: "Enter your email here",
 	email: "Email",
-	createMeeting: "Schedule Meeting"
+	createMeeting: "Schedule Meeting",
+	resendEmailVerification: "Resend E-mail Verification"
 
 };
 

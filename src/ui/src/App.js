@@ -31,12 +31,17 @@ const darkTheme = createTheme({
 
 const App = () => {
 	const dispatch = useDispatch();
-	React.useEffect(() => {
-		dispatch(isAuthUser());
-	}, [])
 	const notifications = useSelector((state) => {
 		return state.notificationData;
 	});
+	const user = useSelector((state) => {
+		return state.userData.user;
+	});
+	React.useEffect(() => {
+		if(!user){
+			dispatch(isAuthUser());
+		}
+	}, [user])
 	React.useEffect(() => {
 		if (Object.keys(notifications).length === 0) {
 			toast.dismiss();
