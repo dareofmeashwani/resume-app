@@ -52,7 +52,6 @@ export default function SignUp(props) {
 			<Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 1 }}>
 				<TextField
 					margin="normal"
-					autoFocus
 					required
 					fullWidth
 					autoComplete="given-name"
