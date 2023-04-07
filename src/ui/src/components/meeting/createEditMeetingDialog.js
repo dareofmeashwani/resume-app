@@ -41,7 +41,7 @@ export default function CreateEditMeetingDialog(props) {
 	let [duration, setDuration] = React.useState(initial ? Math.floor((new Date(initial.end) - new Date(initial.start)) / 60000) : 15);
 	let [selectedDate, setSelectedDate] = React.useState(initialDate);
 	let [slots, setSlots] = React.useState([]);
-	let [selectedSlot, setSelectedSlot] = React.useState();
+	let [selectedSlot, setSelectedSlot] = React.useState(null);
 	let [createEnabled, setCreateEnabled] = React.useState(false);
 	let meetingsStatusList = useSelector((state) => {
 		return state.meetingsData.meetingsStatusList;
@@ -132,11 +132,11 @@ export default function CreateEditMeetingDialog(props) {
 					index++;
 				}
 				possibleSlots.splice(index, 0, initialSlot);
-				setSlots(possibleSlots);
 				setSelectedSlot(possibleSlots[index].text);
-			} else if (possibleSlots.length) {
 				setSlots(possibleSlots);
+			} else if (possibleSlots.length) {
 				setSelectedSlot(possibleSlots[0].text);
+				setSlots(possibleSlots);
 			}
 			if (!possibleSlots.length) {
 				setSelectedDate(dayjs(selectedDate.add(1, "day")));
@@ -165,7 +165,7 @@ export default function CreateEditMeetingDialog(props) {
 			<DialogContent>
 				<Box>
 					<TextField
-						autoFocus
+					  autoFocus
 						id="title"
 						sx={{ marginTop: ".25rem", marginBottom: ".25rem" }}
 						value={title}
@@ -228,11 +228,13 @@ export default function CreateEditMeetingDialog(props) {
 									<InputLabel variant="standard" htmlFor="uncontrolled-native">
 										{getText("availableSlots")}
 									</InputLabel>
-									<NativeSelect value={selectedSlot} onChange={(oEvent) => setSelectedSlot(oEvent.target.value)}>
-										{slots ? slots.map((slot, index) => {
-											return <option key={slot} value={slot.text}>{slot.text}</option>
-										}) : null}
-									</NativeSelect>
+									{slots.length > 0 ?
+										<NativeSelect defaultValue={selectedSlot} onChange={(oEvent) => setSelectedSlot(oEvent.target.value)}>
+											{slots.map((slot) => {
+												return <option key={slot.text} value={slot.text}>{slot.text}</option>
+											})}
+										</NativeSelect> : null
+									}
 								</FormControl>
 								<FormControl sx={{ width: "12rem", marginBottom: ".5rem", marginRight: "2rem" }}>
 									<InputLabel variant="standard" htmlFor="uncontrolled-native">
