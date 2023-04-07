@@ -193,7 +193,6 @@ export default function CreateEditMeetingDialog(props) {
 						label={getText("description")}
 						placeholder={getText("meetingDescPlaceHolder")}
 						onChange={(oEvent) => { setDescription(oEvent.target.value) }}
-						rows={2}
 						fullWidth
 						multiline
 					/>
@@ -214,7 +213,6 @@ export default function CreateEditMeetingDialog(props) {
 						<Grid item sx={{
 							marginTop: ".5rem"
 						}} xs={6}>
-							<InputLabel>{getText("selectDate")}</InputLabel>
 							<LocalizationProvider dateAdapter={AdapterDayjs}>
 								<DateCalendar sx={{ color: "inherit", backgroundColor: "inherit", margin: "0", padding: "0" }} minDate={dayjs()}
 									showDaysOutsideCurrentMonth={true} displayWeekNumber={false}
@@ -228,6 +226,16 @@ export default function CreateEditMeetingDialog(props) {
 							}}>
 								<FormControl sx={{ width: "12rem", marginBottom: ".5rem", marginRight: "2rem" }}>
 									<InputLabel variant="standard" htmlFor="uncontrolled-native">
+										{getText("availableSlots")}
+									</InputLabel>
+									<NativeSelect value={selectedSlot} onChange={(oEvent) => setSelectedSlot(oEvent.target.value)}>
+										{slots ? slots.map((slot, index) => {
+											return <option key={slot} value={slot.text}>{slot.text}</option>
+										}) : null}
+									</NativeSelect>
+								</FormControl>
+								<FormControl sx={{ width: "12rem", marginBottom: ".5rem", marginRight: "2rem" }}>
+									<InputLabel variant="standard" htmlFor="uncontrolled-native">
 										{getText("timezone")}
 									</InputLabel>
 									<NativeSelect
@@ -235,7 +243,7 @@ export default function CreateEditMeetingDialog(props) {
 										onChange={(oEvent) => setTimeZone(oEvent.target.value)}
 									>
 										{momentTz.tz.names().sort().map((tz, index) => {
-											return <option key={index} value={tz}>{tz}</option>
+											return <option key={tz} value={tz}>{tz}</option>
 										})}
 									</NativeSelect>
 								</FormControl>
@@ -250,16 +258,6 @@ export default function CreateEditMeetingDialog(props) {
 										<option value={15}>{getText("fifteenMinutes")}</option>
 										<option value={30}>{getText("thirtyMinutes")}</option>
 										<option value={40}>{getText("fortyMinutes")}</option>
-									</NativeSelect>
-								</FormControl>
-								<FormControl sx={{ width: "12rem", marginBottom: ".5rem" }}>
-									<InputLabel variant="standard" htmlFor="uncontrolled-native">
-										{getText("availableSlots")}
-									</InputLabel>
-									<NativeSelect defaultValue={selectedSlot} value={selectedSlot} onChange={(oEvent) => setSelectedSlot(oEvent.target.value)}>
-										{slots ? slots.map((slot, index) => {
-											return <option key={index} value={slot.text}>{slot.text}</option>
-										}) : null}
 									</NativeSelect>
 								</FormControl>
 							</Grid>

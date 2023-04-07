@@ -51,7 +51,6 @@ export default function ForgetPassword(props) {
 					name="email"
 					autoComplete="email"
 					type="email"
-					autoFocus
 					{...formik.getFieldProps("email")}
 					{...errorHelper(formik, "email")}
 				/>
