@@ -313,40 +313,6 @@ export const deleteMeeting = async (
 	sendZoomCancellation(res.locals.userData, attendees, zoomData?.data, response);
 };
 
-export async function getMeetingStatus(
-	req: express.Request,
-	res: express.Response
-) {
-	let timestamp: any;
-	if (req.query.timestamp) {
-		timestamp = new Date((req.query.timestamp || "") as string);
-	}
-	timestamp.setHours(0, 0, 0, 0);
-	const start = new Date(timestamp);
-	timestamp.setDate(timestamp.getDate() + 1);
-	try {
-		const response = await meetingModel.find({
-			start: { $gte: start, $lte: timestamp }
-		});
-		const meetingStatus: any[] = response.map((event) => {
-			return {
-				start: new Date(event.start as string).toISOString(),
-				end: new Date(event.end as string).toISOString()
-			};
-		});
-		res.status(HTTP_STATUS.OK).send({
-			count: meetingStatus?.length,
-			docs: meetingStatus
-		});
-	} catch (error) {
-		throwResumeError(
-			HTTP_STATUS.SERVICE_UNAVAILABLE,
-			ERROR_MESSAGES.DB_CONNECTIVITY_ERROR,
-			req,
-			error
-		);
-	}
-}
 
 export async function zoomResendInvite(
 	req: express.Request,

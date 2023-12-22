@@ -1204,24 +1204,6 @@ paths:
     "500":
      $ref: "#/components/responses/InternalServerError"
 
- /meetingsStatus:
-  get:
-   parameters:
-    - $ref: "#/components/parameters/MeetingTimestamp"
-   tags:
-    - Meeting
-   summary: list system meetings status
-   operationId: getMeetingStatus
-   responses:
-    "200":
-     description: returns list of system's meeting status
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/MeetingStatusList"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
-
  /meetings:
   get:
    tags:
@@ -2470,31 +2452,6 @@ components:
       maxLength: 256
       example: bob@gmail.com
 
-  MeetingStatusList:
-   type: object
-   allOf:
-    - $ref: "#/components/schemas/ResourceList"
-    - type: object
-      properties:
-       docs:
-        type: array
-        items:
-         $ref: "#/components/schemas/MeetingStatus"
-
-  MeetingStatus:
-   type: object
-   required:
-    - start
-    - end
-   properties:
-    start:
-     type: string
-     format: date-time
-     maxLength: 25
-    end:
-     type: string
-     format: date-time
-     maxLength: 25
   #######################################
   ############  Identifiers  ############
   #######################################
