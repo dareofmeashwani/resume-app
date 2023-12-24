@@ -8,7 +8,7 @@ Front-end - ReactJs, Material UI
 
 ## Features
 
-Zoom SDK integration
+Calendly UI & webhook integration
 Gmail Integration Using NodeMailer
 User SignIn/SignUp/SignOut workflow
 User password update
@@ -39,9 +39,6 @@ NodeJs, Yarn
     ENV=
     EMAIL=
     EMAIL_PASSWORD=
-    ZOOM_SDK_KEY=
-    ZOOM_SDK_SECRET=
-    CONTENT_URL=
 ## Development
 
     yarn dev
@@ -55,11 +52,9 @@ NodeJs, Yarn
     Express session management with mongodb store
     SignIn/SignUp/SignOut workflow
     OpenApi Spec Intergration with ExpressJs
-    Chat Server Websock Handling
     How to Use Mongoose
     ReactJs
     Rest API
-    Zoom APi/SDK integration
     Gmail email service integration
 
 [Demo](https://ashwanikumarverma.co.in/)

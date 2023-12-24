@@ -4,21 +4,6 @@ import getText from "../../messages";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
-export const getMeetingStatus = (timestamp) => {
-	return async (dispatch) => {
-		dispatch(actions.setBusyIndicator());
-		try {
-			const response = await axios.get(`/api/v1/meetingsStatus?timestamp=${timestamp}`);
-			dispatch(actions.meetingsStatus(response.data));
-		} catch (error) {
-			dispatch(
-				actions.errorGlobal(error.response.data)
-			);
-		}
-		dispatch(actions.resetBusyIndicator());
-	};
-};
-
 
 export const clearMeetingsStatus = () => {
 	return async (dispatch) => {

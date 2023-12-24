@@ -4,13 +4,13 @@ import { throwResumeError } from "../utils/errorHelper";
 import { filterProps, unique, processQueryParam } from "../utils/helpers";
 import config from "../config";
 import meetingModel from "../models/meetingModel";
-import * as zoom from "../utils/zoomApi";
 import {
-	sendZoomCancellation,
-	sendZoomInvite,
-	sendZoomUpdate
+	sendMeetingCancellation,
+	sendInvite,
+	sendMeetingUpdate
 } from "../utils/email";
 import { User } from "../models/userModel";
+import { verfiyWebhookSignature } from "../utils/calendlyApi";
 const getProps = (user: any) => {
 	return filterProps(user, ["__v", "externalEventId", "createdBy"], {
 		_id: "id"
@@ -127,7 +127,7 @@ export const createMeeting = async (
 				(new Date(req.body.end).getTime() - new Date(req.body.start).getTime()) /
 				60000
 			)
-			response = await zoom.create(
+			/*response = await zoom.create(
 				{
 					topic: req.body.title || "Meeting with " + config.DOMAIN_NAME,
 					agenda: req.body.description || "",
@@ -135,10 +135,10 @@ export const createMeeting = async (
 					duration: duration
 				},
 				attendees
-			);
+			);*/
 			req.body.start = response.start_time;
 			req.body.end = new Date(new Date(response.start_time).getTime() + duration * 60 * 1000).toISOString();
-			sendZoomInvite(
+			sendInvite(
 				res.locals.userData || { firstname: userEmail, lastname: "" },
 				attendees.map((attendee: any) => attendee.email),
 				response,
@@ -147,7 +147,7 @@ export const createMeeting = async (
 		} catch (error) {
 			throwResumeError(
 				HTTP_STATUS.INTERNAL_SERVER_ERROR,
-				ERROR_MESSAGES.ZOOM_CONNECTIVITY_ERROR,
+				ERROR_MESSAGES.CALENDLY_CONNECTIVITY_ERROR,
 				req,
 				error
 			);
@@ -164,7 +164,7 @@ export const createMeeting = async (
 		const response = await doc.save();
 		res.status(HTTP_STATUS.CREATED).send(getProps(response._doc));
 	} catch (error) {
-		zoom.del(response.id);
+		//zoom.del(response.id);
 		throwResumeError(
 			HTTP_STATUS.SERVICE_UNAVAILABLE,
 			ERROR_MESSAGES.DB_CONNECTIVITY_ERROR,
@@ -223,7 +223,7 @@ export const patchMeeting = async (
 	attendees = unique(attendees, "email");
 	if (response.externalEventId) {
 		try {
-			const zoomResponse = await zoom.update(
+			/*const zoomResponse = await zoom.update(
 				response.externalEventId,
 				{
 					topic: response.title,
@@ -235,20 +235,21 @@ export const patchMeeting = async (
 					)
 				},
 				attendees
-			);
+			);*/
 			res.status(HTTP_STATUS.ACCEPTED).send(getProps(response._doc));
-			sendZoomUpdate(
+			/*sendMeetingUpdate(
 				res.locals.userData,
 				attendees.map((attendee: any) => attendee.email),
 				await (
-					await zoom.get(response._doc.externalEventId)
+				await zoom.get(response._doc.externalEventId)
 				).data,
 				response
 			);
+			*/
 		} catch (error) {
 			throwResumeError(
 				HTTP_STATUS.INTERNAL_SERVER_ERROR,
-				ERROR_MESSAGES.ZOOM_CONNECTIVITY_ERROR,
+				ERROR_MESSAGES.CALENDLY_CONNECTIVITY_ERROR,
 				req,
 				error
 			);
@@ -287,17 +288,17 @@ export const deleteMeeting = async (
 	]);
 	let zoomData;
 	if (response._doc.externalEventId) {
-		try {
+		/*try {
 			zoomData = await zoom.get(response._doc.externalEventId);
 			await zoom.del(response._doc.externalEventId);
 		} catch (error) {
 			throwResumeError(
 				HTTP_STATUS.INTERNAL_SERVER_ERROR,
-				ERROR_MESSAGES.ZOOM_CONNECTIVITY_ERROR,
+				ERROR_MESSAGES.CALENDLY_CONNECTIVITY_ERROR,
 				req,
 				error
 			);
-		}
+		}*/
 	}
 	try {
 		await meetingModel.deleteOne({ _id: req.params.meetingId });
@@ -310,45 +311,11 @@ export const deleteMeeting = async (
 			error
 		);
 	}
-	sendZoomCancellation(res.locals.userData, attendees, zoomData?.data, response);
+	//sendZoomCancellation(res.locals.userData, attendees, zoomData?.data, response);
 };
 
-export async function getMeetingStatus(
-	req: express.Request,
-	res: express.Response
-) {
-	let timestamp: any;
-	if (req.query.timestamp) {
-		timestamp = new Date((req.query.timestamp || "") as string);
-	}
-	timestamp.setHours(0, 0, 0, 0);
-	const start = new Date(timestamp);
-	timestamp.setDate(timestamp.getDate() + 1);
-	try {
-		const response = await meetingModel.find({
-			start: { $gte: start, $lte: timestamp }
-		});
-		const meetingStatus: any[] = response.map((event) => {
-			return {
-				start: new Date(event.start as string).toISOString(),
-				end: new Date(event.end as string).toISOString()
-			};
-		});
-		res.status(HTTP_STATUS.OK).send({
-			count: meetingStatus?.length,
-			docs: meetingStatus
-		});
-	} catch (error) {
-		throwResumeError(
-			HTTP_STATUS.SERVICE_UNAVAILABLE,
-			ERROR_MESSAGES.DB_CONNECTIVITY_ERROR,
-			req,
-			error
-		);
-	}
-}
 
-export async function zoomResendInvite(
+export async function resendInvite(
 	req: express.Request,
 	res: express.Response
 ) {
@@ -376,15 +343,33 @@ export async function zoomResendInvite(
 		res.locals.userData.email,
 		...admins.map((admin) => admin.email)
 	]);
-	sendZoomInvite(
+	/*sendZoomInvite(
 		res.locals.userData,
 		attendees,
 		await (
 			await zoom.get(response._doc.externalEventId)
 		).data,
 		response
-	);
+	);*/
 	res.status(HTTP_STATUS.ACCEPTED).send({
+		message: MESSAGES.MEETING_NOTI_SEND
+	});
+}
+
+
+export async function meetingWebhook(
+	req: express.Request,
+	res: express.Response) {
+		console.log(JSON.stringify(req.body));
+		console.log(JSON.stringify(req.params));
+		const headers = req.headers;
+		console.log(JSON.stringify(headers));
+		const calendlySignature = headers['Calendly-Webhook-Signature'] as string;
+		console.log(calendlySignature);
+		if(req.body && calendlySignature){
+				console.log(verfiyWebhookSignature(calendlySignature,req.body));
+		}
+	res.status(HTTP_STATUS.OK).send({
 		message: MESSAGES.MEETING_NOTI_SEND
 	});
 }
