@@ -200,7 +200,7 @@ export const sendQueryNotificationToAdmin = async (query: any) => {
 	}
 };
 
-const sendZoomMeeting = async (
+const sendMeeting = async (
 	userInfo: any,
 	emails: string[],
 	meeting: any,
@@ -284,35 +284,35 @@ const sendZoomMeeting = async (
 		return false;
 	}
 };
-export const sendZoomInvite = async (
+export const sendInvite = async (
 	userInfo: any,
 	emails: string[],
 	meeting: any,
 	meetingDbMeta: any
 ) => {
-	sendZoomMeeting(
+	sendMeeting(
 		userInfo,
 		emails,
 		meeting,
-		`Zoom Meeting with ${config.DOMAIN_NAME}`,
+		`Google Meet Meeting with ${config.DOMAIN_NAME}`,
 		meetingDbMeta
 	);
 };
-export const sendZoomUpdate = async (
+export const sendMeetingUpdate = async (
 	userInfo: any,
 	emails: string[],
 	meeting: any,
 	meetingDbMeta: any
 ) => {
-	sendZoomMeeting(
+	sendMeeting(
 		userInfo,
 		emails,
 		meeting,
-		`Your Zoom Meeting with ${config.DOMAIN_NAME} has been updated`,
+		`Your Google Meet Meeting with ${config.DOMAIN_NAME} has been updated`,
 		meetingDbMeta,
 	);
 };
-export const sendZoomCancellation = async (
+export const sendMeetingCancellation = async (
 	userInfo: any,
 	emails: string[],
 	meeting: any,
@@ -348,7 +348,7 @@ export const sendZoomCancellation = async (
 				let message = {
 					from: config.EMAIL,
 					to: userEmail,
-					subject: `Zoom Meeting with ${config.DOMAIN_NAME} has been cancelled`,
+					subject: `Google Meet Meeting with ${config.DOMAIN_NAME} has been cancelled`,
 					html: emailBody
 				};
 				return await transporter.sendMail(message);

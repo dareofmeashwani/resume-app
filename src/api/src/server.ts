@@ -16,6 +16,7 @@ import {
 	permissionsCheck
 } from "./middleware/auth";
 import prepareContent from "./utils/prepareContent";
+import { registorWebhook } from "./utils/calendlyApi";
 
 async function main() {
 	const app = express();
@@ -64,10 +65,10 @@ async function main() {
 			}
 		})
 	})
-	await prepareContent();
+	//await prepareContent();
+	await registorWebhook();
 	app.listen(port, () => {
 		console.log(`Server running on port ${port}`);
 	});
 }
-
 main();

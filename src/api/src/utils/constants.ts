@@ -49,7 +49,7 @@ export const ERROR_MESSAGES = {
 		code: "1000012",
 		message: "Please verfiy your email, then try again your action"
 	},
-	ZOOM_CONNECTIVITY_ERROR: {
+	CALENDLY_CONNECTIVITY_ERROR: {
 		code: "1000013",
 		message: "Please try again later, unable to process your request at this time"
 	},
