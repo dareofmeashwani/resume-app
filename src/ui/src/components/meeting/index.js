@@ -45,7 +45,9 @@ const Meeting = (props) => {
   window.addEventListener("message", function (e) {
     if (isCalendlyEvent(e)) {
       if (listType !== "previous") {
-        dispatch(clearMeetingsList());
+        if(e.data.event==="event_scheduled"){
+          dispatch(clearMeetingsList());
+        }
       }
       console.log("Event name:", e.data.event);
     }
