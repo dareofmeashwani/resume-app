@@ -105,8 +105,9 @@ const messages = {
 	emailMeetingPlaceHolder: "Enter your email here",
 	email: "Email",
 	createMeeting: "Schedule Meeting",
-	resendEmailVerification: "Resend E-mail Verification"
-
+	resendEmailVerification: "Resend E-mail Verification",
+	cancel: "Cancel",
+	canceled: "Canceled"
 };
 
 export default function getText(key) {

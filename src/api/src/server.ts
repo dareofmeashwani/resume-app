@@ -16,7 +16,6 @@ import {
 } from "./middleware/auth";
 import prepareContent from "./utils/prepareContent";
 import { registorWebhook } from "./utils/calendlyApi";
-import { createCalendlyMeeting } from "./routes";
 
 async function main() {
 	const app = express();
