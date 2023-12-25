@@ -57,10 +57,10 @@ export default function ItemsList(props) {
                 justifyContent: 'space-between',
               }}>
                 <Typography component='div' fontWeight={"fontWeightMedium"}>
-                  {item.title}
+                  {item.status === "active" ? item.title : `${getText("canceled")} ${item.title}`}
                 </Typography>
                 <Box>
-                  {new Date(item.end).getTime() > Date.now() && new Date(item.start).getTime() < Date.now()
+                  {item.status === "active" && new Date(item.end).getTime() > Date.now() && new Date(item.start).getTime() < Date.now()
                     || new Date(item.start).getTime() - 900000 < Date.now()
                     && new Date(item.start).getTime() > Date.now() ?
                     <Button variant="contained" color="success" sx={{ marginLeft: ".5rem", marginRight: ".5rem" }}
@@ -88,7 +88,7 @@ export default function ItemsList(props) {
                       oEvent.stopPropagation()
                     }}
                   >
-                    {[getText("view"), getText("edit"), getText("sendNotification"), getText("delete")].map((action) => (
+                    {[getText("view"), getText("edit"), getText("cancel"), getText("sendNotification")].map((action) => (
                       <MenuItem
                         data-key={action}
                         key={action}
@@ -104,8 +104,8 @@ export default function ItemsList(props) {
                           else if (actionType == getText("sendNotification")) {
                             dispatch(resendMeetingInvite(key));
                           }
-                          else if (actionType == getText("delete")) {
-                            dispatch(deleteMeeting(key));
+                          else if (actionType == getText("cancel")) {
+                            //dispatch(deleteMeeting(key));
                           }
                           setOpenedMenu("");
                           setAnchorEl(null);

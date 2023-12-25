@@ -39,23 +39,17 @@ const Meeting = (props) => {
       dispatch(getMeetingList(listType, sort, sortBy));
     }
   }, [user, meetingsList]);
-/*
-  const onDialogSuccess = async (values) => {
-    await dispatch(createMeeting(values));
-    dialogCloseHandler();
-  }
   function isCalendlyEvent(e) {
     return e.origin === "https://calendly.com" && e.data.event && e.data.event.indexOf("calendly.") === 0;
   };
-   
-  window.addEventListener("message", function(e) {
-    if(isCalendlyEvent(e)) {
+  window.addEventListener("message", function (e) {
+    if (isCalendlyEvent(e)) {
+      if (listType !== "previous") {
+        dispatch(clearMeetingsList());
+      }
       console.log("Event name:", e.data.event);
-      // calendly.event_scheduled
-      console.log("Event details:", e.data.payload);
     }
   });
-  */
   return (
     <Box sx={{
       marginLeft: "15%",
