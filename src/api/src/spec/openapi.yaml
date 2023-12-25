@@ -1287,29 +1287,6 @@ paths:
                     $ref: "#/components/responses/NotFound"
                 "500":
                     $ref: "#/components/responses/InternalServerError"
-        delete:
-            tags:
-                - Meeting
-            x-middleware:
-                - loginCheck
-                - emailVerifyCheck
-            summary: delete meeting
-            operationId: deleteMeeting
-            responses:
-                "202":
-                    description: delete existing meeting
-                    content:
-                        application/json:
-                            schema:
-                                $ref: "#/components/schemas/Empty"
-                "401":
-                    $ref: "#/components/responses/Unauthorized"
-                "403":
-                    $ref: "#/components/responses/Forbidden"
-                "404":
-                    $ref: "#/components/responses/NotFound"
-                "500":
-                    $ref: "#/components/responses/InternalServerError"
 
     /meetings/{meetingId}/resendInvite:
         parameters:
