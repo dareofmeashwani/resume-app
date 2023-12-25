@@ -9,11 +9,6 @@ const MeetingSchema = new mongoose.Schema({
 		maxLength: 100,
 		trim: true
 	},
-	description: {
-		type: String,
-		maxLength: 500,
-		trim: true
-	},
 	start: {
 		type: Date,
 		required: true
@@ -29,6 +24,13 @@ const MeetingSchema = new mongoose.Schema({
 	end: {
 		type: Date,
 		required: true
+	},
+	status: {
+		type: String,
+		enum: [
+				"active", "inactive"
+		],
+		default: "active"
 	},
 	members: {
 		type: Array,

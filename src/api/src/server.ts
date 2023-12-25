@@ -8,7 +8,6 @@ import * as path from "path";
 import config from "./config";
 import * as api from "./routes";
 import middleware from "./middleware";
-import connectDb from "./utils/connectDb";
 import mongoose from "mongoose";
 import {
 	loginCheck,
@@ -17,6 +16,7 @@ import {
 } from "./middleware/auth";
 import prepareContent from "./utils/prepareContent";
 import { registorWebhook } from "./utils/calendlyApi";
+import { createCalendlyMeeting } from "./routes";
 
 async function main() {
 	const app = express();
@@ -65,7 +65,7 @@ async function main() {
 			}
 		})
 	})
-	//await prepareContent();
+	await prepareContent();
 	await registorWebhook();
 	app.listen(port, () => {
 		console.log(`Server running on port ${port}`);

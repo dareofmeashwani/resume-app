@@ -94,3 +94,12 @@ export function processQueryParam(queryList: any[], reqQuery: any) {
 		});
 	return params;
 }
+
+export function setDifference(a: any[], b: any[], comparator?: any) {
+	comparator = comparator || ((x: any, y: any) => x == y);
+	return a.filter(function (x) {
+		return !b.find((y)=>{
+			return comparator(x,y);
+		});
+	});
+}
