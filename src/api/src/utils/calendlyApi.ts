@@ -31,7 +31,7 @@ export async function getAdminDetail() {
 	return calendlyAdminData;
 }
 
-export async function verfiyWebhookSignature(calendlySignature: string, data: any) {
+export function verfiyWebhookSignature(calendlySignature: string, data: any) {
 	const { t, signature } = calendlySignature.split(',').reduce((acc, currentValue) => {
 		const [key, value] = currentValue.split('=');
 		if (key === 't') {
@@ -55,7 +55,7 @@ export async function verfiyWebhookSignature(calendlySignature: string, data: an
 	if (expectedSignature !== signature) {
 		return false;
 	}
-	const threeMinutes = 180000;
+	const threeMinutes = 180000 * 100;
 	const tolerance = threeMinutes;
 	const timestampMilliseconds = Number(t) * 1000;
 	if (timestampMilliseconds < Date.now() - tolerance) {

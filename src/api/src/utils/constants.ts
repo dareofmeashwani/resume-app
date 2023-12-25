@@ -64,7 +64,15 @@ export const ERROR_MESSAGES = {
 	EMAIL_REQUIRED_MEETING: {
 		code: "1000015",
 		message: "The email is required to schedule a meeting"
-	}
+	},
+	WEBHOOK_REQUEST_UNAUTHORIZED: {
+		code: "1000015",
+		message: "Not enough permission to access this resource."
+	},
+	WEBHOOK_HANDLING_ERROR: {
+		code: "1000017",
+		message: "Unable to process request, Something went wrong"
+	},
 };
 
 export const HTTP_STATUS = {
@@ -104,7 +112,8 @@ export const MESSAGES = {
 	FORGET_PASSWORD_SUCCESS: "Your password has been changed successfully",
 	VALID_TOKEN: "Token provided by you is valid, please proceed further",
 	MEETING_NOTI_SEND: "Meeting Invites Send.",
-	CHANGE_PASSWORD_SUCCESS: "Your password has successfully updated."
+	CHANGE_PASSWORD_SUCCESS: "Your password has successfully updated.",
+	SUCCESS_RESPONSE: "Request Successfully Completed",
 };
 
 export const query = {

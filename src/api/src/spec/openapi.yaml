@@ -1,2705 +1,2682 @@
 openapi: 3.0.1
 info:
- title: Resume Service
- version: 1.0.0
+    title: Resume Service
+    version: 1.0.0
 
 tags:
- - name: User
+    - name: User
 
 servers:
- - url: "/api/v1"
-   description: resume api
+    - url: "/api/v1"
+      description: resume api
 
 paths:
- /healthz:
-  get:
-   tags:
-    - Healthz
-   summary: check health
-   operationId: getHealthz
-   responses:
-    "200":
-     $ref: "#/components/responses/healthStatusOk"
-    "503":
-     $ref: "#/components/responses/healthStatusError"
+    /healthz:
+        get:
+            tags:
+                - Healthz
+            summary: check health
+            operationId: getHealthz
+            responses:
+                "200":
+                    $ref: "#/components/responses/healthStatusOk"
+                "503":
+                    $ref: "#/components/responses/healthStatusError"
 
- /admins:
-  get:
-   tags:
-    - Admin
-   x-middleware:
-    - loginCheck
-    - emailVerifyCheck
-    - permissionsCheck
-   x-permissions:
-    - ADMIN
-   summary: list of admin detail
-   operationId: getAdminList
-   parameters:
-    - $ref: "#/components/parameters/Sort"
-    - $ref: "#/components/parameters/Page"
-    - $ref: "#/components/parameters/Limit"
-   responses:
-    "200":
-     description: "list of admin detail"
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/AdminList"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "403":
-     $ref: "#/components/responses/Forbidden"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
+    /admins:
+        get:
+            tags:
+                - Admin
+            x-middleware:
+                - loginCheck
+                - emailVerifyCheck
+                - permissionsCheck
+            x-permissions:
+                - ADMIN
+            summary: list of admin detail
+            operationId: getAdminList
+            parameters:
+                - $ref: "#/components/parameters/Sort"
+                - $ref: "#/components/parameters/Page"
+                - $ref: "#/components/parameters/Limit"
+            responses:
+                "200":
+                    description: "list of admin detail"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/AdminList"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
 
- /user:
-  get:
-   tags:
-    - User
-   x-middleware:
-    - loginCheck
-    - emailVerifyCheck
-    - permissionsCheck
-   x-permissions:
-    - ADMIN
-   summary: list of user detail
-   operationId: getListUser
-   parameters:
-    - $ref: "#/components/parameters/Sort"
-    - $ref: "#/components/parameters/Page"
-    - $ref: "#/components/parameters/Limit"
-   responses:
-    "200":
-     description: "list of user detail"
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/UserList"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "403":
-     $ref: "#/components/responses/Forbidden"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
+    /user:
+        get:
+            tags:
+                - User
+            x-middleware:
+                - loginCheck
+                - emailVerifyCheck
+                - permissionsCheck
+            x-permissions:
+                - ADMIN
+            summary: list of user detail
+            operationId: getListUser
+            parameters:
+                - $ref: "#/components/parameters/Sort"
+                - $ref: "#/components/parameters/Page"
+                - $ref: "#/components/parameters/Limit"
+            responses:
+                "200":
+                    description: "list of user detail"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/UserList"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
 
- /user/register:
-  post:
-   tags:
-    - User
-   summary: Register new user
-   operationId: postRegisterUser
-   requestBody:
-    required: true
-    $ref: "#/components/requestBodies/UserRegisterBody"
-   responses:
-    "201":
-     $ref: "#/components/responses/UserDetail"
-    "400":
-     $ref: "#/components/responses/BadRequest"
-    "409":
-     $ref: "#/components/responses/Conflict"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
+    /user/register:
+        post:
+            tags:
+                - User
+            summary: Register new user
+            operationId: postRegisterUser
+            requestBody:
+                required: true
+                $ref: "#/components/requestBodies/UserRegisterBody"
+            responses:
+                "201":
+                    $ref: "#/components/responses/UserDetail"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "409":
+                    $ref: "#/components/responses/Conflict"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
 
- /user/login:
-  post:
-   tags:
-    - User
-   summary: login User
-   operationId: postLoginUser
-   requestBody:
-    required: true
-    $ref: "#/components/requestBodies/UserLoginBody"
-   responses:
-    "202":
-     $ref: "#/components/responses/UserDetail"
-    "400":
-     $ref: "#/components/responses/BadRequest"
-    "404":
-     $ref: "#/components/responses/NotFound"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
+    /user/login:
+        post:
+            tags:
+                - User
+            summary: login User
+            operationId: postLoginUser
+            requestBody:
+                required: true
+                $ref: "#/components/requestBodies/UserLoginBody"
+            responses:
+                "202":
+                    $ref: "#/components/responses/UserDetail"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
 
- /user/logout:
-  post:
-   tags:
-    - User
-   x-middleware:
-    - loginCheck
-   summary: Logout logged-in user
-   operationId: postLogoutUser
-   responses:
-    "202":
-     description: resume api ready
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/Empty"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
+    /user/logout:
+        post:
+            tags:
+                - User
+            x-middleware:
+                - loginCheck
+            summary: Logout logged-in user
+            operationId: postLogoutUser
+            responses:
+                "202":
+                    description: resume api ready
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Empty"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
 
- /user/isAuth:
-  get:
-   tags:
-    - User
-   x-middleware:
-    - loginCheck
-   summary: logged in User auth check
-   operationId: getAuthUser
-   responses:
-    "200":
-     $ref: "#/components/responses/UserDetail"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
- /user/changePassword:
-  post:
-   tags:
-    - User
-   summary: change user password
-   operationId: postChangePassword
-   x-middleware:
-    - loginCheck
-   requestBody:
-    required: true
-    $ref: "#/components/requestBodies/ChangePasswordBody"
-   responses:
-    "202":
-     description: "change password success message"
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/Message"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "400":
-     $ref: "#/components/responses/BadRequest"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
+    /user/isAuth:
+        get:
+            tags:
+                - User
+            x-middleware:
+                - loginCheck
+            summary: logged in User auth check
+            operationId: getAuthUser
+            responses:
+                "200":
+                    $ref: "#/components/responses/UserDetail"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+    /user/changePassword:
+        post:
+            tags:
+                - User
+            summary: change user password
+            operationId: postChangePassword
+            x-middleware:
+                - loginCheck
+            requestBody:
+                required: true
+                $ref: "#/components/requestBodies/ChangePasswordBody"
+            responses:
+                "202":
+                    description: "change password success message"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Message"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
 
- /user/forgetPassword:
-  post:
-   tags:
-    - User
-   summary: forget user password
-   operationId: postForgetPassword
-   requestBody:
-    required: true
-    $ref: "#/components/requestBodies/ForgetPasswordBody"
-   responses:
-    "202":
-     description: "forget password success message"
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/Message"
-    "400":
-     $ref: "#/components/responses/BadRequest"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
+    /user/forgetPassword:
+        post:
+            tags:
+                - User
+            summary: forget user password
+            operationId: postForgetPassword
+            requestBody:
+                required: true
+                $ref: "#/components/requestBodies/ForgetPasswordBody"
+            responses:
+                "202":
+                    description: "forget password success message"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Message"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
 
- /user/verifyForgetPassword:
-  patch:
-   tags:
-    - User
-   summary: verify forget password token
-   operationId: verifyForgetPassword
-   requestBody:
-    required: true
-    $ref: "#/components/requestBodies/ForgetPasswordVerifyBody"
-   responses:
-    "202":
-     description: "forget password success message"
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/Message"
-    "400":
-     $ref: "#/components/responses/BadRequest"
-    "403":
-     $ref: "#/components/responses/Forbidden"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
+    /user/verifyForgetPassword:
+        patch:
+            tags:
+                - User
+            summary: verify forget password token
+            operationId: verifyForgetPassword
+            requestBody:
+                required: true
+                $ref: "#/components/requestBodies/ForgetPasswordVerifyBody"
+            responses:
+                "202":
+                    description: "forget password success message"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Message"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
 
- /user/resendEmailVerification:
-  post:
-   x-middleware:
-    - loginCheck
-   tags:
-    - User
-   summary: resend email verification
-   operationId: resendEmailVerification
-   responses:
-    "202":
-     description: "email verification link resend success message"
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/Message"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
+    /user/resendEmailVerification:
+        post:
+            x-middleware:
+                - loginCheck
+            tags:
+                - User
+            summary: resend email verification
+            operationId: resendEmailVerification
+            responses:
+                "202":
+                    description: "email verification link resend success message"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Message"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
 
- /user/emailVerify:
-  patch:
-   tags:
-    - User
-   summary: email verification
-   operationId: emailVerify
-   requestBody:
-    required: true
-    $ref: "#/components/requestBodies/EmailVerifyBody"
-   responses:
-    "202":
-     description: "email verification success message"
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/Message"
-    "403":
-     $ref: "#/components/responses/Forbidden"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
+    /user/emailVerify:
+        patch:
+            tags:
+                - User
+            summary: email verification
+            operationId: emailVerify
+            requestBody:
+                required: true
+                $ref: "#/components/requestBodies/EmailVerifyBody"
+            responses:
+                "202":
+                    description: "email verification success message"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Message"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
 
- /educations:
-  get:
-   tags:
-    - Education
-   summary: list educations
-   operationId: getEducationList
-   parameters:
-    - $ref: "#/components/parameters/Sort"
-    - $ref: "#/components/parameters/Page"
-    - $ref: "#/components/parameters/Limit"
-    - $ref: "#/components/parameters/Status"
-   responses:
-    "200":
-     description: returns list of educatiofindns
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/EducationList"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
-  post:
-   x-permissions:
-    - ADMIN
-   tags:
-    - Education
-   x-middleware:
-    - loginCheck
-    - emailVerifyCheck
-    - permissionsCheck
-   summary: create education
-   operationId: createEducation
-   requestBody:
-    required: true
-    $ref: "#/components/requestBodies/EducationBody"
-   responses:
-    "201":
-     description: create new education
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/EducationDetail"
-    "400":
-     $ref: "#/components/responses/BadRequest"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "403":
-     $ref: "#/components/responses/Forbidden"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
+    /educations:
+        get:
+            tags:
+                - Education
+            summary: list educations
+            operationId: getEducationList
+            parameters:
+                - $ref: "#/components/parameters/Sort"
+                - $ref: "#/components/parameters/Page"
+                - $ref: "#/components/parameters/Limit"
+                - $ref: "#/components/parameters/Status"
+            responses:
+                "200":
+                    description: returns list of educatiofindns
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/EducationList"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+        post:
+            x-permissions:
+                - ADMIN
+            tags:
+                - Education
+            x-middleware:
+                - loginCheck
+                - emailVerifyCheck
+                - permissionsCheck
+            summary: create education
+            operationId: createEducation
+            requestBody:
+                required: true
+                $ref: "#/components/requestBodies/EducationBody"
+            responses:
+                "201":
+                    description: create new education
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/EducationDetail"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
 
- /educations/{educationId}:
-  parameters:
-   - $ref: "#/components/parameters/EducationId"
-  get:
-   tags:
-    - Education
-   summary: get education
-   operationId: getEducation
-   responses:
-    "200":
-     description: returns single education
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/EducationDetail"
-    "404":
-     $ref: "#/components/responses/NotFound"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
-  patch:
-   x-permissions:
-    - ADMIN
-   tags:
-    - Education
-   x-middleware:
-    - loginCheck
-    - emailVerifyCheck
-    - permissionsCheck
-   summary: modify education
-   operationId: patchEducation
-   requestBody:
-    required: true
-    $ref: "#/components/requestBodies/EducationModificationBody"
-   responses:
-    "202":
-     description: modity existing education
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/EducationDetail"
-    "400":
-     $ref: "#/components/responses/BadRequest"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "403":
-     $ref: "#/components/responses/Forbidden"
-    "404":
-     $ref: "#/components/responses/NotFound"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
-  delete:
-   tags:
-    - Education
-   x-permissions:
-    - ADMIN
-   x-middleware:
-    - loginCheck
-    - emailVerifyCheck
-    - permissionsCheck
-   summary: delete education
-   operationId: deleteEducation
-   responses:
-    "202":
-     description: delete existing education
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/Empty"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "403":
-     $ref: "#/components/responses/Forbidden"
-    "404":
-     $ref: "#/components/responses/NotFound"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
+    /educations/{educationId}:
+        parameters:
+            - $ref: "#/components/parameters/EducationId"
+        get:
+            tags:
+                - Education
+            summary: get education
+            operationId: getEducation
+            responses:
+                "200":
+                    description: returns single education
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/EducationDetail"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+        patch:
+            x-permissions:
+                - ADMIN
+            tags:
+                - Education
+            x-middleware:
+                - loginCheck
+                - emailVerifyCheck
+                - permissionsCheck
+            summary: modify education
+            operationId: patchEducation
+            requestBody:
+                required: true
+                $ref: "#/components/requestBodies/EducationModificationBody"
+            responses:
+                "202":
+                    description: modity existing education
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/EducationDetail"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+        delete:
+            tags:
+                - Education
+            x-permissions:
+                - ADMIN
+            x-middleware:
+                - loginCheck
+                - emailVerifyCheck
+                - permissionsCheck
+            summary: delete education
+            operationId: deleteEducation
+            responses:
+                "202":
+                    description: delete existing education
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Empty"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
 
- /extraCurriculars:
-  get:
-   tags:
-    - ExtraCurricular
-   summary: list extra curriculars
-   operationId: getExtraCurricularList
-   parameters:
-    - $ref: "#/components/parameters/Sort"
-    - $ref: "#/components/parameters/Page"
-    - $ref: "#/components/parameters/Limit"
-    - $ref: "#/components/parameters/Status"
-   responses:
-    "200":
-     description: returns list of extra curricular
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/ExtraCurricularList"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
-  post:
-   tags:
-    - ExtraCurricular
-   x-middleware:
-    - loginCheck
-    - emailVerifyCheck
-    - permissionsCheck
-   x-permissions:
-    - ADMIN
-   summary: create extra curriculars
-   operationId: createExtraCurricular
-   requestBody:
-    required: true
-    $ref: "#/components/requestBodies/ExtraCurricularBody"
-   responses:
-    "201":
-     description: create new extra curricular
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/ExtraCurricularDetail"
-    "400":
-     $ref: "#/components/responses/BadRequest"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "403":
-     $ref: "#/components/responses/Forbidden"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
+    /extraCurriculars:
+        get:
+            tags:
+                - ExtraCurricular
+            summary: list extra curriculars
+            operationId: getExtraCurricularList
+            parameters:
+                - $ref: "#/components/parameters/Sort"
+                - $ref: "#/components/parameters/Page"
+                - $ref: "#/components/parameters/Limit"
+                - $ref: "#/components/parameters/Status"
+            responses:
+                "200":
+                    description: returns list of extra curricular
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ExtraCurricularList"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+        post:
+            tags:
+                - ExtraCurricular
+            x-middleware:
+                - loginCheck
+                - emailVerifyCheck
+                - permissionsCheck
+            x-permissions:
+                - ADMIN
+            summary: create extra curriculars
+            operationId: createExtraCurricular
+            requestBody:
+                required: true
+                $ref: "#/components/requestBodies/ExtraCurricularBody"
+            responses:
+                "201":
+                    description: create new extra curricular
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ExtraCurricularDetail"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
 
- /extraCurriculars/{extraCurricularId}:
-  parameters:
-   - $ref: "#/components/parameters/ExtraCurricularId"
-  get:
-   tags:
-    - ExtraCurricular
-   summary: get extra curricular
-   operationId: getExtraCurricular
-   responses:
-    "200":
-     description: returns single extra curricular
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/ExtraCurricularDetail"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
-  patch:
-   tags:
-    - ExtraCurricular
-   x-middleware:
-    - loginCheck
-    - emailVerifyCheck
-    - permissionsCheck
-   x-permissions:
-    - ADMIN
-   summary: modify extra curricular
-   operationId: patchExtraCurricular
-   requestBody:
-    required: true
-    $ref: "#/components/requestBodies/ExtraCurricularModificationBody"
-   responses:
-    "202":
-     description: modify existing extra curricular
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/ExtraCurricularDetail"
-    "400":
-     $ref: "#/components/responses/BadRequest"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "403":
-     $ref: "#/components/responses/Forbidden"
-    "404":
-     $ref: "#/components/responses/NotFound"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
-  delete:
-   tags:
-    - ExtraCurricular
-   x-middleware:
-    - loginCheck
-    - emailVerifyCheck
-    - permissionsCheck
-   x-permissions:
-    - ADMIN
-   summary: delete extra curricular
-   operationId: deleteExtraCurricular
-   responses:
-    "202":
-     description: delete existing extra curricular
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/Empty"
-    "400":
-     $ref: "#/components/responses/BadRequest"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "403":
-     $ref: "#/components/responses/Forbidden"
-    "404":
-     $ref: "#/components/responses/NotFound"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
+    /extraCurriculars/{extraCurricularId}:
+        parameters:
+            - $ref: "#/components/parameters/ExtraCurricularId"
+        get:
+            tags:
+                - ExtraCurricular
+            summary: get extra curricular
+            operationId: getExtraCurricular
+            responses:
+                "200":
+                    description: returns single extra curricular
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ExtraCurricularDetail"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+        patch:
+            tags:
+                - ExtraCurricular
+            x-middleware:
+                - loginCheck
+                - emailVerifyCheck
+                - permissionsCheck
+            x-permissions:
+                - ADMIN
+            summary: modify extra curricular
+            operationId: patchExtraCurricular
+            requestBody:
+                required: true
+                $ref: "#/components/requestBodies/ExtraCurricularModificationBody"
+            responses:
+                "202":
+                    description: modify existing extra curricular
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ExtraCurricularDetail"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+        delete:
+            tags:
+                - ExtraCurricular
+            x-middleware:
+                - loginCheck
+                - emailVerifyCheck
+                - permissionsCheck
+            x-permissions:
+                - ADMIN
+            summary: delete extra curricular
+            operationId: deleteExtraCurricular
+            responses:
+                "202":
+                    description: delete existing extra curricular
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Empty"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
 
- /projects:
-  get:
-   tags:
-    - Project
-   summary: list project
-   operationId: getProjectList
-   parameters:
-    - $ref: "#/components/parameters/Sort"
-    - $ref: "#/components/parameters/Page"
-    - $ref: "#/components/parameters/Limit"
-    - $ref: "#/components/parameters/Status"
-   responses:
-    "200":
-     description: returns list of project
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/ProjectList"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
-  post:
-   tags:
-    - Project
-   x-middleware:
-    - loginCheck
-    - emailVerifyCheck
-    - permissionsCheck
-   x-permissions:
-    - ADMIN
-   summary: create project
-   operationId: createProject
-   requestBody:
-    required: true
-    $ref: "#/components/requestBodies/ProjectBody"
-   responses:
-    "201":
-     description: create new project
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/ProjectDetail"
-    "400":
-     $ref: "#/components/responses/BadRequest"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "403":
-     $ref: "#/components/responses/Forbidden"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
+    /projects:
+        get:
+            tags:
+                - Project
+            summary: list project
+            operationId: getProjectList
+            parameters:
+                - $ref: "#/components/parameters/Sort"
+                - $ref: "#/components/parameters/Page"
+                - $ref: "#/components/parameters/Limit"
+                - $ref: "#/components/parameters/Status"
+            responses:
+                "200":
+                    description: returns list of project
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ProjectList"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+        post:
+            tags:
+                - Project
+            x-middleware:
+                - loginCheck
+                - emailVerifyCheck
+                - permissionsCheck
+            x-permissions:
+                - ADMIN
+            summary: create project
+            operationId: createProject
+            requestBody:
+                required: true
+                $ref: "#/components/requestBodies/ProjectBody"
+            responses:
+                "201":
+                    description: create new project
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ProjectDetail"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
 
- /projects/{projectId}:
-  parameters:
-   - $ref: "#/components/parameters/ProjectId"
-  get:
-   tags:
-    - Project
-   summary: get project
-   operationId: getProject
-   responses:
-    "200":
-     description: returns single project
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/ProjectDetail"
-    "404":
-     $ref: "#/components/responses/NotFound"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
-  patch:
-   tags:
-    - Project
-   x-middleware:
-    - loginCheck
-    - emailVerifyCheck
-    - permissionsCheck
-   x-permissions:
-    - ADMIN
-   summary: modify project
-   operationId: patchProject
-   requestBody:
-    required: true
-    $ref: "#/components/requestBodies/ProjectModificationBody"
-   responses:
-    "202":
-     description: modify existing project
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/ProjectDetail"
-    "400":
-     $ref: "#/components/responses/BadRequest"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "403":
-     $ref: "#/components/responses/Forbidden"
-    "404":
-     $ref: "#/components/responses/NotFound"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
-  delete:
-   tags:
-    - Project
-   x-middleware:
-    - loginCheck
-    - emailVerifyCheck
-    - permissionsCheck
-   x-permissions:
-    - ADMIN
-   summary: delete project
-   operationId: deleteProject
-   responses:
-    "202":
-     description: delete existing project
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/Empty"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "403":
-     $ref: "#/components/responses/Forbidden"
-    "404":
-     $ref: "#/components/responses/NotFound"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
+    /projects/{projectId}:
+        parameters:
+            - $ref: "#/components/parameters/ProjectId"
+        get:
+            tags:
+                - Project
+            summary: get project
+            operationId: getProject
+            responses:
+                "200":
+                    description: returns single project
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ProjectDetail"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+        patch:
+            tags:
+                - Project
+            x-middleware:
+                - loginCheck
+                - emailVerifyCheck
+                - permissionsCheck
+            x-permissions:
+                - ADMIN
+            summary: modify project
+            operationId: patchProject
+            requestBody:
+                required: true
+                $ref: "#/components/requestBodies/ProjectModificationBody"
+            responses:
+                "202":
+                    description: modify existing project
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ProjectDetail"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+        delete:
+            tags:
+                - Project
+            x-middleware:
+                - loginCheck
+                - emailVerifyCheck
+                - permissionsCheck
+            x-permissions:
+                - ADMIN
+            summary: delete project
+            operationId: deleteProject
+            responses:
+                "202":
+                    description: delete existing project
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Empty"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
 
- /responsibilities:
-  get:
-   tags:
-    - Responsibility
-   summary: list responsibilities
-   operationId: getResponsibilityList
-   parameters:
-    - $ref: "#/components/parameters/Sort"
-    - $ref: "#/components/parameters/Page"
-    - $ref: "#/components/parameters/Limit"
-    - $ref: "#/components/parameters/Status"
-   responses:
-    "200":
-     description: returns list of responsibilities
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/ResponsibilityList"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
-  post:
-   tags:
-    - Responsibility
-   x-middleware:
-    - loginCheck
-    - emailVerifyCheck
-    - permissionsCheck
-   x-permissions:
-    - ADMIN
-   summary: create responsibility
-   operationId: createResponsibility
-   requestBody:
-    required: true
-    $ref: "#/components/requestBodies/ResponsibilityBody"
-   responses:
-    "201":
-     description: newly created responsibility
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/ResponsibilityDetail"
-    "400":
-     $ref: "#/components/responses/BadRequest"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "403":
-     $ref: "#/components/responses/Forbidden"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
+    /responsibilities:
+        get:
+            tags:
+                - Responsibility
+            summary: list responsibilities
+            operationId: getResponsibilityList
+            parameters:
+                - $ref: "#/components/parameters/Sort"
+                - $ref: "#/components/parameters/Page"
+                - $ref: "#/components/parameters/Limit"
+                - $ref: "#/components/parameters/Status"
+            responses:
+                "200":
+                    description: returns list of responsibilities
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ResponsibilityList"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+        post:
+            tags:
+                - Responsibility
+            x-middleware:
+                - loginCheck
+                - emailVerifyCheck
+                - permissionsCheck
+            x-permissions:
+                - ADMIN
+            summary: create responsibility
+            operationId: createResponsibility
+            requestBody:
+                required: true
+                $ref: "#/components/requestBodies/ResponsibilityBody"
+            responses:
+                "201":
+                    description: newly created responsibility
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ResponsibilityDetail"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
 
- /responsibilities/{responsibilityId}:
-  parameters:
-   - $ref: "#/components/parameters/ResponsibilityId"
-  get:
-   tags:
-    - Responsibility
-   summary: get responsibility
-   operationId: getResponsibility
-   responses:
-    "200":
-     description: returns single responsibility
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/ResponsibilityDetail"
-    "404":
-     $ref: "#/components/responses/NotFound"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
-  patch:
-   tags:
-    - Responsibility
-   x-middleware:
-    - loginCheck
-    - emailVerifyCheck
-    - permissionsCheck
-   x-permissions:
-    - ADMIN
-   summary: modify responsibility
-   operationId: patchResponsibility
-   requestBody:
-    required: true
-    $ref: "#/components/requestBodies/ResponsibilityModificationBody"
-   responses:
-    "202":
-     description: modify existing responsibility
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/ResponsibilityDetail"
-    "400":
-     $ref: "#/components/responses/BadRequest"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "403":
-     $ref: "#/components/responses/Forbidden"
-    "404":
-     $ref: "#/components/responses/NotFound"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
-  delete:
-   tags:
-    - Responsibility
-   x-middleware:
-    - loginCheck
-    - emailVerifyCheck
-    - permissionsCheck
-   x-permissions:
-    - ADMIN
-   summary: delete responsibility
-   operationId: deleteResponsibility
-   responses:
-    "202":
-     description: delete existing responsibility
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/Empty"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "403":
-     $ref: "#/components/responses/Forbidden"
-    "404":
-     $ref: "#/components/responses/NotFound"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
+    /responsibilities/{responsibilityId}:
+        parameters:
+            - $ref: "#/components/parameters/ResponsibilityId"
+        get:
+            tags:
+                - Responsibility
+            summary: get responsibility
+            operationId: getResponsibility
+            responses:
+                "200":
+                    description: returns single responsibility
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ResponsibilityDetail"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+        patch:
+            tags:
+                - Responsibility
+            x-middleware:
+                - loginCheck
+                - emailVerifyCheck
+                - permissionsCheck
+            x-permissions:
+                - ADMIN
+            summary: modify responsibility
+            operationId: patchResponsibility
+            requestBody:
+                required: true
+                $ref: "#/components/requestBodies/ResponsibilityModificationBody"
+            responses:
+                "202":
+                    description: modify existing responsibility
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ResponsibilityDetail"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+        delete:
+            tags:
+                - Responsibility
+            x-middleware:
+                - loginCheck
+                - emailVerifyCheck
+                - permissionsCheck
+            x-permissions:
+                - ADMIN
+            summary: delete responsibility
+            operationId: deleteResponsibility
+            responses:
+                "202":
+                    description: delete existing responsibility
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Empty"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
 
- /skills:
-  get:
-   tags:
-    - Skill
-   summary: list skill
-   operationId: getSkillList
-   parameters:
-    - $ref: "#/components/parameters/Sort"
-    - $ref: "#/components/parameters/Page"
-    - $ref: "#/components/parameters/Limit"
-    - $ref: "#/components/parameters/Status"
-   responses:
-    "200":
-     description: returns list of skill
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/SkillList"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
-  post:
-   tags:
-    - Skill
-   x-middleware:
-    - loginCheck
-    - emailVerifyCheck
-    - permissionsCheck
-   x-permissions:
-    - ADMIN
-   summary: create skill
-   operationId: createSkill
-   requestBody:
-    required: true
-    $ref: "#/components/requestBodies/SkillBody"
-   responses:
-    "201":
-     description: create new skill
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/SkillDetail"
-    "400":
-     $ref: "#/components/responses/BadRequest"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "403":
-     $ref: "#/components/responses/Forbidden"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
+    /skills:
+        get:
+            tags:
+                - Skill
+            summary: list skill
+            operationId: getSkillList
+            parameters:
+                - $ref: "#/components/parameters/Sort"
+                - $ref: "#/components/parameters/Page"
+                - $ref: "#/components/parameters/Limit"
+                - $ref: "#/components/parameters/Status"
+            responses:
+                "200":
+                    description: returns list of skill
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/SkillList"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+        post:
+            tags:
+                - Skill
+            x-middleware:
+                - loginCheck
+                - emailVerifyCheck
+                - permissionsCheck
+            x-permissions:
+                - ADMIN
+            summary: create skill
+            operationId: createSkill
+            requestBody:
+                required: true
+                $ref: "#/components/requestBodies/SkillBody"
+            responses:
+                "201":
+                    description: create new skill
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/SkillDetail"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
 
- /skills/{skillId}:
-  parameters:
-   - $ref: "#/components/parameters/SkillId"
-  get:
-   tags:
-    - Skill
-   summary: get skill
-   operationId: getSkill
-   responses:
-    "200":
-     description: returns single skill
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/SkillDetail"
-    "404":
-     $ref: "#/components/responses/NotFound"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
-  patch:
-   tags:
-    - Skill
-   x-middleware:
-    - loginCheck
-    - emailVerifyCheck
-    - permissionsCheck
-   x-permissions:
-    - ADMIN
-   summary: modify skill
-   operationId: patchSkill
-   requestBody:
-    required: true
-    $ref: "#/components/requestBodies/SkillModificationBody"
-   responses:
-    "202":
-     description: modify existing skill
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/SkillDetail"
-    "400":
-     $ref: "#/components/responses/BadRequest"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "403":
-     $ref: "#/components/responses/Forbidden"
-    "404":
-     $ref: "#/components/responses/NotFound"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
-  delete:
-   tags:
-    - Skill
-   x-middleware:
-    - loginCheck
-    - emailVerifyCheck
-    - permissionsCheck
-   x-permissions:
-    - ADMIN
-   summary: delete skill
-   operationId: deleteSkill
-   responses:
-    "202":
-     description: delete existing skill
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/Empty"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "403":
-     $ref: "#/components/responses/Forbidden"
-    "404":
-     $ref: "#/components/responses/NotFound"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
+    /skills/{skillId}:
+        parameters:
+            - $ref: "#/components/parameters/SkillId"
+        get:
+            tags:
+                - Skill
+            summary: get skill
+            operationId: getSkill
+            responses:
+                "200":
+                    description: returns single skill
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/SkillDetail"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+        patch:
+            tags:
+                - Skill
+            x-middleware:
+                - loginCheck
+                - emailVerifyCheck
+                - permissionsCheck
+            x-permissions:
+                - ADMIN
+            summary: modify skill
+            operationId: patchSkill
+            requestBody:
+                required: true
+                $ref: "#/components/requestBodies/SkillModificationBody"
+            responses:
+                "202":
+                    description: modify existing skill
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/SkillDetail"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+        delete:
+            tags:
+                - Skill
+            x-middleware:
+                - loginCheck
+                - emailVerifyCheck
+                - permissionsCheck
+            x-permissions:
+                - ADMIN
+            summary: delete skill
+            operationId: deleteSkill
+            responses:
+                "202":
+                    description: delete existing skill
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Empty"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
 
- /trainings:
-  get:
-   tags:
-    - Training
-   summary: list training
-   operationId: getTrainingList
-   parameters:
-    - $ref: "#/components/parameters/Sort"
-    - $ref: "#/components/parameters/Page"
-    - $ref: "#/components/parameters/Limit"
-    - $ref: "#/components/parameters/Status"
-   responses:
-    "200":
-     description: returns list of training
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/TrainingList"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
-  post:
-   tags:
-    - Training
-   x-middleware:
-    - loginCheck
-    - emailVerifyCheck
-    - permissionsCheck
-   x-permissions:
-    - ADMIN
-   summary: create training
-   operationId: createTraining
-   requestBody:
-    required: true
-    $ref: "#/components/requestBodies/TrainingBody"
-   responses:
-    "201":
-     description: create new training
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/TrainingDetail"
-    "400":
-     $ref: "#/components/responses/BadRequest"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "403":
-     $ref: "#/components/responses/Forbidden"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
+    /trainings:
+        get:
+            tags:
+                - Training
+            summary: list training
+            operationId: getTrainingList
+            parameters:
+                - $ref: "#/components/parameters/Sort"
+                - $ref: "#/components/parameters/Page"
+                - $ref: "#/components/parameters/Limit"
+                - $ref: "#/components/parameters/Status"
+            responses:
+                "200":
+                    description: returns list of training
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/TrainingList"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+        post:
+            tags:
+                - Training
+            x-middleware:
+                - loginCheck
+                - emailVerifyCheck
+                - permissionsCheck
+            x-permissions:
+                - ADMIN
+            summary: create training
+            operationId: createTraining
+            requestBody:
+                required: true
+                $ref: "#/components/requestBodies/TrainingBody"
+            responses:
+                "201":
+                    description: create new training
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/TrainingDetail"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
 
- /trainings/{trainingId}:
-  parameters:
-   - $ref: "#/components/parameters/TrainingId"
-  get:
-   tags:
-    - Training
-   summary: get training
-   operationId: getTraining
-   responses:
-    "200":
-     description: returns single training
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/TrainingDetail"
-    "404":
-     $ref: "#/components/responses/NotFound"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
-  patch:
-   tags:
-    - Training
-   x-middleware:
-    - loginCheck
-    - emailVerifyCheck
-    - permissionsCheck
-   x-permissions:
-    - ADMIN
-   summary: modify training
-   operationId: patchTraining
-   requestBody:
-    required: true
-    $ref: "#/components/requestBodies/TrainingModificationBody"
-   responses:
-    "202":
-     description: modify existing training
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/TrainingDetail"
-    "400":
-     $ref: "#/components/responses/BadRequest"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "403":
-     $ref: "#/components/responses/Forbidden"
-    "404":
-     $ref: "#/components/responses/NotFound"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
-  delete:
-   tags:
-    - Training
-   x-middleware:
-    - loginCheck
-    - emailVerifyCheck
-    - permissionsCheck
-   x-permissions:
-    - ADMIN
-   summary: delete training
-   operationId: deleteTraining
-   responses:
-    "202":
-     description: delete existing training
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/Empty"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "403":
-     $ref: "#/components/responses/Forbidden"
-    "404":
-     $ref: "#/components/responses/NotFound"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
+    /trainings/{trainingId}:
+        parameters:
+            - $ref: "#/components/parameters/TrainingId"
+        get:
+            tags:
+                - Training
+            summary: get training
+            operationId: getTraining
+            responses:
+                "200":
+                    description: returns single training
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/TrainingDetail"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+        patch:
+            tags:
+                - Training
+            x-middleware:
+                - loginCheck
+                - emailVerifyCheck
+                - permissionsCheck
+            x-permissions:
+                - ADMIN
+            summary: modify training
+            operationId: patchTraining
+            requestBody:
+                required: true
+                $ref: "#/components/requestBodies/TrainingModificationBody"
+            responses:
+                "202":
+                    description: modify existing training
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/TrainingDetail"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+        delete:
+            tags:
+                - Training
+            x-middleware:
+                - loginCheck
+                - emailVerifyCheck
+                - permissionsCheck
+            x-permissions:
+                - ADMIN
+            summary: delete training
+            operationId: deleteTraining
+            responses:
+                "202":
+                    description: delete existing training
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Empty"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
 
- /workExperiences:
-  get:
-   tags:
-    - WorkExperience
-   summary: list Work Experiences
-   operationId: getWorkExperienceList
-   parameters:
-    - $ref: "#/components/parameters/Sort"
-    - $ref: "#/components/parameters/Page"
-    - $ref: "#/components/parameters/Limit"
-    - $ref: "#/components/parameters/Status"
-   responses:
-    "200":
-     description: returns list of Work Experiences
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/WorkExperienceList"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
-  post:
-   tags:
-    - WorkExperience
-   x-middleware:
-    - loginCheck
-    - emailVerifyCheck
-    - permissionsCheck
-   x-permissions:
-    - ADMIN
-   summary: create work experience
-   operationId: createWorkExperience
-   requestBody:
-    required: true
-    $ref: "#/components/requestBodies/WorkExperienceBody"
-   responses:
-    "201":
-     description: create new work experience
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/WorkExperienceDetail"
-    "400":
-     $ref: "#/components/responses/BadRequest"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "403":
-     $ref: "#/components/responses/Forbidden"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
+    /workExperiences:
+        get:
+            tags:
+                - WorkExperience
+            summary: list Work Experiences
+            operationId: getWorkExperienceList
+            parameters:
+                - $ref: "#/components/parameters/Sort"
+                - $ref: "#/components/parameters/Page"
+                - $ref: "#/components/parameters/Limit"
+                - $ref: "#/components/parameters/Status"
+            responses:
+                "200":
+                    description: returns list of Work Experiences
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/WorkExperienceList"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+        post:
+            tags:
+                - WorkExperience
+            x-middleware:
+                - loginCheck
+                - emailVerifyCheck
+                - permissionsCheck
+            x-permissions:
+                - ADMIN
+            summary: create work experience
+            operationId: createWorkExperience
+            requestBody:
+                required: true
+                $ref: "#/components/requestBodies/WorkExperienceBody"
+            responses:
+                "201":
+                    description: create new work experience
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/WorkExperienceDetail"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
 
- /workExperiences/{workExperienceId}:
-  parameters:
-   - $ref: "#/components/parameters/WorkExperienceId"
-  get:
-   tags:
-    - WorkExperience
-   summary: get work experience
-   operationId: getWorkExperience
-   responses:
-    "200":
-     description: returns single work experience
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/WorkExperienceDetail"
-    "404":
-     $ref: "#/components/responses/NotFound"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
-  patch:
-   tags:
-    - WorkExperience
-   x-middleware:
-    - loginCheck
-    - emailVerifyCheck
-    - permissionsCheck
-   x-permissions:
-    - ADMIN
-   summary: modify work experience
-   operationId: patchWorkExperience
-   requestBody:
-    required: true
-    $ref: "#/components/requestBodies/WorkExperienceModificationBody"
-   responses:
-    "202":
-     description: modify existing work experience
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/WorkExperienceDetail"
-    "400":
-     $ref: "#/components/responses/BadRequest"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "403":
-     $ref: "#/components/responses/Forbidden"
-    "404":
-     $ref: "#/components/responses/NotFound"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
-  delete:
-   tags:
-    - WorkExperience
-   x-middleware:
-    - loginCheck
-    - emailVerifyCheck
-    - permissionsCheck
-   x-permissions:
-    - ADMIN
-   summary: delete work experience
-   operationId: deleteWorkExperience
-   responses:
-    "202":
-     description: delete existing work experience
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/Empty"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "403":
-     $ref: "#/components/responses/Forbidden"
-    "404":
-     $ref: "#/components/responses/NotFound"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
+    /workExperiences/{workExperienceId}:
+        parameters:
+            - $ref: "#/components/parameters/WorkExperienceId"
+        get:
+            tags:
+                - WorkExperience
+            summary: get work experience
+            operationId: getWorkExperience
+            responses:
+                "200":
+                    description: returns single work experience
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/WorkExperienceDetail"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+        patch:
+            tags:
+                - WorkExperience
+            x-middleware:
+                - loginCheck
+                - emailVerifyCheck
+                - permissionsCheck
+            x-permissions:
+                - ADMIN
+            summary: modify work experience
+            operationId: patchWorkExperience
+            requestBody:
+                required: true
+                $ref: "#/components/requestBodies/WorkExperienceModificationBody"
+            responses:
+                "202":
+                    description: modify existing work experience
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/WorkExperienceDetail"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+        delete:
+            tags:
+                - WorkExperience
+            x-middleware:
+                - loginCheck
+                - emailVerifyCheck
+                - permissionsCheck
+            x-permissions:
+                - ADMIN
+            summary: delete work experience
+            operationId: deleteWorkExperience
+            responses:
+                "202":
+                    description: delete existing work experience
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Empty"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
 
- /query:
-  get:
-   tags:
-    - Query
-   x-middleware:
-    - loginCheck
-    - emailVerifyCheck
-    - permissionsCheck
-   x-permissions:
-    - ADMIN
-   summary: list queries
-   operationId: getQueryList
-   parameters:
-    - $ref: "#/components/parameters/Sort"
-    - $ref: "#/components/parameters/Page"
-    - $ref: "#/components/parameters/Limit"
-   responses:
-    "200":
-     description: returns list of submitted queries
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/QueryList"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "403":
-     $ref: "#/components/responses/Forbidden"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
-  post:
-   tags:
-    - Query
-   summary: create query
-   operationId: createQuery
-   requestBody:
-    required: true
-    $ref: "#/components/requestBodies/QueryBody"
-   responses:
-    "201":
-     description: create new query
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/QueryDetail"
-    "400":
-     $ref: "#/components/responses/BadRequest"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
+    /query:
+        get:
+            tags:
+                - Query
+            x-middleware:
+                - loginCheck
+                - emailVerifyCheck
+                - permissionsCheck
+            x-permissions:
+                - ADMIN
+            summary: list queries
+            operationId: getQueryList
+            parameters:
+                - $ref: "#/components/parameters/Sort"
+                - $ref: "#/components/parameters/Page"
+                - $ref: "#/components/parameters/Limit"
+            responses:
+                "200":
+                    description: returns list of submitted queries
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/QueryList"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+        post:
+            tags:
+                - Query
+            summary: create query
+            operationId: createQuery
+            requestBody:
+                required: true
+                $ref: "#/components/requestBodies/QueryBody"
+            responses:
+                "201":
+                    description: create new query
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/QueryDetail"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
 
- /meetings:
-  get:
-   tags:
-    - Meeting
-   x-middleware:
-    - loginCheck
-    - emailVerifyCheck
-   summary: list meetings
-   operationId: getMeetingList
-   parameters:
-    - $ref: "#/components/parameters/Sort"
-    - $ref: "#/components/parameters/Page"
-    - $ref: "#/components/parameters/Limit"
-    - $ref: "#/components/parameters/SortBy"
-    - $ref: "#/components/parameters/ListType"
-   responses:
-    "200":
-     description: returns list of meetings
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/MeetingList"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "403":
-     $ref: "#/components/responses/Forbidden"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
-  post:
-   tags:
-    - Meeting
-   summary: create Meeting
-   operationId: createMeeting
-   requestBody:
-    required: true
-    $ref: "#/components/requestBodies/MeetingBody"
-   responses:
-    "201":
-     description: create new Meeting
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/MeetingDetail"
-    "400":
-     $ref: "#/components/responses/BadRequest"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
+    /meetings:
+        get:
+            tags:
+                - Meeting
+            x-middleware:
+                - loginCheck
+                - emailVerifyCheck
+            summary: list meetings
+            operationId: getMeetingList
+            parameters:
+                - $ref: "#/components/parameters/Sort"
+                - $ref: "#/components/parameters/Page"
+                - $ref: "#/components/parameters/Limit"
+                - $ref: "#/components/parameters/SortBy"
+                - $ref: "#/components/parameters/ListType"
+            responses:
+                "200":
+                    description: returns list of meetings
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/MeetingList"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+        post:
+            tags:
+                - Meeting
+            summary: create Meeting
+            operationId: createMeeting
+            requestBody:
+                required: true
+                $ref: "#/components/requestBodies/MeetingBody"
+            responses:
+                "201":
+                    description: create new Meeting
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/MeetingDetail"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
 
- /meetings/{meetingId}:
-  parameters:
-   - $ref: "#/components/parameters/MeetingId"
-  get:
-   tags:
-    - Meeting
-   x-middleware:
-    - loginCheck
-    - emailVerifyCheck
-   summary: get meeting
-   operationId: getMeeting
-   responses:
-    "200":
-     description: returns single meeting
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/MeetingDetail"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "403":
-     $ref: "#/components/responses/Forbidden"
-    "404":
-     $ref: "#/components/responses/NotFound"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
-  patch:
-   tags:
-    - Meeting
-   x-middleware:
-    - loginCheck
-    - emailVerifyCheck
-   summary: modify meeting
-   operationId: patchMeeting
-   requestBody:
-    required: true
-    $ref: "#/components/requestBodies/MeetingModificationBody"
-   responses:
-    "202":
-     description: modify existing meeting
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/MeetingDetail"
-    "400":
-     $ref: "#/components/responses/BadRequest"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "403":
-     $ref: "#/components/responses/Forbidden"
-    "404":
-     $ref: "#/components/responses/NotFound"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
-  delete:
-   tags:
-    - Meeting
-   x-middleware:
-    - loginCheck
-    - emailVerifyCheck
-   summary: delete meeting
-   operationId: deleteMeeting
-   responses:
-    "202":
-     description: delete existing meeting
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/Empty"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "403":
-     $ref: "#/components/responses/Forbidden"
-    "404":
-     $ref: "#/components/responses/NotFound"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
+    /meetings/{meetingId}:
+        parameters:
+            - $ref: "#/components/parameters/MeetingId"
+        get:
+            tags:
+                - Meeting
+            x-middleware:
+                - loginCheck
+                - emailVerifyCheck
+            summary: get meeting
+            operationId: getMeeting
+            responses:
+                "200":
+                    description: returns single meeting
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/MeetingDetail"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+        patch:
+            tags:
+                - Meeting
+            x-middleware:
+                - loginCheck
+                - emailVerifyCheck
+            summary: modify meeting
+            operationId: patchMeeting
+            requestBody:
+                required: true
+                $ref: "#/components/requestBodies/MeetingModificationBody"
+            responses:
+                "202":
+                    description: modify existing meeting
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/MeetingDetail"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+        delete:
+            tags:
+                - Meeting
+            x-middleware:
+                - loginCheck
+                - emailVerifyCheck
+            summary: delete meeting
+            operationId: deleteMeeting
+            responses:
+                "202":
+                    description: delete existing meeting
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Empty"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
 
- /meetings/{meetingId}/resendInvite:
-  parameters:
-   - $ref: "#/components/parameters/MeetingId"
-  post:
-   x-middleware:
-    - loginCheck
-    - emailVerifyCheck
-   tags:
-    - Meeting
-   summary: resend meeting invitation link
-   operationId: resendInvite
-   responses:
-    "202":
-     description: "notfication successfully send"
-     content:
-      application/json:
-       schema:
-        $ref: "#/components/schemas/Message"
-    "401":
-     $ref: "#/components/responses/Unauthorized"
-    "403":
-     $ref: "#/components/responses/Forbidden"
-    "404":
-     $ref: "#/components/responses/NotFound"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
+    /meetings/{meetingId}/resendInvite:
+        parameters:
+            - $ref: "#/components/parameters/MeetingId"
+        post:
+            x-middleware:
+                - loginCheck
+                - emailVerifyCheck
+            tags:
+                - Meeting
+            summary: resend meeting invitation link
+            operationId: resendInvite
+            responses:
+                "202":
+                    description: "notfication successfully send"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Message"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
 
- /meetingscalendlywebhook:
-  post:
-   tags:
-    - Meeting
-   summary: resend meeting invitation link
-   operationId: meetingWebhook
-   responses:
-    "200":
-     description: "notfication successfully send"
-     content:
-      application/json:
-       schema:
-        type: object
-    "500":
-     $ref: "#/components/responses/InternalServerError"
-  get:
-   tags:
-    - Meeting
-   summary: resend meeting invitation link
-   operationId: meetingWebhook
-   responses:
-    "200":
-     description: "notfication successfully send"
-     content:
-      application/json:
-       schema:
-        type: object
-    "500":
-     $ref: "#/components/responses/InternalServerError"
-  patch:
-   tags:
-    - Meeting
-   summary: resend meeting invitation link
-   operationId: meetingWebhook
-   responses:
-    "200":
-     description: "notfication successfully send"
-     content:
-      application/json:
-       schema:
-        type: object
-    "500":
-     $ref: "#/components/responses/InternalServerError"
+    /meetingscalendlywebhook:
+        post:
+            tags:
+                - Meeting
+            summary: resend meeting invitation link
+            operationId: meetingWebhook
+            responses:
+                "200":
+                    description: "notfication successfully send"
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
 
- /downloads:
-  get:
-   summary: downloadable link list
-   operationId: downloadsList
-   tags:
-    - Downloads
-   responses:
-    "200":
-     description: return list of downloadable content links
-     content:
-      application/json:
-       schema:
-        type: array
-        items:
-         type: string
-    "500":
-     $ref: "#/components/responses/InternalServerError"
+    /downloads:
+        get:
+            summary: downloadable link list
+            operationId: downloadsList
+            tags:
+                - Downloads
+            responses:
+                "200":
+                    description: return list of downloadable content links
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: string
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
 
- /downloads/{filename}:
-  get:
-   summary: downloadable content
-   operationId: downloadFile
-   tags:
-    - Downloads
-   parameters:
-    - $ref: "#/components/parameters/Filename"
-   responses:
-    "200":
-     description: return file
-     content:
-      application/octet-stream:
-       schema:
-        type: string
-        format: binary
-     headers:
-      X-Content-Type-Options:
-       schema:
-        type: string
-       description: as per SEC-228 value should always be "nosniff"
-       required: true
-      Content-Security-Policy:
-       schema:
-        type: string
-       description: as per SEC-228 value should always be "default-src 'none'; sandbox"
-       required: true
-      Content-Disposition:
-       required: true
-       schema:
-        type: string
-       description: the value is `attachment; filename="abc.pdf"`
-    "404":
-     $ref: "#/components/responses/NotFound"
-    "500":
-     $ref: "#/components/responses/InternalServerError"
+    /downloads/{filename}:
+        get:
+            summary: downloadable content
+            operationId: downloadFile
+            tags:
+                - Downloads
+            parameters:
+                - $ref: "#/components/parameters/Filename"
+            responses:
+                "200":
+                    description: return file
+                    content:
+                        application/octet-stream:
+                            schema:
+                                type: string
+                                format: binary
+                    headers:
+                        X-Content-Type-Options:
+                            schema:
+                                type: string
+                            description: as per SEC-228 value should always be "nosniff"
+                            required: true
+                        Content-Security-Policy:
+                            schema:
+                                type: string
+                            description: as per SEC-228 value should always be "default-src 'none'; sandbox"
+                            required: true
+                        Content-Disposition:
+                            required: true
+                            schema:
+                                type: string
+                            description: the value is `attachment; filename="abc.pdf"`
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
 
- /imagesList:
-  get:
-   summary: image list
-   operationId: imageList
-   tags:
-    - Images
-   responses:
-    "200":
-     description: return list of images
-     content:
-      application/json:
-       schema:
-        type: array
-        items:
-         type: object
-         required:
-           - img
-           - thumbnail
-         properties:
-           img:
-            type: string
-           thumbnail:
-            type: string
-    "500":
-     $ref: "#/components/responses/InternalServerError"
+    /imagesList:
+        get:
+            summary: image list
+            operationId: imageList
+            tags:
+                - Images
+            responses:
+                "200":
+                    description: return list of images
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: object
+                                    required:
+                                        - img
+                                        - thumbnail
+                                    properties:
+                                        img:
+                                            type: string
+                                        thumbnail:
+                                            type: string
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
 
 components:
- #######################################
- #########   requestBodies  ############
- #######################################
- requestBodies:
-  UserLoginBody:
-   description: login email & password
-   content:
-    application/json:
-     schema:
-      allOf:
-       - $ref: "#/components/schemas/LoginBody"
-  UserRegisterBody:
-   description: register user
-   content:
-    application/json:
-     schema:
-      allOf:
-       - $ref: "#/components/schemas/RegisterUserDetail"
-  ForgetPasswordBody:
-   description: forget user password
-   content:
-    application/json:
-     schema:
-      allOf:
-       - $ref: "#/components/schemas/ForgetPasswordDetail"
-  ChangePasswordBody:
-   description: forget user password
-   content:
-    application/json:
-     schema:
-      allOf:
-       - $ref: "#/components/schemas/ChangePasswordDetail"
-  ForgetPasswordVerifyBody:
-   description: forget user password
-   content:
-    application/json:
-     schema:
-      allOf:
-       - $ref: "#/components/schemas/ForgetPasswordVerifyDetail"
-  EmailVerifyBody:
-   description: verify user email
-   content:
-    application/json:
-     schema:
-      allOf:
-       - $ref: "#/components/schemas/EmailVerifyDetail"
-  EducationBody:
-   description: education detail
-   content:
-    application/json:
-     schema:
-      allOf:
-       - $ref: "#/components/schemas/EducationDetailRequired"
-  EducationModificationBody:
-   description: education modification request body
-   content:
-    application/json:
-     schema:
-      allOf:
-       - $ref: "#/components/schemas/EducationDetailBase"
-  ExtraCurricularBody:
-   description: extra curricular detail
-   content:
-    application/json:
-     schema:
-      allOf:
-       - $ref: "#/components/schemas/ExtraCurricularDetailRequired"
-  ExtraCurricularModificationBody:
-   description: extra curricular modification request body
-   content:
-    application/json:
-     schema:
-      allOf:
-       - $ref: "#/components/schemas/ExtraCurricularDetailBase"
-  ProjectBody:
-   description: project detail
-   content:
-    application/json:
-     schema:
-      allOf:
-       - $ref: "#/components/schemas/ProjectDetailRequired"
-  ProjectModificationBody:
-   description: project modification request body
-   content:
-    application/json:
-     schema:
-      allOf:
-       - $ref: "#/components/schemas/ProjectDetailBase"
-  ResponsibilityBody:
-   description: responsibility detail
-   content:
-    application/json:
-     schema:
-      allOf:
-       - $ref: "#/components/schemas/ResponsibilityDetailRequired"
-  ResponsibilityModificationBody:
-   description: responsibility modification request body
-   content:
-    application/json:
-     schema:
-      allOf:
-       - $ref: "#/components/schemas/ResponsibilityDetailBase"
-  SkillBody:
-   description: skill detail
-   content:
-    application/json:
-     schema:
-      allOf:
-       - $ref: "#/components/schemas/SkillDetailRequired"
-  SkillModificationBody:
-   description: skill modification request body
-   content:
-    application/json:
-     schema:
-      allOf:
-       - $ref: "#/components/schemas/SkillDetailBase"
-  TrainingBody:
-   description: training detail
-   content:
-    application/json:
-     schema:
-      allOf:
-       - $ref: "#/components/schemas/TrainingDetailRequired"
-  TrainingModificationBody:
-   description: training modification request body
-   content:
-    application/json:
-     schema:
-      allOf:
-       - $ref: "#/components/schemas/TrainingDetailBase"
-  WorkExperienceBody:
-   description: work experience detail
-   content:
-    application/json:
-     schema:
-      allOf:
-       - $ref: "#/components/schemas/WorkExperienceDetailRequired"
-  WorkExperienceModificationBody:
-   description: work experience modification request body
-   content:
-    application/json:
-     schema:
-      allOf:
-       - $ref: "#/components/schemas/WorkExperienceDetailBase"
-  QueryBody:
-   description: query post detail
-   content:
-    application/json:
-     schema:
-      allOf:
-       - $ref: "#/components/schemas/QueryDetailBase"
+    #######################################
+    #########   requestBodies  ############
+    #######################################
+    requestBodies:
+        UserLoginBody:
+            description: login email & password
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/LoginBody"
+        UserRegisterBody:
+            description: register user
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/RegisterUserDetail"
+        ForgetPasswordBody:
+            description: forget user password
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/ForgetPasswordDetail"
+        ChangePasswordBody:
+            description: forget user password
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/ChangePasswordDetail"
+        ForgetPasswordVerifyBody:
+            description: forget user password
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/ForgetPasswordVerifyDetail"
+        EmailVerifyBody:
+            description: verify user email
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/EmailVerifyDetail"
+        EducationBody:
+            description: education detail
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/EducationDetailRequired"
+        EducationModificationBody:
+            description: education modification request body
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/EducationDetailBase"
+        ExtraCurricularBody:
+            description: extra curricular detail
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/ExtraCurricularDetailRequired"
+        ExtraCurricularModificationBody:
+            description: extra curricular modification request body
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/ExtraCurricularDetailBase"
+        ProjectBody:
+            description: project detail
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/ProjectDetailRequired"
+        ProjectModificationBody:
+            description: project modification request body
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/ProjectDetailBase"
+        ResponsibilityBody:
+            description: responsibility detail
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/ResponsibilityDetailRequired"
+        ResponsibilityModificationBody:
+            description: responsibility modification request body
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/ResponsibilityDetailBase"
+        SkillBody:
+            description: skill detail
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/SkillDetailRequired"
+        SkillModificationBody:
+            description: skill modification request body
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/SkillDetailBase"
+        TrainingBody:
+            description: training detail
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/TrainingDetailRequired"
+        TrainingModificationBody:
+            description: training modification request body
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/TrainingDetailBase"
+        WorkExperienceBody:
+            description: work experience detail
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/WorkExperienceDetailRequired"
+        WorkExperienceModificationBody:
+            description: work experience modification request body
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/WorkExperienceDetailBase"
+        QueryBody:
+            description: query post detail
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/QueryDetailBase"
 
-  MeetingBody:
-   description: meeting payload for creation
-   content:
-    application/json:
-     schema:
-      allOf:
-       - $ref: "#/components/schemas/MeetingDetailRequired"
-  MeetingModificationBody:
-   description: meeting modification request body
-   content:
-    application/json:
-     schema:
-      allOf:
-       - $ref: "#/components/schemas/MeetingDetailBase"
+        MeetingBody:
+            description: meeting payload for creation
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/MeetingDetailRequired"
+        MeetingModificationBody:
+            description: meeting modification request body
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/MeetingDetailBase"
 
- #######################################
- ###########   responses  ##############
- #######################################
- responses:
-  BadRequest:
-   description: bad request
-   content:
-    application/json:
-     schema:
-      allOf:
-       - $ref: "#/components/schemas/Error"
-  InternalServerError:
-   description: internal server error
-   content:
-    application/json:
-     schema:
-      allOf:
-       - $ref: "#/components/schemas/Error"
-  NotFound:
-   description: not found
-   content:
-    application/json:
-     schema:
-      allOf:
-       - $ref: "#/components/schemas/Error"
-  Forbidden:
-   description: forbidden error
-   content:
-    application/json:
-     schema:
-      allOf:
-       - $ref: "#/components/schemas/Error"
-  Unauthorized:
-   description: unauthorized error
-   content:
-    application/json:
-     schema:
-      allOf:
-       - $ref: "#/components/schemas/Error"
-  Conflict:
-   description: conflict error
-   content:
-    application/json:
-     schema:
-      allOf:
-       - $ref: "#/components/schemas/Error"
-  Logout:
-   description: user logged out
-   content:
-    application/json:
-     schema:
-      $ref: "#/components/schemas/Empty"
-  healthStatusOk:
-   description: resume api ready
-   content:
-    application/json:
-     schema:
-      allOf:
-       - $ref: "#/components/schemas/healthStatus"
-      properties:
-       status:
-        example: OK
-  healthStatusError:
-   description: resume api not ready
-   content:
-    application/json:
-     schema:
-      allOf:
-       - $ref: "#/components/schemas/healthStatus"
-      properties:
-       status:
-        example: NOT OK
-  UserDetail:
-   description: user detail
-   content:
-    application/json:
-     schema:
-      allOf:
-       - $ref: "#/components/schemas/UserDetail"
+    #######################################
+    ###########   responses  ##############
+    #######################################
+    responses:
+        BadRequest:
+            description: bad request
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/Error"
+        InternalServerError:
+            description: internal server error
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/Error"
+        NotFound:
+            description: not found
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/Error"
+        Forbidden:
+            description: forbidden error
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/Error"
+        Unauthorized:
+            description: unauthorized error
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/Error"
+        Conflict:
+            description: conflict error
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/Error"
+        Logout:
+            description: user logged out
+            content:
+                application/json:
+                    schema:
+                        $ref: "#/components/schemas/Empty"
+        healthStatusOk:
+            description: resume api ready
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/healthStatus"
+                        properties:
+                            status:
+                                example: OK
+        healthStatusError:
+            description: resume api not ready
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/healthStatus"
+                        properties:
+                            status:
+                                example: NOT OK
+        UserDetail:
+            description: user detail
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: "#/components/schemas/UserDetail"
 
- #######################################
- ############   Schemas  ###############
- #######################################
- schemas:
-  healthStatus:
-   type: object
-   properties:
-    status:
-     type: string
-     enum:
-      - OK
-      - NOT OK
+    #######################################
+    ############   Schemas  ###############
+    #######################################
+    schemas:
+        healthStatus:
+            type: object
+            properties:
+                status:
+                    type: string
+                    enum:
+                        - OK
+                        - NOT OK
 
-  Empty:
-   type: object
+        Empty:
+            type: object
 
-  Error:
-   type: object
-   required:
-    - message
-    - code
-   properties:
-    message:
-     type: string
-     example: failed reason
-    code:
-     type: string
-     items:
-      type: string
-      example: unique error identifier
+        Error:
+            type: object
+            required:
+                - message
+                - code
+            properties:
+                message:
+                    type: string
+                    example: failed reason
+                code:
+                    type: string
+                    items:
+                        type: string
+                        example: unique error identifier
 
-  ResourceList:
-   required:
-    - docs
-   type: object
-   properties:
-    count:
-     type: integer
-     example: 1
-    docs:
-     type: array
-     items:
-      type: object
+        ResourceList:
+            required:
+                - docs
+            type: object
+            properties:
+                count:
+                    type: integer
+                    example: 1
+                docs:
+                    type: array
+                    items:
+                        type: object
 
-  createdAt:
-   type: string
-   format: date-time
-   maxLength: 25
+        createdAt:
+            type: string
+            format: date-time
+            maxLength: 25
 
-  DateMeta:
-   required:
-    - createdAt
-    - modifiedAt
-   type: object
-   properties:
-    createdAt:
-     allOf:
-      - $ref: "#/components/schemas/createdAt"
-    modifiedAt:
-     type: string
-     format: date-time
-     maxLength: 25
-  Message:
-   required:
-    - message
-   type: object
-   properties:
-    message:
-     type: string
-     maxLength: 256
-  #######################################
-  ##########  User Schemas  #############
-  #######################################
+        DateMeta:
+            required:
+                - createdAt
+                - modifiedAt
+            type: object
+            properties:
+                createdAt:
+                    allOf:
+                        - $ref: "#/components/schemas/createdAt"
+                modifiedAt:
+                    type: string
+                    format: date-time
+                    maxLength: 25
+        Message:
+            required:
+                - message
+            type: object
+            properties:
+                message:
+                    type: string
+                    maxLength: 256
+        #######################################
+        ##########  User Schemas  #############
+        #######################################
 
-  AdminList:
-   type: object
-   allOf:
-    - $ref: "#/components/schemas/ResourceList"
-    - type: object
-      properties:
-       docs:
-        type: array
-        items:
-         $ref: "#/components/schemas/AdminDetail"
+        AdminList:
+            type: object
+            allOf:
+                - $ref: "#/components/schemas/ResourceList"
+                - type: object
+                  properties:
+                      docs:
+                          type: array
+                          items:
+                              $ref: "#/components/schemas/AdminDetail"
 
-  AdminDetail:
-   required:
-    - id
-    - firstname
-   properties:
-    id:
-     allOf:
-      - $ref: "#/components/schemas/Id"
-        description: Id of the Education
-    firstname:
-     type: string
-     maxLength: 100
-    lastname:
-     type: string
-     maxLength: 100
+        AdminDetail:
+            required:
+                - id
+                - firstname
+            properties:
+                id:
+                    allOf:
+                        - $ref: "#/components/schemas/Id"
+                          description: Id of the Education
+                firstname:
+                    type: string
+                    maxLength: 100
+                lastname:
+                    type: string
+                    maxLength: 100
 
-  LoginBody:
-   type: object
-   required:
-    - email
-    - password
-   properties:
-    email:
-     type: string
-     maxLength: 256
-     format: email
-    password:
-     type: string
-     maxLength: 25
+        LoginBody:
+            type: object
+            required:
+                - email
+                - password
+            properties:
+                email:
+                    type: string
+                    maxLength: 256
+                    format: email
+                password:
+                    type: string
+                    maxLength: 25
 
-  RegisterUserDetail:
-   allOf:
-    - $ref: "#/components/schemas/UserDetailBase"
-   required:
-    - password
-   properties:
-    password:
-     type: string
-     maxLength: 25
+        RegisterUserDetail:
+            allOf:
+                - $ref: "#/components/schemas/UserDetailBase"
+            required:
+                - password
+            properties:
+                password:
+                    type: string
+                    maxLength: 25
 
-  UserDetail:
-   allOf:
-    - $ref: "#/components/schemas/UserDetailBase"
-    - $ref: "#/components/schemas/DateMeta"
-   required:
-    - id
-    - emailVerified
-   properties:
-    id:
-     type: string
-     example: "145664568768"
-    emailVerified:
-     type: boolean
+        UserDetail:
+            allOf:
+                - $ref: "#/components/schemas/UserDetailBase"
+                - $ref: "#/components/schemas/DateMeta"
+            required:
+                - id
+                - emailVerified
+            properties:
+                id:
+                    type: string
+                    example: "145664568768"
+                emailVerified:
+                    type: boolean
 
-  UserDetailBase:
-   type: object
-   required:
-    - email
-    - firstname
-   properties:
-    email:
-     type: string
-     maxLength: 256
-     format: email
-    firstname:
-     type: string
-     maxLength: 100
-    lastname:
-     type: string
-     maxLength: 100
-  UserList:
-   type: object
-   allOf:
-    - $ref: "#/components/schemas/ResourceList"
-    - type: object
-      properties:
-       docs:
-        type: array
-        items:
-         $ref: "#/components/schemas/UserDetail"
-  EmailVerifyDetail:
-   type: object
-   required:
-    - token
-   properties:
-    token:
-     type: string
-     maxLength: 1024
-  ForgetPasswordDetail:
-   type: object
-   required:
-    - email
-   properties:
-    email:
-     type: string
-     maxLength: 256
-     format: email
-  ChangePasswordDetail:
-   type: object
-   required:
-    - password
-   properties:
-    password:
-     type: string
-     maxLength: 25
-  ForgetPasswordVerifyDetail:
-   type: object
-   required:
-    - token
-   properties:
-    token:
-     type: string
-     maxLength: 1024
-    password:
-     type: string
-     maxLength: 25
-  #######################################
-  ########  Education Schemas  ##########
-  #######################################
-  EducationList:
-   type: object
-   allOf:
-    - $ref: "#/components/schemas/ResourceList"
-    - type: object
-      properties:
-       docs:
-        type: array
-        items:
-         $ref: "#/components/schemas/EducationDetail"
+        UserDetailBase:
+            type: object
+            required:
+                - email
+                - firstname
+            properties:
+                email:
+                    type: string
+                    maxLength: 256
+                    format: email
+                firstname:
+                    type: string
+                    maxLength: 100
+                lastname:
+                    type: string
+                    maxLength: 100
+        UserList:
+            type: object
+            allOf:
+                - $ref: "#/components/schemas/ResourceList"
+                - type: object
+                  properties:
+                      docs:
+                          type: array
+                          items:
+                              $ref: "#/components/schemas/UserDetail"
+        EmailVerifyDetail:
+            type: object
+            required:
+                - token
+            properties:
+                token:
+                    type: string
+                    maxLength: 1024
+        ForgetPasswordDetail:
+            type: object
+            required:
+                - email
+            properties:
+                email:
+                    type: string
+                    maxLength: 256
+                    format: email
+        ChangePasswordDetail:
+            type: object
+            required:
+                - password
+            properties:
+                password:
+                    type: string
+                    maxLength: 25
+        ForgetPasswordVerifyDetail:
+            type: object
+            required:
+                - token
+            properties:
+                token:
+                    type: string
+                    maxLength: 1024
+                password:
+                    type: string
+                    maxLength: 25
+        #######################################
+        ########  Education Schemas  ##########
+        #######################################
+        EducationList:
+            type: object
+            allOf:
+                - $ref: "#/components/schemas/ResourceList"
+                - type: object
+                  properties:
+                      docs:
+                          type: array
+                          items:
+                              $ref: "#/components/schemas/EducationDetail"
 
-  EducationDetail:
-   allOf:
-    - $ref: "#/components/schemas/EducationDetailRequired"
-    - $ref: "#/components/schemas/DateMeta"
-   type: object
-   required:
-    - id
-   properties:
-    id:
-     type: string
-     example: "145664568768"
+        EducationDetail:
+            allOf:
+                - $ref: "#/components/schemas/EducationDetailRequired"
+                - $ref: "#/components/schemas/DateMeta"
+            type: object
+            required:
+                - id
+            properties:
+                id:
+                    type: string
+                    example: "145664568768"
 
-  EducationDetailRequired:
-   allOf:
-    - $ref: "#/components/schemas/EducationDetailBase"
-   type: object
-   required:
-    - institute
-    - programme
-    - totalMarks
-    - obtainedMarks
+        EducationDetailRequired:
+            allOf:
+                - $ref: "#/components/schemas/EducationDetailBase"
+            type: object
+            required:
+                - institute
+                - programme
+                - totalMarks
+                - obtainedMarks
 
-  EducationDetailBase:
-   type: object
-   properties:
-    institute:
-     type: string
-     maxLength: 100
-    address:
-     type: string
-     maxLength: 200
-    programme:
-     type: string
-     maxLength: 100
-    programmeArea:
-     type: string
-     maxLength: 100
-    start:
-     type: string
-     format: date-time
-     maxLength: 25
-    end:
-     type: string
-     format: date-time
-     maxLength: 25
-    totalMarks:
-     type: number
-     multipleOf: 0.001
-    obtainedMarks:
-     type: number
-     multipleOf: 0.001
-    gradingType:
-     type: string
-     enum:
-      - percentage
-      - cgpa
-     default: cgpa
-    status:
-     type: string
-     enum:
-      - public
-      - draft
-     default: public
+        EducationDetailBase:
+            type: object
+            properties:
+                institute:
+                    type: string
+                    maxLength: 100
+                address:
+                    type: string
+                    maxLength: 200
+                programme:
+                    type: string
+                    maxLength: 100
+                programmeArea:
+                    type: string
+                    maxLength: 100
+                start:
+                    type: string
+                    format: date-time
+                    maxLength: 25
+                end:
+                    type: string
+                    format: date-time
+                    maxLength: 25
+                totalMarks:
+                    type: number
+                    multipleOf: 0.001
+                obtainedMarks:
+                    type: number
+                    multipleOf: 0.001
+                gradingType:
+                    type: string
+                    enum:
+                        - percentage
+                        - cgpa
+                    default: cgpa
+                status:
+                    type: string
+                    enum:
+                        - public
+                        - draft
+                    default: public
 
-  #######################################
-  #####  Extra Curricular Schemas  ######
-  #######################################
-  ExtraCurricularList:
-   type: object
-   allOf:
-    - $ref: "#/components/schemas/ResourceList"
-    - type: object
-      properties:
-       docs:
-        type: array
-        items:
-         $ref: "#/components/schemas/ExtraCurricularDetail"
+        #######################################
+        #####  Extra Curricular Schemas  ######
+        #######################################
+        ExtraCurricularList:
+            type: object
+            allOf:
+                - $ref: "#/components/schemas/ResourceList"
+                - type: object
+                  properties:
+                      docs:
+                          type: array
+                          items:
+                              $ref: "#/components/schemas/ExtraCurricularDetail"
 
-  ExtraCurricularDetail:
-   allOf:
-    - $ref: "#/components/schemas/ExtraCurricularDetailRequired"
-    - $ref: "#/components/schemas/DateMeta"
-   type: object
-   required:
-    - id
-   properties:
-    id:
-     type: string
-     example: "145664568768"
+        ExtraCurricularDetail:
+            allOf:
+                - $ref: "#/components/schemas/ExtraCurricularDetailRequired"
+                - $ref: "#/components/schemas/DateMeta"
+            type: object
+            required:
+                - id
+            properties:
+                id:
+                    type: string
+                    example: "145664568768"
 
-  ExtraCurricularDetailRequired:
-   allOf:
-    - $ref: "#/components/schemas/ExtraCurricularDetailBase"
-   type: object
-   required:
-    - activity
+        ExtraCurricularDetailRequired:
+            allOf:
+                - $ref: "#/components/schemas/ExtraCurricularDetailBase"
+            type: object
+            required:
+                - activity
 
-  ExtraCurricularDetailBase:
-   type: object
-   properties:
-    activity:
-     type: string
-     maxLength: 200
-    description:
-     type: string
-     maxLength: 500
-    status:
-     type: string
-     enum:
-      - public
-      - draft
-     default: public
+        ExtraCurricularDetailBase:
+            type: object
+            properties:
+                activity:
+                    type: string
+                    maxLength: 200
+                description:
+                    type: string
+                    maxLength: 500
+                status:
+                    type: string
+                    enum:
+                        - public
+                        - draft
+                    default: public
 
-  #######################################
-  ##########  Project Schemas  ##########
-  #######################################
-  ProjectList:
-   type: object
-   allOf:
-    - $ref: "#/components/schemas/ResourceList"
-    - type: object
-      properties:
-       docs:
-        type: array
-        items:
-         $ref: "#/components/schemas/ProjectDetail"
+        #######################################
+        ##########  Project Schemas  ##########
+        #######################################
+        ProjectList:
+            type: object
+            allOf:
+                - $ref: "#/components/schemas/ResourceList"
+                - type: object
+                  properties:
+                      docs:
+                          type: array
+                          items:
+                              $ref: "#/components/schemas/ProjectDetail"
 
-  ProjectDetail:
-   allOf:
-    - $ref: "#/components/schemas/ProjectDetailRequired"
-    - $ref: "#/components/schemas/DateMeta"
-   type: object
-   required:
-    - id
-   properties:
-    id:
-     type: string
-     example: "145664568768"
+        ProjectDetail:
+            allOf:
+                - $ref: "#/components/schemas/ProjectDetailRequired"
+                - $ref: "#/components/schemas/DateMeta"
+            type: object
+            required:
+                - id
+            properties:
+                id:
+                    type: string
+                    example: "145664568768"
 
-  ProjectDetailRequired:
-   allOf:
-    - $ref: "#/components/schemas/ProjectDetailBase"
-   type: object
-   required:
-    - title
-    - description
+        ProjectDetailRequired:
+            allOf:
+                - $ref: "#/components/schemas/ProjectDetailBase"
+            type: object
+            required:
+                - title
+                - description
 
-  ProjectDetailBase:
-   type: object
-   properties:
-    title:
-     type: string
-     maxLength: 100
-    description:
-     type: string
-     maxLength: 500
-    area:
-     type: string
-     maxLength: 100
-    guidedBy:
-     type: string
-     maxLength: 200
-    techStack:
-     type: string
-     maxLength: 200
-    start:
-     type: string
-     format: date-time
-     maxLength: 25
-    end:
-     type: string
-     format: date-time
-     maxLength: 25
-    status:
-     type: string
-     enum:
-      - public
-      - draft
-     default: public
+        ProjectDetailBase:
+            type: object
+            properties:
+                title:
+                    type: string
+                    maxLength: 100
+                description:
+                    type: string
+                    maxLength: 500
+                area:
+                    type: string
+                    maxLength: 100
+                guidedBy:
+                    type: string
+                    maxLength: 200
+                techStack:
+                    type: string
+                    maxLength: 200
+                start:
+                    type: string
+                    format: date-time
+                    maxLength: 25
+                end:
+                    type: string
+                    format: date-time
+                    maxLength: 25
+                status:
+                    type: string
+                    enum:
+                        - public
+                        - draft
+                    default: public
 
-  #######################################
-  ##########  Responsibility Schemas  ##########
-  #######################################
-  ResponsibilityList:
-   type: object
-   allOf:
-    - $ref: "#/components/schemas/ResourceList"
-    - type: object
-      properties:
-       docs:
-        type: array
-        items:
-         $ref: "#/components/schemas/ResponsibilityDetail"
+        #######################################
+        ##########  Responsibility Schemas  ##########
+        #######################################
+        ResponsibilityList:
+            type: object
+            allOf:
+                - $ref: "#/components/schemas/ResourceList"
+                - type: object
+                  properties:
+                      docs:
+                          type: array
+                          items:
+                              $ref: "#/components/schemas/ResponsibilityDetail"
 
-  ResponsibilityDetail:
-   allOf:
-    - $ref: "#/components/schemas/ResponsibilityDetailRequired"
-    - $ref: "#/components/schemas/DateMeta"
-   type: object
-   required:
-    - id
-   properties:
-    id:
-     type: string
-     example: "145664568768"
+        ResponsibilityDetail:
+            allOf:
+                - $ref: "#/components/schemas/ResponsibilityDetailRequired"
+                - $ref: "#/components/schemas/DateMeta"
+            type: object
+            required:
+                - id
+            properties:
+                id:
+                    type: string
+                    example: "145664568768"
 
-  ResponsibilityDetailRequired:
-   allOf:
-    - $ref: "#/components/schemas/ResponsibilityDetailBase"
-   type: object
-   required:
-    - organization
-    - position
+        ResponsibilityDetailRequired:
+            allOf:
+                - $ref: "#/components/schemas/ResponsibilityDetailBase"
+            type: object
+            required:
+                - organization
+                - position
 
-  ResponsibilityDetailBase:
-   type: object
-   properties:
-    organization:
-     type: string
-     maxLength: 100
-    position:
-     type: string
-     maxLength: 100
-    guidedBy:
-     type: string
-     maxLength: 200
-    description:
-     type: string
-     maxLength: 500
-    area:
-     type: string
-     maxLength: 100
-    start:
-     type: string
-     format: date-time
-     maxLength: 25
-    end:
-     type: string
-     format: date-time
-     maxLength: 25
-    status:
-     type: string
-     enum:
-      - public
-      - draft
-     default: public
+        ResponsibilityDetailBase:
+            type: object
+            properties:
+                organization:
+                    type: string
+                    maxLength: 100
+                position:
+                    type: string
+                    maxLength: 100
+                guidedBy:
+                    type: string
+                    maxLength: 200
+                description:
+                    type: string
+                    maxLength: 500
+                area:
+                    type: string
+                    maxLength: 100
+                start:
+                    type: string
+                    format: date-time
+                    maxLength: 25
+                end:
+                    type: string
+                    format: date-time
+                    maxLength: 25
+                status:
+                    type: string
+                    enum:
+                        - public
+                        - draft
+                    default: public
 
-  #######################################
-  ###########  Skill Schemas  ###########
-  #######################################
-  SkillList:
-   type: object
-   allOf:
-    - $ref: "#/components/schemas/ResourceList"
-    - type: object
-      properties:
-       docs:
-        type: array
-        items:
-         $ref: "#/components/schemas/SkillDetail"
+        #######################################
+        ###########  Skill Schemas  ###########
+        #######################################
+        SkillList:
+            type: object
+            allOf:
+                - $ref: "#/components/schemas/ResourceList"
+                - type: object
+                  properties:
+                      docs:
+                          type: array
+                          items:
+                              $ref: "#/components/schemas/SkillDetail"
 
-  SkillDetail:
-   allOf:
-    - $ref: "#/components/schemas/SkillDetailRequired"
-    - $ref: "#/components/schemas/DateMeta"
-   type: object
-   required:
-    - id
-   properties:
-    id:
-     type: string
-     example: "145664568768"
+        SkillDetail:
+            allOf:
+                - $ref: "#/components/schemas/SkillDetailRequired"
+                - $ref: "#/components/schemas/DateMeta"
+            type: object
+            required:
+                - id
+            properties:
+                id:
+                    type: string
+                    example: "145664568768"
 
-  SkillDetailRequired:
-   allOf:
-    - $ref: "#/components/schemas/SkillDetailBase"
-   type: object
-   required:
-    - name
+        SkillDetailRequired:
+            allOf:
+                - $ref: "#/components/schemas/SkillDetailBase"
+            type: object
+            required:
+                - name
 
-  SkillDetailBase:
-   type: object
-   properties:
-    name:
-     type: string
-     maxLength: 100
-    group:
-     type: string
-     maxLength: 50
-    experience:
-     type: string
-     maxLength: 50
-    status:
-     type: string
-     enum:
-      - public
-      - draft
-     default: public
+        SkillDetailBase:
+            type: object
+            properties:
+                name:
+                    type: string
+                    maxLength: 100
+                group:
+                    type: string
+                    maxLength: 50
+                experience:
+                    type: string
+                    maxLength: 50
+                status:
+                    type: string
+                    enum:
+                        - public
+                        - draft
+                    default: public
 
-  #######################################
-  ###########  Training Schemas  ###########
-  #######################################
-  TrainingList:
-   type: object
-   allOf:
-    - $ref: "#/components/schemas/ResourceList"
-    - type: object
-      properties:
-       docs:
-        type: array
-        items:
-         $ref: "#/components/schemas/TrainingDetail"
+        #######################################
+        ###########  Training Schemas  ###########
+        #######################################
+        TrainingList:
+            type: object
+            allOf:
+                - $ref: "#/components/schemas/ResourceList"
+                - type: object
+                  properties:
+                      docs:
+                          type: array
+                          items:
+                              $ref: "#/components/schemas/TrainingDetail"
 
-  TrainingDetail:
-   allOf:
-    - $ref: "#/components/schemas/TrainingDetailRequired"
-    - $ref: "#/components/schemas/DateMeta"
-   type: object
-   required:
-    - id
-   properties:
-    id:
-     type: string
-     example: "145664568768"
+        TrainingDetail:
+            allOf:
+                - $ref: "#/components/schemas/TrainingDetailRequired"
+                - $ref: "#/components/schemas/DateMeta"
+            type: object
+            required:
+                - id
+            properties:
+                id:
+                    type: string
+                    example: "145664568768"
 
-  TrainingDetailRequired:
-   allOf:
-    - $ref: "#/components/schemas/TrainingDetailBase"
-   type: object
-   required:
-    - organization
-    - position
+        TrainingDetailRequired:
+            allOf:
+                - $ref: "#/components/schemas/TrainingDetailBase"
+            type: object
+            required:
+                - organization
+                - position
 
-  TrainingDetailBase:
-   type: object
-   properties:
-    organization:
-     type: string
-     maxLength: 100
-    position:
-     type: string
-     maxLength: 100
-    description:
-     type: string
-     maxLength: 500
-    area:
-     type: string
-     maxLength: 100
-    techStack:
-     type: string
-     maxLength: 200
-    start:
-     type: string
-     format: date-time
-     maxLength: 25
-    end:
-     type: string
-     format: date-time
-     maxLength: 25
-    status:
-     type: string
-     enum:
-      - public
-      - draft
-     default: public
+        TrainingDetailBase:
+            type: object
+            properties:
+                organization:
+                    type: string
+                    maxLength: 100
+                position:
+                    type: string
+                    maxLength: 100
+                description:
+                    type: string
+                    maxLength: 500
+                area:
+                    type: string
+                    maxLength: 100
+                techStack:
+                    type: string
+                    maxLength: 200
+                start:
+                    type: string
+                    format: date-time
+                    maxLength: 25
+                end:
+                    type: string
+                    format: date-time
+                    maxLength: 25
+                status:
+                    type: string
+                    enum:
+                        - public
+                        - draft
+                    default: public
 
-  #######################################
-  #####  Work Experience Schemas  #######
-  #######################################
-  WorkExperienceList:
-   type: object
-   allOf:
-    - $ref: "#/components/schemas/ResourceList"
-    - type: object
-      properties:
-       docs:
-        type: array
-        items:
-         $ref: "#/components/schemas/WorkExperienceDetail"
+        #######################################
+        #####  Work Experience Schemas  #######
+        #######################################
+        WorkExperienceList:
+            type: object
+            allOf:
+                - $ref: "#/components/schemas/ResourceList"
+                - type: object
+                  properties:
+                      docs:
+                          type: array
+                          items:
+                              $ref: "#/components/schemas/WorkExperienceDetail"
 
-  WorkExperienceDetail:
-   allOf:
-    - $ref: "#/components/schemas/WorkExperienceDetailRequired"
-    - $ref: "#/components/schemas/DateMeta"
-   type: object
-   required:
-    - id
-   properties:
-    id:
-     type: string
-     example: "145664568768"
+        WorkExperienceDetail:
+            allOf:
+                - $ref: "#/components/schemas/WorkExperienceDetailRequired"
+                - $ref: "#/components/schemas/DateMeta"
+            type: object
+            required:
+                - id
+            properties:
+                id:
+                    type: string
+                    example: "145664568768"
 
-  WorkExperienceDetailRequired:
-   allOf:
-    - $ref: "#/components/schemas/WorkExperienceDetailBase"
-   type: object
-   required:
-    - organization
-    - position
-    - start
+        WorkExperienceDetailRequired:
+            allOf:
+                - $ref: "#/components/schemas/WorkExperienceDetailBase"
+            type: object
+            required:
+                - organization
+                - position
+                - start
 
-  WorkExperienceDetailBase:
-   type: object
-   properties:
-    organization:
-     type: string
-     maxLength: 100
-    position:
-     type: string
-     maxLength: 100
-    team:
-     type: string
-     maxLength: 100
-    description:
-     type: string
-     maxLength: 500
-    techStack:
-     type: string
-     maxLength: 200
-    start:
-     type: string
-     format: date-time
-     maxLength: 25
-    end:
-     type: string
-     format: date-time
-     maxLength: 25
-    status:
-     type: string
-     enum:
-      - public
-      - draft
-     default: public
+        WorkExperienceDetailBase:
+            type: object
+            properties:
+                organization:
+                    type: string
+                    maxLength: 100
+                position:
+                    type: string
+                    maxLength: 100
+                team:
+                    type: string
+                    maxLength: 100
+                description:
+                    type: string
+                    maxLength: 500
+                techStack:
+                    type: string
+                    maxLength: 200
+                start:
+                    type: string
+                    format: date-time
+                    maxLength: 25
+                end:
+                    type: string
+                    format: date-time
+                    maxLength: 25
+                status:
+                    type: string
+                    enum:
+                        - public
+                        - draft
+                    default: public
 
-  #######################################
-  ###########  Query Schemas  ###########
-  #######################################
-  QueryList:
-   type: object
-   allOf:
-    - $ref: "#/components/schemas/ResourceList"
-    - type: object
-      properties:
-       docs:
-        type: array
-        items:
-         $ref: "#/components/schemas/QueryDetail"
+        #######################################
+        ###########  Query Schemas  ###########
+        #######################################
+        QueryList:
+            type: object
+            allOf:
+                - $ref: "#/components/schemas/ResourceList"
+                - type: object
+                  properties:
+                      docs:
+                          type: array
+                          items:
+                              $ref: "#/components/schemas/QueryDetail"
 
-  QueryDetail:
-   allOf:
-    - $ref: "#/components/schemas/QueryDetailBase"
-   type: object
-   required:
-    - id
-    - createdAt
-   properties:
-    id:
-     type: string
-     example: "145664568768"
-    createdAt:
-     allOf:
-      - $ref: "#/components/schemas/createdAt"
+        QueryDetail:
+            allOf:
+                - $ref: "#/components/schemas/QueryDetailBase"
+            type: object
+            required:
+                - id
+                - createdAt
+            properties:
+                id:
+                    type: string
+                    example: "145664568768"
+                createdAt:
+                    allOf:
+                        - $ref: "#/components/schemas/createdAt"
 
-  QueryDetailBase:
-   type: object
-   properties:
-    name:
-     type: string
-     maxLength: 200
-    subject:
-     type: string
-     maxLength: 200
-    description:
-     type: string
-     maxLength: 500
-    email:
-     type: string
-     maxLength: 256
-    mobile:
-     type: string
-     maxLength: 13
+        QueryDetailBase:
+            type: object
+            properties:
+                name:
+                    type: string
+                    maxLength: 200
+                subject:
+                    type: string
+                    maxLength: 200
+                description:
+                    type: string
+                    maxLength: 500
+                email:
+                    type: string
+                    maxLength: 256
+                mobile:
+                    type: string
+                    maxLength: 13
 
-  #######################################
-  ############   Meetings  ##############
-  #######################################
-  MeetingList:
-   type: object
-   allOf:
-    - $ref: "#/components/schemas/ResourceList"
-    - type: object
-      properties:
-       docs:
-        type: array
-        items:
-         $ref: "#/components/schemas/MeetingDetail"
+        #######################################
+        ############   Meetings  ##############
+        #######################################
+        MeetingList:
+            type: object
+            allOf:
+                - $ref: "#/components/schemas/ResourceList"
+                - type: object
+                  properties:
+                      docs:
+                          type: array
+                          items:
+                              $ref: "#/components/schemas/MeetingDetail"
 
-  MeetingDetail:
-   allOf:
-    - $ref: "#/components/schemas/MeetingDetailRequired"
-    - $ref: "#/components/schemas/DateMeta"
-   type: object
-   required:
-    - id
-    - joiningLink
-   properties:
-    id:
-     type: string
-     example: "145664568768"
-    joiningLink:
-     type: string
-     maxLength: 200
+        MeetingDetail:
+            allOf:
+                - $ref: "#/components/schemas/MeetingDetailRequired"
+                - $ref: "#/components/schemas/DateMeta"
+            type: object
+            required:
+                - id
+                - joiningLink
+            properties:
+                id:
+                    type: string
+                    example: "145664568768"
+                joiningLink:
+                    type: string
+                    maxLength: 200
 
-  MeetingDetailRequired:
-   allOf:
-    - $ref: "#/components/schemas/MeetingDetailBase"
-   type: object
-   required:
-    - end
-    - start
+        MeetingDetailRequired:
+            allOf:
+                - $ref: "#/components/schemas/MeetingDetailBase"
+            type: object
+            required:
+                - end
+                - start
 
-  MeetingDetailBase:
-   type: object
-   properties:
-    title:
-     type: string
-     maxLength: 100
-    description:
-     type: string
-     maxLength: 500
-    start:
-     type: string
-     format: date-time
-     maxLength: 25
-    end:
-     type: string
-     format: date-time
-     maxLength: 25
-    email:
-     type: string
-     maxLength: 256
-     format: email
-    members:
-     type: array
-     minItems: 0
-     maxItems: 100
-     items:
-      type: string
-      format: email
-      maxLength: 256
-      example: bob@gmail.com
+        MeetingDetailBase:
+            type: object
+            properties:
+                title:
+                    type: string
+                    maxLength: 100
+                start:
+                    type: string
+                    format: date-time
+                    maxLength: 25
+                end:
+                    type: string
+                    format: date-time
+                    maxLength: 25
+                email:
+                    type: string
+                    maxLength: 256
+                    format: email
+                members:
+                    type: array
+                    minItems: 0
+                    maxItems: 100
+                    items:
+                        type: string
+                        format: email
+                        maxLength: 256
+                        example: bob@gmail.com
+                status:
+                    type: string
+                    default: active
+                    enum:
+                        - active
+                        - inactive
 
-  #######################################
-  ############  Identifiers  ############
-  #######################################
-  Id:
-   type: string
-   pattern: '^[a-f\d]{24}$'
+        #######################################
+        ############  Identifiers  ############
+        #######################################
+        Id:
+            type: string
+            pattern: '^[a-f\d]{24}$'
 
-  EducationId:
-   allOf:
-    - $ref: "#/components/schemas/Id"
-    - description: Id of the Education
-  ExtraCurricularId:
-   allOf:
-    - $ref: "#/components/schemas/Id"
-    - description: Id of the Education
-  ProjectId:
-   allOf:
-    - $ref: "#/components/schemas/Id"
-    - description: Id of the Education
-  ResponsibilityId:
-   allOf:
-    - $ref: "#/components/schemas/Id"
-    - description: Id of the Education
-  SkillId:
-   allOf:
-    - $ref: "#/components/schemas/Id"
-    - description: Id of the Education
-  TrainingId:
-   allOf:
-    - $ref: "#/components/schemas/Id"
-    - description: Id of the Education
-  WorkExperienceId:
-   allOf:
-    - $ref: "#/components/schemas/Id"
-    - description: Id of the Education
-  MeetingId:
-   allOf:
-    - $ref: "#/components/schemas/Id"
-    - description: Id of the Education
-  Filename:
-   type: string
-   maxLength: 256
-   minLength: 1
-  Sort:
-   type: string
-   default: desc
-   enum:
-    - asc
-    - desc
-  SortBy:
-   type: string
-   default: createdAt
-   enum:
-    - createdAt
-    - start
-    - end
-  ListType:
-   type: string
-   default: all
-   enum:
-    - all
-    - upcoming
-    - previous
-  Status:
-   type: string
-   default: public
-   enum:
-    - public
-    - draft
-    - all
- #######################################
- ############  Parameters  #############
- #######################################
+        EducationId:
+            allOf:
+                - $ref: "#/components/schemas/Id"
+                - description: Id of the Education
+        ExtraCurricularId:
+            allOf:
+                - $ref: "#/components/schemas/Id"
+                - description: Id of the Education
+        ProjectId:
+            allOf:
+                - $ref: "#/components/schemas/Id"
+                - description: Id of the Education
+        ResponsibilityId:
+            allOf:
+                - $ref: "#/components/schemas/Id"
+                - description: Id of the Education
+        SkillId:
+            allOf:
+                - $ref: "#/components/schemas/Id"
+                - description: Id of the Education
+        TrainingId:
+            allOf:
+                - $ref: "#/components/schemas/Id"
+                - description: Id of the Education
+        WorkExperienceId:
+            allOf:
+                - $ref: "#/components/schemas/Id"
+                - description: Id of the Education
+        MeetingId:
+            allOf:
+                - $ref: "#/components/schemas/Id"
+                - description: Id of the Education
+        Filename:
+            type: string
+            maxLength: 256
+            minLength: 1
+        Sort:
+            type: string
+            default: desc
+            enum:
+                - asc
+                - desc
+        SortBy:
+            type: string
+            default: createdAt
+            enum:
+                - createdAt
+                - start
+                - end
+        ListType:
+            type: string
+            default: all
+            enum:
+                - all
+                - upcoming
+                - previous
+        Status:
+            type: string
+            default: public
+            enum:
+                - public
+                - draft
+                - all
+    #######################################
+    ############  Parameters  #############
+    #######################################
 
- parameters:
-  EducationId:
-   name: educationId
-   description: education identifier
-   in: path
-   required: true
-   schema:
-    allOf:
-     - $ref: "#/components/schemas/EducationId"
-  ExtraCurricularId:
-   name: extraCurricularId
-   description: education identifier
-   in: path
-   required: true
-   schema:
-    allOf:
-     - $ref: "#/components/schemas/ExtraCurricularId"
-  ProjectId:
-   name: projectId
-   description: education identifier
-   in: path
-   required: true
-   schema:
-    allOf:
-     - $ref: "#/components/schemas/ProjectId"
-  ResponsibilityId:
-   name: responsibilityId
-   description: education identifier
-   in: path
-   required: true
-   schema:
-    allOf:
-     - $ref: "#/components/schemas/ResponsibilityId"
-  SkillId:
-   name: skillId
-   description: education identifier
-   in: path
-   required: true
-   schema:
-    allOf:
-     - $ref: "#/components/schemas/SkillId"
-  TrainingId:
-   name: trainingId
-   description: education identifier
-   in: path
-   required: true
-   schema:
-    allOf:
-     - $ref: "#/components/schemas/TrainingId"
-  WorkExperienceId:
-   name: workExperienceId
-   description: education identifier
-   in: path
-   required: true
-   schema:
-    allOf:
-     - $ref: "#/components/schemas/WorkExperienceId"
-  MeetingId:
-   name: meetingId
-   description: meeting identifier
-   in: path
-   required: true
-   schema:
-    allOf:
-     - $ref: "#/components/schemas/MeetingId"
-  MeetingTimestamp:
-   name: timestamp
-   description: timestamp
-   in: query
-   required: true
-   allowReserved: true
-   schema:
-    type: string
-    maxLength: 25
-    format: date-time
-   example: "2022-12-10T10:31:53.327Z"
-  Filename:
-   name: filename
-   description: filename identifier
-   in: path
-   required: true
-   schema:
-    allOf:
-     - $ref: "#/components/schemas/Filename"
-  Sort:
-   name: sort
-   description: sort query parameter
-   in: query
-   required: false
-   schema:
-    allOf:
-     - $ref: "#/components/schemas/Sort"
-  SortBy:
-   name: sortBy
-   description: sortBy query parameter
-   in: query
-   required: false
-   schema:
-    allOf:
-     - $ref: "#/components/schemas/SortBy"
-  ListType:
-   name: listType
-   description: sortBy query parameter
-   in: query
-   required: false
-   schema:
-    allOf:
-     - $ref: "#/components/schemas/ListType"
-  Limit:
-   name: limit
-   description: limit query parameter
-   in: query
-   required: false
-   schema:
-    default: 25
-    type: integer
-  Page:
-   name: page
-   description: page query parameter
-   in: query
-   required: false
-   schema:
-    type: integer
-    minimum: 1
-    maximum: 100
-  Status:
-   name: status
-   description: status query parameter
-   in: query
-   required: false
-   schema:
-    allOf:
-     - $ref: "#/components/schemas/Status"
+    parameters:
+        EducationId:
+            name: educationId
+            description: education identifier
+            in: path
+            required: true
+            schema:
+                allOf:
+                    - $ref: "#/components/schemas/EducationId"
+        ExtraCurricularId:
+            name: extraCurricularId
+            description: education identifier
+            in: path
+            required: true
+            schema:
+                allOf:
+                    - $ref: "#/components/schemas/ExtraCurricularId"
+        ProjectId:
+            name: projectId
+            description: education identifier
+            in: path
+            required: true
+            schema:
+                allOf:
+                    - $ref: "#/components/schemas/ProjectId"
+        ResponsibilityId:
+            name: responsibilityId
+            description: education identifier
+            in: path
+            required: true
+            schema:
+                allOf:
+                    - $ref: "#/components/schemas/ResponsibilityId"
+        SkillId:
+            name: skillId
+            description: education identifier
+            in: path
+            required: true
+            schema:
+                allOf:
+                    - $ref: "#/components/schemas/SkillId"
+        TrainingId:
+            name: trainingId
+            description: education identifier
+            in: path
+            required: true
+            schema:
+                allOf:
+                    - $ref: "#/components/schemas/TrainingId"
+        WorkExperienceId:
+            name: workExperienceId
+            description: education identifier
+            in: path
+            required: true
+            schema:
+                allOf:
+                    - $ref: "#/components/schemas/WorkExperienceId"
+        MeetingId:
+            name: meetingId
+            description: meeting identifier
+            in: path
+            required: true
+            schema:
+                allOf:
+                    - $ref: "#/components/schemas/MeetingId"
+        MeetingTimestamp:
+            name: timestamp
+            description: timestamp
+            in: query
+            required: true
+            allowReserved: true
+            schema:
+                type: string
+                maxLength: 25
+                format: date-time
+            example: "2022-12-10T10:31:53.327Z"
+        Filename:
+            name: filename
+            description: filename identifier
+            in: path
+            required: true
+            schema:
+                allOf:
+                    - $ref: "#/components/schemas/Filename"
+        Sort:
+            name: sort
+            description: sort query parameter
+            in: query
+            required: false
+            schema:
+                allOf:
+                    - $ref: "#/components/schemas/Sort"
+        SortBy:
+            name: sortBy
+            description: sortBy query parameter
+            in: query
+            required: false
+            schema:
+                allOf:
+                    - $ref: "#/components/schemas/SortBy"
+        ListType:
+            name: listType
+            description: sortBy query parameter
+            in: query
+            required: false
+            schema:
+                allOf:
+                    - $ref: "#/components/schemas/ListType"
+        Limit:
+            name: limit
+            description: limit query parameter
+            in: query
+            required: false
+            schema:
+                default: 25
+                type: integer
+        Page:
+            name: page
+            description: page query parameter
+            in: query
+            required: false
+            schema:
+                type: integer
+                minimum: 1
+                maximum: 100
+        Status:
+            name: status
+            description: status query parameter
+            in: query
+            required: false
+            schema:
+                allOf:
+                    - $ref: "#/components/schemas/Status"
