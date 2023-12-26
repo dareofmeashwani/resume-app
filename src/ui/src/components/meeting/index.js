@@ -47,9 +47,9 @@ const Meeting = (props) => {
       if (listType !== "previous") {
         if(e.data.event==="event_scheduled"){
           dispatch(clearMeetingsList());
+          console.log("Event name:", e.data.event);
         }
       }
-      console.log("Event name:", e.data.event);
     }
   });
   return (
