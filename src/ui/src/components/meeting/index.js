@@ -43,8 +43,11 @@ const Meeting = (props) => {
     return e.origin === "https://calendly.com" && e.data.event && e.data.event.indexOf("calendly.") === 0;
   };
   window.addEventListener("message", function (e) {
+    console.log("Event name:", e.data.event);
     if (isCalendlyEvent(e)) {
+      console.log("Event name:", e.data.event);
       if (listType !== "previous") {
+        console.log("Event name:", e.data.event);
         if(e.data.event==="event_scheduled"){
           dispatch(clearMeetingsList());
           console.log("Event name:", e.data.event);
