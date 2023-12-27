@@ -4,12 +4,6 @@ import getText from "../../messages";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
-
-export const clearMeetingsStatus = () => {
-	return async (dispatch) => {
-		dispatch(actions.clearMeetingsStatus());
-	};
-};
 export const getMeetingList = (listType, sort, sortBy) => {
 	return async (dispatch) => {
 		dispatch(actions.setBusyIndicator());
@@ -32,13 +26,13 @@ export const clearMeetingsList = () => {
 	};
 };
 
-export const deleteMeeting = (meetingId) => {
+export const cancelMeetingInvite = (meetingId) => {
 	return async (dispatch) => {
 		dispatch(actions.setBusyIndicator());
 		try {
-			await axios.delete(`/api/v1/meetings/${meetingId}`);
+			await axios.post(`/api/v1/meetings/cancelInvite?meetingId=${meetingId}`);
 			dispatch(actions.clearMeetingList());
-			dispatch(actions.successGlobal({message: getText("meetingDeletedNoti")}));
+			dispatch(actions.successGlobal({message: getText("meetingCancelNoti")}));
 		} catch (error) {
 			dispatch(
 				actions.errorGlobal(error.response.data)
@@ -52,42 +46,8 @@ export const resendMeetingInvite = (meetingId) => {
 	return async (dispatch) => {
 		dispatch(actions.setBusyIndicator());
 		try {
-			const response = await axios.post(`/api/v1/meetings/${meetingId}/resendInvite`);
+			const response = await axios.post(`/api/v1/meetings/resendInvite?meetingId=${meetingId}`);
 			dispatch(actions.successGlobal(response.data))
-		} catch (error) {
-			dispatch(
-				actions.errorGlobal(error.response.data)
-			);
-		}
-		dispatch(actions.resetBusyIndicator());
-	};
-};
-
-export const patchMeeting = (meetingId, payload) => {
-	return async (dispatch) => {
-		dispatch(actions.setBusyIndicator());
-		try {
-			const response = await axios.patch(`/api/v1/meetings/${meetingId}`, payload);
-			dispatch(actions.clearMeetingList());
-			dispatch(actions.clearMeetingsStatus());
-			dispatch(actions.successGlobal({message: getText("meetingUpdatedNoti")}));
-		} catch (error) {
-			dispatch(
-				actions.errorGlobal(error.response.data)
-			);
-		}
-		dispatch(actions.resetBusyIndicator());
-	};
-};
-
-export const createMeeting = (payload) => {
-	return async (dispatch) => {
-		dispatch(actions.setBusyIndicator());
-		try {
-			const response = await axios.post(`/api/v1/meetings`, payload);
-			dispatch(actions.clearMeetingList());
-			dispatch(actions.clearMeetingsStatus());
-			dispatch(actions.successGlobal({message: getText("meetingCreatedNoti")}));
 		} catch (error) {
 			dispatch(
 				actions.errorGlobal(error.response.data)

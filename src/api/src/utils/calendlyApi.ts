@@ -6,6 +6,7 @@ import config from "../config";
 const url = {
 	ME: "https://api.calendly.com/users/me",
 	SUBSCRIPTIONS: "https://api.calendly.com/webhook_subscriptions",
+	CANCEL_MEETING: "https://api.calendly.com/scheduled_events/{uuid}/cancellation"
 }
 
 let calendlyAdminData: any;
@@ -75,7 +76,8 @@ export async function registorWebhook() {
 			"events": [
 				"invitee.created",
 				"invitee.canceled",
-				"invitee_no_show.created"
+				"invitee_no_show.created",
+				"routing_form_submission.created"
 			],
 			"organization": calendlyAdminData.current_organization,
 			"user": calendlyAdminData.uri,
@@ -89,6 +91,10 @@ export async function registorWebhook() {
 		}
 	}
 	return subslist.collection[0];
+}
+
+export async function cancelCalendlyInvite(id: string, reason?: string) {
+	return axios.post(url.CANCEL_MEETING.replace("{uuid}", id), { reason }, getOptions());
 }
 /*
 const url = "https://api.zoom.us/v2/users/" + config.EMAIL + "/meetings";
