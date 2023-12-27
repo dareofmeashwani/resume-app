@@ -13,7 +13,7 @@ import Button from '@mui/material/Button';
 import getText from "../../messages";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { deleteMeeting, resendMeetingInvite } from "../../store/actions/meetingsActions";
+import { cancelMeetingInvite, resendMeetingInvite } from "../../store/actions/meetingsActions";
 import { useDispatch } from "react-redux";
 import moment from "moment";
 import { formatAMPM } from "../../utils";
@@ -57,7 +57,7 @@ export default function ItemsList(props) {
                 justifyContent: 'space-between',
               }}>
                 <Typography component='div' fontWeight={"fontWeightMedium"}>
-                  {item.status === "active" ? item.title : `${getText("canceled")} ${item.title}`}
+                  {item.status === "active" ? item.title : `${getText("canceled")} - ${item.title}`}
                 </Typography>
                 <Box>
                   {item.status === "active" && new Date(item.end).getTime() > Date.now() && new Date(item.start).getTime() < Date.now()
@@ -102,7 +102,7 @@ export default function ItemsList(props) {
                             dispatch(resendMeetingInvite(key));
                           }
                           else if (actionType == getText("cancel")) {
-                            //dispatch(deleteMeeting(key));
+                            dispatch(cancelMeetingInvite(key));
                           }
                           setOpenedMenu("");
                           setAnchorEl(null);

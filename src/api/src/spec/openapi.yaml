@@ -1243,7 +1243,7 @@ paths:
                 - loginCheck
                 - emailVerifyCheck
             summary: cancel meeting
-            operationId: cancelMeeting
+            operationId: cancelInvite
             responses:
                 "202":
                     description: cancel existing meeting success message

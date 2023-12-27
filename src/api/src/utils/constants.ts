@@ -114,6 +114,9 @@ export const MESSAGES = {
 	MEETING_NOTI_SEND: "Meeting Invites Send.",
 	CHANGE_PASSWORD_SUCCESS: "Your password has successfully updated.",
 	SUCCESS_RESPONSE: "Request Successfully Completed",
+	CANCEL_INVITE: "Meeting has been cancelled successfully",
+	REQ_DENY_BY_USER: "Meeting decline by guest",
+	REQ_DENY_BY_ADMIN: "Meeting decline by platform admin"
 };
 
 export const query = {

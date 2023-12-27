@@ -68,7 +68,6 @@ export const signOut = () => {
 			await axios.post(`/api/v1/user/logout`);
 			dispatch(actions.signOut(null));
 			dispatch(actions.clearMeetingList());
-			dispatch(actions.clearMeetingsStatus());
 			removeCookieToken();
 		} catch (error) {
 			dispatch(

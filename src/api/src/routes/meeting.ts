@@ -10,7 +10,7 @@ import {
 	sendMeetingUpdate
 } from "../utils/email";
 import { User } from "../models/userModel";
-import { verfiyWebhookSignature } from "../utils/calendlyApi";
+import { verfiyWebhookSignature, cancelCalendlyInvite } from "../utils/calendlyApi";
 
 const getProps = (user: any) => {
 	return filterProps(user, ["__v", "externalEventId", "createdBy"], {
@@ -23,17 +23,16 @@ export const cancelInvite = async (
 	res: express.Response
 ) => {
 	let response;
-	let admins = [];
 	try {
-		admins = await User.find({ role: ROLES.ADMIN });
-		req.body.members = req.body.members && unique(req.body.members);
 		response = await meetingModel.findOneAndUpdate(
 			{
-				_id: req.params.meetingId,
+				_id: req.query.meetingId,
 				createdBy: res.locals.userData.email
 			},
 			{
-				$set: req.body
+				$set: {
+					status: "inactive"
+				}
 			},
 			{ new: true }
 		);
@@ -52,56 +51,23 @@ export const cancelInvite = async (
 			error
 		);
 	}
-	let attendees: any = [
-		{ email: res.locals.userData.email },
-		...admins.map((admin: any) => {
-			return {
-				email: admin.email
-			};
-		})
-	];
-	if (response.members) {
-		response.members.forEach((member: string) => {
-			attendees.push({ email: member });
-		});
+	try {
+		await cancelCalendlyInvite(
+			response.externalEventId,
+			res.locals.userData.role === ROLES.USER ?
+				MESSAGES.REQ_DENY_BY_USER : MESSAGES.REQ_DENY_BY_ADMIN
+		);
+	} catch (error) {
+		throwResumeError(
+			HTTP_STATUS.INTERNAL_SERVER_ERROR,
+			ERROR_MESSAGES.CALENDLY_CONNECTIVITY_ERROR,
+			req,
+			error
+		);
 	}
-	attendees = unique(attendees, "email");
-	if (response.externalEventId) {
-		try {
-			/*const zoomResponse = await zoom.update(
-				response.externalEventId,
-				{
-					topic: response.title,
-					agenda: response.description,
-					start_time: new Date(response.start).toISOString(),
-					duration: Math.floor(
-						(new Date(response.end).getTime() - new Date(response.start).getTime()) /
-						60000
-					)
-				},
-				attendees
-			);*/
-			res.status(HTTP_STATUS.ACCEPTED).send(getProps(response._doc));
-			/*sendMeetingUpdate(
-				res.locals.userData,
-				attendees.map((attendee: any) => attendee.email),
-				await (
-				await zoom.get(response._doc.externalEventId)
-				).data,
-				response
-			);
-			*/
-		} catch (error) {
-			throwResumeError(
-				HTTP_STATUS.INTERNAL_SERVER_ERROR,
-				ERROR_MESSAGES.CALENDLY_CONNECTIVITY_ERROR,
-				req,
-				error
-			);
-		}
-	} else {
-		res.status(HTTP_STATUS.ACCEPTED).send(getProps(response._doc));
-	}
+	res.status(HTTP_STATUS.ACCEPTED).send({
+		message: MESSAGES.CANCEL_INVITE
+	});
 };
 
 
@@ -159,7 +125,7 @@ export const getMeetingList = async function (
 			options.sort = { [options.sortBy]: options.sort };
 		}
 		const filterParams: any = {};
-		if(res.locals.userData.role === ROLES.USER){
+		if (res.locals.userData.role === ROLES.USER) {
 			filterParams.createdBy = res.locals.userData.email
 		}
 		if (options.listType === "previous") {
@@ -245,6 +211,8 @@ export async function meetingWebhook(
 			await createCalendlyMeeting(body);
 		} else if (body.event === "invitee.canceled") {
 			await cancelCalendlyMeeting(body);
+		} else{
+			console.log(JSON.stringify(body));
 		}
 	} catch (error) {
 		throwResumeError(

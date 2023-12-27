@@ -32,8 +32,6 @@ import {
 	TRAININGS_CLEAR,
 	WORK_EXPERIENCES_CLEAR,
 	WORK_EXPERIENCES_LIST,
-	MEETINGS_STATUS_LIST,
-	MEETINGS_STATUS_LIST_CLEAR,
 	MEETINGS_LIST,
 	MEETINGS_LIST_CLEAR,
 } from "../types";
@@ -227,16 +225,6 @@ export const emailVerify = (payload) => ({
 });
 
 /////// meetings /////////////
-
-export const meetingsStatus = (payload) => ({
-	type: MEETINGS_STATUS_LIST,
-	payload,
-});
-
-export const clearMeetingsStatus = () => ({
-	type: MEETINGS_STATUS_LIST_CLEAR,
-	payload: null
-});
 
 export const meetingsList = (payload) => ({
 	type: MEETINGS_LIST,
