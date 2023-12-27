@@ -1,14 +1,8 @@
 import * as express from "express";
 import { HTTP_STATUS, ERROR_MESSAGES, ROLES, query, MESSAGES } from "../utils/constants";
 import { throwResumeError } from "../utils/errorHelper";
-import { filterProps, unique, processQueryParam, setDifference } from "../utils/helpers";
-import config from "../config";
+import { filterProps, processQueryParam, setDifference } from "../utils/helpers";
 import meetingModel from "../models/meetingModel";
-import {
-	sendMeetingCancellation,
-	sendInvite,
-	sendMeetingUpdate
-} from "../utils/email";
 import { User } from "../models/userModel";
 import { verfiyWebhookSignature, cancelCalendlyInvite } from "../utils/calendlyApi";
 
@@ -69,48 +63,6 @@ export const cancelInvite = async (
 		message: MESSAGES.CANCEL_INVITE
 	});
 };
-
-
-export async function resendInvite(
-	req: express.Request,
-	res: express.Response
-) {
-	let admins = [];
-	let response;
-	try {
-		admins = await User.find({ role: ROLES.ADMIN });
-		response = await meetingModel.findOne({
-			_id: req.params.meetingId,
-			createdBy: res.locals.userData.email
-		});
-	} catch (error) {
-		throwResumeError(
-			HTTP_STATUS.SERVICE_UNAVAILABLE,
-			ERROR_MESSAGES.DB_CONNECTIVITY_ERROR,
-			req,
-			error
-		);
-	}
-	if (!response) {
-		throwResumeError(HTTP_STATUS.NOT_FOUND, ERROR_MESSAGES.NOT_FOUND_ERROR, req);
-	}
-	let attendees: any = unique([
-		...response._doc.members,
-		res.locals.userData.email,
-		...admins.map((admin) => admin.email)
-	]);
-	/*sendZoomInvite(
-		res.locals.userData,
-		attendees,
-		await (
-			await zoom.get(response._doc.externalEventId)
-		).data,
-		response
-	);*/
-	res.status(HTTP_STATUS.ACCEPTED).send({
-		message: MESSAGES.MEETING_NOTI_SEND
-	});
-}
 
 export const getMeetingList = async function (
 	req: express.Request,
@@ -207,12 +159,11 @@ export async function meetingWebhook(
 		);
 	}
 	try {
+		console.log(JSON.stringify(body));
 		if (body.event === "invitee.created") {
 			await createCalendlyMeeting(body);
 		} else if (body.event === "invitee.canceled") {
 			await cancelCalendlyMeeting(body);
-		} else{
-			console.log(JSON.stringify(body));
 		}
 	} catch (error) {
 		throwResumeError(
