@@ -85,16 +85,10 @@ export function getQueryVariable(variable) {
     return undefined;
 }
 
-export function formatAMPM(date) {
-    function formatDigit(digit) {
-		return ("0" + digit).slice(-2);
-	}
-    var hours = date.hours();
-    var minutes = date.minutes();
-    var ampm = hours >= 12 ? 'pm' : 'am';
-    hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
-    minutes = minutes < 10 ? '0'+minutes : minutes;
-    var strTime = formatDigit(hours) + ':' + formatDigit(minutes) + ' ' + ampm;
-    return strTime;
-  }
+export function longestCommonPrefix(words) {
+    if (!words[0] || words.length === 1) return words[0] || "";
+    let i = 0;
+    while (words[0][i] && words.every(w => w[i] === words[0][i]))
+        i++;
+    return words[0].substr(0, i);
+}

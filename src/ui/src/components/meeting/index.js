@@ -2,7 +2,6 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import ButtonGroup from "@mui/material/ButtonGroup";
 import Typography from "@mui/material/Typography";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "@mui/material";
@@ -80,7 +79,6 @@ const Meeting = (props) => {
           <Grid >
             <MainCard title={getText("Meetings")} actions={
               <>
-                <ButtonGroup>
                   <Button color="success" variant={listType === "all" ? "contained" : "outlined"} onClick={() => {
                     if (listType !== "all") {
                       setListType("all");
@@ -99,7 +97,6 @@ const Meeting = (props) => {
                       dispatch(clearMeetingsList());
                     }
                   }}>{getText("previous")}</Button>
-                </ButtonGroup>
                 <IconButton aria-label="comment" onClick={() => {
                   Calendly.initPopupWidget({
                     url: "https://calendly.com/connect2ashwaniverma", prefill: {
@@ -118,7 +115,7 @@ const Meeting = (props) => {
                   <Typography margin={"1rem"} sx={{
                     alignSelf: "center", alignContent: "center",
                     textAlign: "center",
-                  }}>{getText("noMeetingCreated")}</Typography>
+                  }}>{ listType === "upcoming"? getText("noUpcomingMeeting") :getText("noMeetingCreated")}</Typography>
                 </Box>}
             </MainCard>
           </Grid>}

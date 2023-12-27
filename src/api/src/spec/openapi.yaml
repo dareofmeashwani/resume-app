@@ -1513,6 +1513,7 @@ components:
                     schema:
                         allOf:
                             - $ref: "#/components/schemas/QueryDetailBase"
+                            - $ref: "#/components/schemas/QueryDetailBaseReqiured"
 
     #######################################
     ###########   responses  ##############
@@ -2260,6 +2261,7 @@ components:
         QueryDetail:
             allOf:
                 - $ref: "#/components/schemas/QueryDetailBase"
+                - $ref: "#/components/schemas/QueryDetailBaseReqiured"
             type: object
             required:
                 - id
@@ -2271,6 +2273,12 @@ components:
                 createdAt:
                     allOf:
                         - $ref: "#/components/schemas/createdAt"
+
+        QueryDetailBaseReqiured:
+            required:
+              - name
+              - email
+              - subject
 
         QueryDetailBase:
             type: object
