@@ -138,3 +138,4 @@ yarn-error.log*
 
 src/api/src/downloads
 src/api/src/images
+src/api/src/temp.zip

@@ -78,7 +78,7 @@ const messages = {
 	view: "View",
 	edit: "Edit",
 	delete: "Delete",
-	sendNotification: "Send Notification",
+	resendInvitee: "Resend Invitee",
 	scheduleMeeting: "Schedule Meeting",
 	meetingTitle: "Meeting Title",
 	meetingDescPlaceHolder: "Mention some details about the meeting.",

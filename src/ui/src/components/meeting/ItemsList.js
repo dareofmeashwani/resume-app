@@ -88,7 +88,7 @@ export default function ItemsList(props) {
                       oEvent.stopPropagation()
                     }}
                   >
-                    {[getText("view"), getText("edit"), getText("cancel"), getText("sendNotification")].map((action) => (
+                    {[getText("view"), getText("resendInvitee"), getText("cancel")].map((action) => (
                       <MenuItem
                         data-key={action}
                         key={action}
@@ -98,10 +98,7 @@ export default function ItemsList(props) {
                           if (actionType == getText("view")) {
                             setOpenedItem(key);
                           }
-                          else if (actionType == getText("edit")) {
-                            // 
-                          }
-                          else if (actionType == getText("sendNotification")) {
+                          else if (actionType == getText("resendInvitee")) {
                             dispatch(resendMeetingInvite(key));
                           }
                           else if (actionType == getText("cancel")) {

@@ -71,7 +71,7 @@ export async function registorWebhook() {
 		, getOptions())).data;
 	if (!subslist.collection.length) {
 		const data = {
-			"url": `${config.DOMAIN_ADDRESS}/api/v1/meetingscalendlywebhook`,
+			"url": `${config.DOMAIN_ADDRESS}/api/v1/meetings/calendlyWebhook`,
 			"events": [
 				"invitee.created",
 				"invitee.canceled",
