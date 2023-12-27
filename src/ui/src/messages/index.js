@@ -72,7 +72,7 @@ const messages = {
 	join: "Join Now",
 	additionalParticipants: "Additional Participants",
 	modifiedAt: "Last Modified At",
-	createdAt: "Created At",
+	createdAt: "Scheduled At",
 	startAt: "Start At",
 	endAt: "End At",
 	view: "View",
@@ -109,7 +109,8 @@ const messages = {
 	cancel: "Cancel",
 	canceled: "Canceled",
 	noUpcomingMeeting: "You don't have any upcoming meeting",
-	joiningUrl: "Joining URL"
+	joiningUrl: "Joining URL",
+	createdBy: "Created By"
 };
 
 export default function getText(key) {

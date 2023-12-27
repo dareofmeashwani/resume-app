@@ -7,7 +7,7 @@ import { User } from "../models/userModel";
 import { verfiyWebhookSignature, cancelCalendlyInvite } from "../utils/calendlyApi";
 
 const getProps = (user: any) => {
-	return filterProps(user, ["__v", "externalEventId", "createdBy"], {
+	return filterProps(user, ["__v", "externalEventId"], {
 		_id: "id"
 	});
 };
@@ -110,10 +110,12 @@ export async function createCalendlyMeeting(data: any) {
 	const payload = data.payload;
 	const scheduledEvent = data.payload.scheduled_event;
 	const admins = await User.find({ role: ROLES.ADMIN });
+	const questionsAnswers = payload.questions_and_answers;
 	let attendees = scheduledEvent.event_guests.map((userInfo: any) => userInfo.user_email);
 	attendees.push(...scheduledEvent.event_memberships.map((userInfo: any) => userInfo.user_email));
 	const doc = new meetingModel({
 		title: scheduledEvent.name,
+		description: Array.isArray(questionsAnswers) && questionsAnswers.length && questionsAnswers[0] ? questionsAnswers[0].answer : "",
 		start: scheduledEvent.start_time,
 		end: scheduledEvent.end_time,
 		members: setDifference(attendees, admins.map((admin: any) => admin.email)),

@@ -12,7 +12,12 @@ const MeetingSchema = new mongoose.Schema({
 	start: {
 		type: Date,
 		required: true
-	}, 
+	},
+	description: {
+		type: String,
+		maxLength: 500,
+		trim: true
+	},
 	joiningLink:{
 		type: String,
 		maxLength: 200,
