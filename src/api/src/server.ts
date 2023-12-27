@@ -64,8 +64,8 @@ async function main() {
 			}
 		})
 	})
-	//await prepareContent();
-	//await registorWebhook();
+	await prepareContent();
+	await registorWebhook();
 	app.listen(port, () => {
 		console.log(`Server running on port ${port}`);
 	});
