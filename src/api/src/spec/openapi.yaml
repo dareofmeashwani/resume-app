@@ -1232,51 +1232,25 @@ paths:
                     $ref: "#/components/responses/Forbidden"
                 "500":
                     $ref: "#/components/responses/InternalServerError"
-
-    /meetings/{meetingId}:
+    
+    /meetings/cancelInvite:
         parameters:
             - $ref: "#/components/parameters/MeetingId"
-        get:
+        post:
             tags:
                 - Meeting
             x-middleware:
                 - loginCheck
                 - emailVerifyCheck
-            summary: get meeting
-            operationId: getMeeting
-            responses:
-                "200":
-                    description: returns single meeting
-                    content:
-                        application/json:
-                            schema:
-                                $ref: "#/components/schemas/MeetingDetail"
-                "401":
-                    $ref: "#/components/responses/Unauthorized"
-                "403":
-                    $ref: "#/components/responses/Forbidden"
-                "404":
-                    $ref: "#/components/responses/NotFound"
-                "500":
-                    $ref: "#/components/responses/InternalServerError"
-        patch:
-            tags:
-                - Meeting
-            x-middleware:
-                - loginCheck
-                - emailVerifyCheck
-            summary: modify meeting
-            operationId: patchMeeting
-            requestBody:
-                required: true
-                $ref: "#/components/requestBodies/MeetingModificationBody"
+            summary: cancel meeting
+            operationId: cancelMeeting
             responses:
                 "202":
-                    description: modify existing meeting
+                    description: cancel existing meeting success message
                     content:
                         application/json:
                             schema:
-                                $ref: "#/components/schemas/MeetingDetail"
+                                $ref: "#/components/schemas/Message"
                 "400":
                     $ref: "#/components/responses/BadRequest"
                 "401":
@@ -1288,7 +1262,7 @@ paths:
                 "500":
                     $ref: "#/components/responses/InternalServerError"
 
-    /meetings/{meetingId}/resendInvite:
+    /meetings/resendInvite:
         parameters:
             - $ref: "#/components/parameters/MeetingId"
         post:
@@ -1306,6 +1280,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Message"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
                 "401":
                     $ref: "#/components/responses/Unauthorized"
                 "403":
@@ -1315,7 +1291,7 @@ paths:
                 "500":
                     $ref: "#/components/responses/InternalServerError"
 
-    /meetingscalendlywebhook:
+    /meetings/calendlyWebhook:
         post:
             tags:
                 - Meeting
@@ -1566,21 +1542,6 @@ components:
                     schema:
                         allOf:
                             - $ref: "#/components/schemas/QueryDetailBase"
-
-        MeetingBody:
-            description: meeting payload for creation
-            content:
-                application/json:
-                    schema:
-                        allOf:
-                            - $ref: "#/components/schemas/MeetingDetailRequired"
-        MeetingModificationBody:
-            description: meeting modification request body
-            content:
-                application/json:
-                    schema:
-                        allOf:
-                            - $ref: "#/components/schemas/MeetingDetailBase"
 
     #######################################
     ###########   responses  ##############
@@ -2565,7 +2526,7 @@ components:
         MeetingId:
             name: meetingId
             description: meeting identifier
-            in: path
+            in: query
             required: true
             schema:
                 allOf:
