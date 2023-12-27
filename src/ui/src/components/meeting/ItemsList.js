@@ -14,14 +14,17 @@ import Button from '@mui/material/Button';
 import getText from "../../messages";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { cancelMeetingInvite, resendMeetingInvite } from "../../store/actions/meetingsActions";
-import { useDispatch } from "react-redux";
+import { cancelMeetingInvite } from "../../store/actions/meetingsActions";
+import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { longestCommonPrefix } from '../../utils';
 
 export default function ItemsList(props) {
   const dispatch = useDispatch();
   const items = props.items;
+  const user = useSelector((state) => {
+    return state.userData.user;
+  });
   const [openedItem, setOpenedItem] = React.useState("");
   const handleSelect = (panel) => (oEvent) => {
     if (openedItem === panel) {
@@ -62,6 +65,9 @@ export default function ItemsList(props) {
                   <Typography variant="subtitle2" color="inherit">
                     {`${getText("timing")} : ${moment(item.start).format("llll")} - ${moment(item.end).format("llll").replace(longestCommonPrefix([moment(item.start).format("llll"), moment(item.end).format("llll")]), "")}`}
                   </Typography>
+                  {user && user.role === "ADMIN" ? <Typography>
+                    {getText("createdBy") + " : " + item.createdBy}
+                  </Typography> : null}
                 </Typography>
                 <Box>
                   {item.status === "active" && new Date(item.end).getTime() > Date.now() && new Date(item.start).getTime() < Date.now()
@@ -92,7 +98,7 @@ export default function ItemsList(props) {
                       oEvent.stopPropagation()
                     }}
                   >
-                    {[getText("view"), item.status === "active" && new Date(item.end).getTime() > Date.now() ?getText("cancel"): null].map((action) => (
+                    {[getText("view"), item.status === "active" && new Date(item.end).getTime() > Date.now() ? getText("cancel") : null].map((action) => (
                       <MenuItem
                         data-key={action}
                         key={action}
@@ -125,6 +131,9 @@ export default function ItemsList(props) {
                 backgroundColor: 'rgba(255, 255, 255, .05)',
                 padding: "1rem"
               }}>
+                {item.description ? <Typography>
+                  {getText("description") + " : " + item.description}
+                </Typography> : null}
                 {Array.isArray(item.members) && item.members.length ? <Typography>
                   {getText("additionalParticipants") + " : " + item.members.join(", ")}
                 </Typography> : null}

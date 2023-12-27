@@ -2315,12 +2315,16 @@ components:
 
         MeetingDetail:
             allOf:
-                - $ref: "#/components/schemas/MeetingDetailRequired"
+                - $ref: "#/components/schemas/MeetingDetailBase"
                 - $ref: "#/components/schemas/DateMeta"
             type: object
             required:
                 - id
                 - joiningLink
+                - createdBy
+                - end
+                - start
+                - status
             properties:
                 id:
                     type: string
@@ -2329,20 +2333,15 @@ components:
                     type: string
                     maxLength: 200
 
-        MeetingDetailRequired:
-            allOf:
-                - $ref: "#/components/schemas/MeetingDetailBase"
-            type: object
-            required:
-                - end
-                - start
-
         MeetingDetailBase:
             type: object
             properties:
                 title:
                     type: string
                     maxLength: 100
+                description:
+                    type: string
+                    maxLength: 400
                 start:
                     type: string
                     format: date-time
@@ -2351,7 +2350,7 @@ components:
                     type: string
                     format: date-time
                     maxLength: 25
-                email:
+                createdBy:
                     type: string
                     maxLength: 256
                     format: email
