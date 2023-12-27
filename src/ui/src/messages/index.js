@@ -108,7 +108,8 @@ const messages = {
 	resendEmailVerification: "Resend E-mail Verification",
 	cancel: "Cancel",
 	canceled: "Canceled",
-	noUpcomingMeeting: "You don't have any upcoming meeting"
+	noUpcomingMeeting: "You don't have any upcoming meeting",
+	joiningUrl: "Joining URL"
 };
 
 export default function getText(key) {

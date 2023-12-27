@@ -1,5 +1,6 @@
 import * as React from 'react';
 import List from '@mui/material/List';
+import Link from "@mui/material/Link";
 import Box from '@mui/material/Box';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -16,7 +17,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { cancelMeetingInvite, resendMeetingInvite } from "../../store/actions/meetingsActions";
 import { useDispatch } from "react-redux";
 import moment from "moment";
-import { formatAMPM } from "../../utils";
+import { longestCommonPrefix } from '../../utils';
 
 export default function ItemsList(props) {
   const dispatch = useDispatch();
@@ -58,6 +59,9 @@ export default function ItemsList(props) {
               }}>
                 <Typography component='div' fontWeight={"fontWeightMedium"}>
                   {item.status === "active" ? item.title : `${getText("canceled")} - ${item.title}`}
+                  <Typography variant="subtitle2" color="inherit">
+                    {`${getText("timing")} : ${moment(item.start).format("llll")} - ${moment(item.end).format("llll").replace(longestCommonPrefix([moment(item.start).format("llll"), moment(item.end).format("llll")]), "")}`}
+                  </Typography>
                 </Typography>
                 <Box>
                   {item.status === "active" && new Date(item.end).getTime() > Date.now() && new Date(item.start).getTime() < Date.now()
@@ -88,7 +92,7 @@ export default function ItemsList(props) {
                       oEvent.stopPropagation()
                     }}
                   >
-                    {[getText("view"), getText("resendInvitee"), getText("cancel")].map((action) => (
+                    {[getText("view"), item.status === "active" && new Date(item.end).getTime() > Date.now() ?getText("cancel"): null].map((action) => (
                       <MenuItem
                         data-key={action}
                         key={action}
@@ -97,9 +101,6 @@ export default function ItemsList(props) {
                           const actionType = oEvent.target.getAttribute("data-key");
                           if (actionType == getText("view")) {
                             setOpenedItem(key);
-                          }
-                          else if (actionType == getText("resendInvitee")) {
-                            dispatch(resendMeetingInvite(key));
                           }
                           else if (actionType == getText("cancel")) {
                             dispatch(cancelMeetingInvite(key));
@@ -116,7 +117,7 @@ export default function ItemsList(props) {
                           {action}
                         </Typography>
                       </MenuItem>
-                    ))}
+                    )).filter(menuItem => !!menuItem)}
                   </Menu>
                 </Box>
               </ListItemButton>
@@ -124,20 +125,17 @@ export default function ItemsList(props) {
                 backgroundColor: 'rgba(255, 255, 255, .05)',
                 padding: "1rem"
               }}>
-                {item.description ? <Typography>
-                  {item.description}
-                </Typography> : null}
                 {Array.isArray(item.members) && item.members.length ? <Typography>
                   {getText("additionalParticipants") + " : " + item.members.join(", ")}
                 </Typography> : null}
                 <Typography>
-                  {`${getText("timing")} : ${new Date(item.start).toDateString()} - ${formatAMPM(moment(item.start))} - ${formatAMPM(moment(item.end))}`}
+                  {getText("createdAt") + " : " + moment(item.start).format("llll")}
                 </Typography>
-                <Typography>
-                  {getText("createdAt") + " : " + new Date(item.createdAt).toLocaleString()}
-                </Typography>
-                <Typography>
-                  {getText("modifiedAt") + " : " + new Date(item.modifiedAt).toLocaleString()}
+                <Typography>{getText("joiningUrl") + " : "} {
+                  <Link color="inherit" href={item.joiningLink} target='_blank'>
+                    {item.joiningLink}
+                  </Link>
+                }
                 </Typography>
               </Collapse>
             </Box>

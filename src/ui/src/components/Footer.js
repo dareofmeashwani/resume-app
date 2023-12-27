@@ -18,7 +18,7 @@ const Footer = (props) => {
 			<Container maxWidth="lg">
 				<Box align="center">
 					<Typography variant="caption" color="inherit">
-						Made using ReactJs, Material UI, ExpressJs & MongoDB. Hosted on Render,
+						Made using ReactJs, Material UI, ExpressJs & MongoDB, Calendly. Hosted on Render,
 						and open-sourced on GitHub
 					</Typography>
 				</Box>
