@@ -42,7 +42,7 @@ const ForgetPassword = (props) => {
       } catch (err) {
         errors.confirmPassword = err.message
       }
-      if (Object.keys(errors).length == 0 && values.confirmPassword != values.password) {
+      if (Object.keys(errors).length === 0 && values.confirmPassword !== values.password) {
         errors.confirmPassword = getText("passwordNotMatching");
         errors.password = getText("passwordNotMatching")
       }

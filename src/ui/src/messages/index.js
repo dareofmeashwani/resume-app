@@ -69,7 +69,7 @@ const messages = {
 	save: "Save",
 	meetingDetails: "Meeting Details",
 	noMeetingCreated: "You have not scheduled any meeting yet.",
-	join: "Join",
+	join: "Join Now",
 	additionalParticipants: "Additional Participants",
 	modifiedAt: "Last Modified At",
 	createdAt: "Created At",
@@ -107,7 +107,8 @@ const messages = {
 	createMeeting: "Schedule Meeting",
 	resendEmailVerification: "Resend E-mail Verification",
 	cancel: "Cancel",
-	canceled: "Canceled"
+	canceled: "Canceled",
+	noUpcomingMeeting: "You don't have any upcoming meeting"
 };
 
 export default function getText(key) {
