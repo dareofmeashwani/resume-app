@@ -98,8 +98,11 @@ export default function ItemsList(props) {
                       oEvent.stopPropagation()
                     }}
                   >
-                    {[getText("view"), item.status === "active" && new Date(item.end).getTime() > Date.now() ? getText("cancel") : null].map((action) => (
-                      <MenuItem
+                    {[getText("view"), item.status === "active" && new Date(item.end).getTime() > Date.now() ? getText("cancel") : null].map((action) => {
+                      if (!action) {
+                        return null;
+                      }
+                      return <MenuItem
                         data-key={action}
                         key={action}
                         onClick={(oEvent) => {
@@ -123,7 +126,7 @@ export default function ItemsList(props) {
                           {action}
                         </Typography>
                       </MenuItem>
-                    )).filter(menuItem => !!menuItem)}
+                    }).filter(menuItem => !!menuItem)}
                   </Menu>
                 </Box>
               </ListItemButton>
