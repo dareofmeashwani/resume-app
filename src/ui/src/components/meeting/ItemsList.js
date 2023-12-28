@@ -63,7 +63,7 @@ export default function ItemsList(props) {
                 <Typography component='div' fontWeight={"fontWeightMedium"}>
                   {item.status === "active" ? item.title : `${getText("canceled")} - ${item.title}`}
                   <Typography variant="subtitle2" color="inherit">
-                    {`${getText("timing")} : ${moment(item.start).format("llll")} - ${moment(item.end).format("llll").replace(longestCommonPrefix([moment(item.start).format("llll"), moment(item.end).format("llll")]), "")}`}
+                    {`${getText("timing")} : ${moment(item.start).format("llll")} - ${moment(item.end).format("LT")}`}
                   </Typography>
                   {user && user.role === "ADMIN" ? <Typography>
                     {getText("createdBy") + " : " + item.createdBy}
@@ -138,7 +138,7 @@ export default function ItemsList(props) {
                   {getText("additionalParticipants") + " : " + item.members.join(", ")}
                 </Typography> : null}
                 <Typography>
-                  {getText("createdAt") + " : " + moment(item.start).format("llll")}
+                  {getText("createdAt") + " : " + moment(item.createdAt).format("llll")}
                 </Typography>
                 <Typography>{getText("joiningUrl") + " : "} {
                   <Link color="inherit" href={item.joiningLink} target='_blank'>

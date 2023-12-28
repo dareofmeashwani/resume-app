@@ -72,7 +72,7 @@ const messages = {
 	join: "Join Now",
 	additionalParticipants: "Additional Participants",
 	modifiedAt: "Last Modified At",
-	createdAt: "Scheduled At",
+	createdAt: "Created At",
 	startAt: "Start At",
 	endAt: "End At",
 	view: "View",
