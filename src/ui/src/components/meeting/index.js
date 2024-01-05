@@ -70,7 +70,7 @@ const Meeting = (props) => {
               textAlign: "center",
               alignSelf: "center"
             }}>
-              <Button variant="contained" color="success" sx={{ mt: 3, mb: 2 }} onClick={() => Calendly.initPopupWidget({ url: "https://calendly.com/connect2ashwaniverma" })}>
+              <Button variant="contained" color="success" sx={{ mt: 3, mb: 2 }} onClick={() => Calendly.initPopupWidget({ url: "https://calendly.com/connect2ashwaniverma/30-minute-meeting" })}>
                 {getText("createMeeting")}
               </Button>
             </Box>
@@ -99,7 +99,7 @@ const Meeting = (props) => {
                   }}>{getText("previous")}</Button>
                 <IconButton aria-label="comment" onClick={() => {
                   Calendly.initPopupWidget({
-                    url: "https://calendly.com/connect2ashwaniverma", prefill: {
+                    url: "https://calendly.com/connect2ashwaniverma/30-minute-meeting", prefill: {
                       name: `${user.firstname} ${user.lastname}`,
                       email: user.email,
                       branding: false
