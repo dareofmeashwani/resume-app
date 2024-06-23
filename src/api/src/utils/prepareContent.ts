@@ -30,8 +30,8 @@ function downloadFile(url: string, filename: string) {
 	});
 }
 async function unzipFile(filename: string, targetDir: string = "./") {
-	var zip = new admZip(filename);
-	zip.extractAllTo(targetDir, true);
+	//var zip = new admZip(filename);
+	//zip.extractAllTo(targetDir, true);
 }
 export default async function downloadContent() {
 	const filePath = path.join(__dirname, "../temp.zip");
